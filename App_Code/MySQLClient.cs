@@ -66,7 +66,7 @@ using MySql.Data.MySqlClient;
             //Insert values into the database.
 
             //Example: INSERT INTO user (Fname, Lname, username, password, email, phone, address, city, state, zipcode) VALUES('Eric', 'Abbott', 'eabb', 'password', 'eabbott113@gmail.com', '7066913464', '2111 N Oak', 'Valdosta', 'GA', '31698')
-            //Code: MySQLClient.Insert("user", "Fname, Lname, username, password, email, phone, address, city, state, zipcode", "'Eric', 'Abbott', 'eabb', 'password', 'eabbott113@gmail.com', '7066913464', '2111 N Oak', 'Valdosta', 'GA', '31698'");
+            //Code: MySQLClient.Insert("user", "first_name, last_name, username, password, email, phone, address, city, state, zipcode", "'Eric', 'Abbott', 'eabb', 'password', 'eabbott113@gmail.com', '7066913464', '2111 N Oak', 'Valdosta', 'GA', '31698'");
             string query = "INSERT INTO " + table + " (" + column + ") VALUES (" + value + ")";
 
             try
