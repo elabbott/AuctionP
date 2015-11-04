@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using MySql.Data.MySqlClient;
 
-    public class MySQLClient
-    {
+public class MySQLClient
+{
         MySqlConnection conn = null;
         //what things should be currently, will leave the server running on Baralai and hope for the best for now.
         //hostname = 173.194.241.131   //google cloud host 
@@ -61,6 +61,7 @@ using MySql.Data.MySqlClient;
         }
         #endregion
 
+        #region methods
         public void Insert(string table, string column, string value)
         {
             //Insert values into the database.
@@ -156,5 +157,8 @@ using MySql.Data.MySqlClient;
                 return Count;
             }
         }
-    }
+        #endregion
+}
+        
+
 

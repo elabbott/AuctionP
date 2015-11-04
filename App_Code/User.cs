@@ -8,22 +8,19 @@ using System.Web;
 /// </summary>
 public class User
 {
+    #region Attributes/Private Variables
     private int id;
     private string username;
     private string email;
-   
-    private string password;
-   
+    private string password;   
     private DateTime created_date;
-
-    
     private string address;
     private string city;
     private string state;
     private string zipcode;
     private string first_name;
     private string last_name;
-
+    #endregion
     public User(string username, string password, string email, string address, string city, string state, string zipcode, string first_name, string last_name)
 	{
         this.username = username;
@@ -44,7 +41,7 @@ public class User
         add_user.Insert("user", "first_name, last_name, username, password, email, phone, address, city, state, zipcode", value);
     }
 
-
+    #region Properties
     public int Id
     {
         get { return id; }
@@ -100,4 +97,6 @@ public class User
         get { return created_date; }
         set { created_date = value; }//should never really be used
     }
+    #endregion
+
 }
