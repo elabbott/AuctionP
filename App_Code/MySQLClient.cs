@@ -61,7 +61,7 @@ public class MySQLClient
         }
         #endregion
 
-        #region methods
+        #region Methods
         public void Insert(string table, string column, string value)
         {
             //Insert values into the database.
@@ -74,7 +74,7 @@ public class MySQLClient
             {
                 if (this.Open())
                 {
-                    //Opens a connection, if succefull; run the query and then close the connection.
+                    //Opens a connection, if successful; run the query and then close the connection.
 
                     MySqlCommand cmd = new MySqlCommand(query, conn);
 
