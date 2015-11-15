@@ -33,13 +33,19 @@ public class User
         this.first_name = first_name;
         this.last_name = last_name;
 	}
-
-    public void Create_User(User user)
+    public User(string username, string password, string email)
     {
-        MySQLClient add_user = new MySQLClient("173.194.241.131","auction_powers", "root", "root");
-        string value = user.Username + ", " + user.Email + ", " + user.Password + ", " + user.Address + ", " + user.City + ", " + user.State + ", " + user.Zipcode + ", " + user.First_name + ", " + user.Last_name;
-        add_user.Insert("user", "first_name, last_name, username, password, email, phone, address, city, state, zipcode", value);
+        this.Username = username;
+        this.Password = password;
+        this.Email = email;
     }
+    //this doesn't belong here
+    //public void Create_User(User user)
+    //{
+    //    MySQLClient add_user = new MySQLClient("173.194.241.131","auction_powers", "root", "root");
+    //    string value = user.Username + ", " + user.Email + ", " + user.Password + ", " + user.Address + ", " + user.City + ", " + user.State + ", " + user.Zipcode + ", " + user.First_name + ", " + user.Last_name;
+    //    add_user.Insert("user", "first_name, last_name, username, password, email, phone, address, city, state, zipcode", value);
+    //}
 
     #region Properties
     public int Id

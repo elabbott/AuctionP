@@ -6,7 +6,13 @@ using MySql.Data.MySqlClient;
 
 public class MySQLClient
 {
-        MySqlConnection conn = null;
+    MySqlConnection conn = null;
+
+    public MySqlConnection Conn
+    {
+        get { return conn; }
+        set { conn = value; }
+    }
         //what things should be currently, will leave the server running on Baralai and hope for the best for now.
         //hostname = 173.194.241.131   //google cloud host 
         //database = aution_powers
@@ -14,20 +20,20 @@ public class MySQLClient
         //password = root
         //port number = 3306 // shouldnt need to use this 3306 is default for MySQL
         #region Constructors
-        public MySQLClient(string hostname, string database, string username, string password)
+        public MySQLClient(MySqlConnection conn)
         {
-            conn = new MySqlConnection("host=" + hostname + ";database=" + database +";username=" + username +";password=" + password +";");
+            this.conn = conn;
         }
 
-        public MySQLClient(string hostname, string database, string username, string password, int portNumber)
-        {
-            conn = new MySqlConnection("host=" + hostname + ";database=" + database + ";username=" + username + ";password=" + password + ";port=" + portNumber.ToString() +";");
-        }
+        //public MySQLClient(string hostname, string database, string username, string password, int portNumber)
+        //{
+        //    conn = new MySqlConnection("host=" + hostname + ";database=" + database + ";username=" + username + ";password=" + password + ";port=" + portNumber.ToString() +";");
+        //}
 
-        public MySQLClient(string hostname, string database, string username, string password, int portNumber, int connectionTimeout)
-        {
-            conn = new MySqlConnection("host=" + hostname + ";database=" + database + ";username=" + username + ";password=" + password + ";port=" + portNumber.ToString() + ";Connection Timeout=" + connectionTimeout.ToString() +";");
-        }
+        //public MySQLClient(string hostname, string database, string username, string password, int portNumber, int connectionTimeout)
+        //{
+        //    conn = new MySqlConnection("host=" + hostname + ";database=" + database + ";username=" + username + ";password=" + password + ";port=" + portNumber.ToString() + ";Connection Timeout=" + connectionTimeout.ToString() +";");
+        //}
         #endregion
 
         #region Open/Close Connection
@@ -62,6 +68,8 @@ public class MySQLClient
         #endregion
 
         #region Methods
+
+        //may not work with variables!!!
         public void Insert(string table, string column, string value)
         {
             //Insert values into the database.
@@ -75,7 +83,7 @@ public class MySQLClient
                 if (this.Open())
                 {
                     //Opens a connection, if successful; run the query and then close the connection.
-
+                    Console.Write("hello");
                     MySqlCommand cmd = new MySqlCommand(query, conn);
 
                     cmd.ExecuteNonQuery();
@@ -85,7 +93,27 @@ public class MySQLClient
             catch { }
             return;
         }
+        public void Insert_Users(User user)
+        {
+            MySqlCommand cmd = null;
+            try
+            {
+                if (this.Open())
+                {
+                    cmd = new MySqlCommand();
+                    cmd.Parameters.AddWithValue("?username", user.Username);
+                    cmd.Parameters.AddWithValue("?password", user.Password);
+                    cmd.Parameters.AddWithValue("?email", user.Email);
+                    cmd.Connection = this.Conn;
+                    cmd.CommandText = "INSERT INTO user (username, `password`, email) VALUES (?username, ?password, ?email)";
+                    cmd.ExecuteNonQuery();
+                    this.Close();
+                }
+            }
+            catch { this.Close(); }
+        }
 
+        
         public void Update(string table, string SET, string WHERE)
         {
             //Update existing values in the database.
