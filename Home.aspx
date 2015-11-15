@@ -9,8 +9,12 @@
 <body>
     <form id="form1" runat="server">
     <div>
-    
-    </div>
+    Welcome
+    <asp:LoginName ID="LoginName1" runat="server" Font-Bold = "true" />
+    <br />
+    <br />
+    <asp:LoginStatus ID="LoginStatus1" runat="server" />
+</div>
     </form>
 </body>
 </html>
