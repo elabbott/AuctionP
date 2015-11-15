@@ -7,6 +7,8 @@ using System.Web.UI.WebControls;
 using System.Data;
 using System.Configuration;
 using MySql.Data.MySqlClient;
+using System.Net.Mail;
+using System.Net;
 
 public partial class Registration : System.Web.UI.Page
 {
@@ -70,9 +72,60 @@ public partial class Registration : System.Web.UI.Page
                     break;
                 default:
                     message = "Registration successful.\\nUser Id: " + userId.ToString();
+                    SendActivationEmail(userId);//line 81
                     break;
             }
             ClientScript.RegisterStartupScript(GetType(), "alert", "alert('" + message + "');", true);
+        }
+    }
+    // this isn't quite working look at line 75 for some reason it is passing in the integer 0 instead of the userId
+    private void SendActivationEmail(int userId)
+    {
+        string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+        string activationCode = Guid.NewGuid().ToString();
+        using (MySqlConnection con = new MySqlConnection(constr))
+        {
+            using (MySqlCommand cmd = new MySqlCommand("INSERT INTO User_Activation VALUES(User_Id, Activation_Code)"))
+            {
+                using (MySqlDataAdapter sda = new MySqlDataAdapter())
+                {
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Parameters.AddWithValue("User_Id", userId);
+                    cmd.Parameters.AddWithValue("Activation_Code", activationCode);
+                    cmd.Connection = con;
+                    try
+                    {
+                        con.Open();
+                        cmd.ExecuteNonQuery();
+                    }
+                    catch (MySqlException e)
+                    {
+                        Console.Write(e.ToString() + userId);
+                    }
+                    finally
+                    {
+                        con.Close();
+                    }                    
+                }
+            }
+        }
+        using (MailMessage mm = new MailMessage("auctionpowers2015fall@gmail.com", txtEmail.Text))
+        {
+            mm.Subject = "Account Activation";
+            string body = "Hello " + txtUsername.Text.Trim() + ",";
+            body += "<br /><br />Please click the following link to activate your account";
+            body += "<br /><a href = '" + Request.Url.AbsoluteUri.Replace("Registration.aspx", "Activation.aspx?Activation_Code=" + activationCode) + "'>Click here to activate your account.</a>";
+            body += "<br /><br />Thanks";
+            mm.Body = body;
+            mm.IsBodyHtml = true;
+            SmtpClient smtp = new SmtpClient();
+            smtp.Host = "smtp.gmail.com";
+            smtp.EnableSsl = true;
+            NetworkCredential NetworkCred = new NetworkCredential("auctionpowers2015fall@gmail.com", "auctionp1");
+            smtp.UseDefaultCredentials = true;
+            smtp.Credentials = NetworkCred;
+            smtp.Port = 587;
+            smtp.Send(mm);
         }
     }
 }
