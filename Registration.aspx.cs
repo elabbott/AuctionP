@@ -38,60 +38,41 @@ public partial class Registration : System.Web.UI.Page
         conn.ConnectionString = "server=173.194.241.131;database=auction_powers;uid=root;pwd=root;";
         MySQLClient register_user = new MySQLClient(conn);
         register_user.Insert_Users(registering_user);
-
-
-        //currently failed attempt at getting stored procedure to work
-        ////int userId = 0;
-        //MySqlConnection conn = new MySqlConnection();
-        //conn.ConnectionString = "server=173.194.241.131;database=auction_powers;uid=root;pwd=root;";
-        //MySqlCommand cmd = new MySqlCommand();
-        //try
-        //{
-        //    conn.Open();
-
-        //    cmd.Connection = conn;
-        //    cmd.CommandText = "Insert_User";
-        //    cmd.CommandType = CommandType.StoredProcedure;
-
-        //    cmd.Parameters.AddWithValue("Username", txtUsername.Text.Trim());
-        //    cmd.Parameters["Username"].Direction = ParameterDirection.Input;
-
-        //    cmd.Parameters.AddWithValue("Pass", txtPassword.Text.Trim());
-        //    cmd.Parameters["Pass"].Direction = ParameterDirection.Input;
-
-        //    cmd.Parameters.AddWithValue("Email", txtEmail.Text.Trim());
-        //    cmd.Parameters["Email"].Direction = ParameterDirection.Input;
-
-        //    cmd.ExecuteNonQuery();
-
-        //}
-        //catch (MySqlException ex)
-        //{
-        //    string message = string.Empty;
-        //    message = "Insert failed with: " + ex.Message;
-        //    ClientScript.RegisterStartupScript(GetType(), "alert", "alert('" + message + "');", true);
-        //}
-        //finally
-        //{
-        //    conn.Close();
-        //}
-
-        //catch
-        //{
-        //    string message = string.Empty;
-        //    switch (userId)
-        //    {
-        //        case -1:
-        //            message = "Username already exists.\\nPlease choose a different username.";
-        //            break;
-        //        case -2:
-        //            message = "Supplied email address has already been used.";
-        //            break;
-        //        default:
-        //            message = "Registration successful.\\nUser Id: " + userId.ToString();
-        //            break;
-        //    }
-        //    ClientScript.RegisterStartupScript(GetType(), "alert", "alert('" + message + "');", true);
-        //}
+    }
+    protected void RegisterUser2(object sender, EventArgs e)
+    {
+        int userId = 0;
+        string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+        using (MySqlConnection con = new MySqlConnection(constr))
+        {
+            using (MySqlCommand cmd = new MySqlCommand("Insert_User"))
+            {
+                using (MySqlDataAdapter sda = new MySqlDataAdapter())
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("Username", txtUsername.Text.Trim());
+                    cmd.Parameters.AddWithValue("Pass", txtPassword.Text.Trim());
+                    cmd.Parameters.AddWithValue("Email", txtEmail.Text.Trim());
+                    cmd.Connection = con;
+                    con.Open();
+                    userId = Convert.ToInt32(cmd.ExecuteScalar());
+                    con.Close();
+                }
+            }
+            string message = string.Empty;
+            switch (userId)
+            {
+                case -1:
+                    message = "Username already exists.\\nPlease choose a different username.\\n" + txtUsername.Text;
+                    break;
+                case -2:
+                    message = "Supplied email address has already been used.";
+                    break;
+                default:
+                    message = "Registration successful.\\nUser Id: " + userId.ToString();
+                    break;
+            }
+            ClientScript.RegisterStartupScript(GetType(), "alert", "alert('" + message + "');", true);
+        }
     }
 }

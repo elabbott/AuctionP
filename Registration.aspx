@@ -94,7 +94,7 @@
             <td>
             </td>
             <td>
-                <asp:Button ID="Button1" Text="Submit" runat="server" OnClick="RegisterUser" />
+                <asp:Button ID="Button1" Text="Submit" runat="server" OnClick="RegisterUser2" />
             </td>
             <td>
             </td>
