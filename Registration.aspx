@@ -50,6 +50,8 @@
             <td>
                 <asp:RequiredFieldValidator ID="RequiredFieldValidator1" ErrorMessage="Required" ForeColor="Red" ControlToValidate="txtUsername"
                     runat="server" />
+                <asp:RegularExpressionValidator Display = "Dynamic" ControlToValidate = "txtUsername" ID="RegularExpressionValidator2" 
+                    ValidationExpression = "^[\s\S]{4,16}$" runat="server" ErrorMessage="Minimum 4 and Maximum 16 characters required."></asp:RegularExpressionValidator>
             </td>
         </tr>
         <tr>
@@ -62,6 +64,8 @@
             <td>
                 <asp:RequiredFieldValidator ID="RequiredFieldValidator2" ErrorMessage="Required" ForeColor="Red" ControlToValidate="txtPassword"
                     runat="server" />
+                <asp:RegularExpressionValidator Display = "Dynamic" ControlToValidate = "txtPassword" ID="RegularExpressionValidator3" 
+                    ValidationExpression = "^[\s\S]{8,32}$" runat="server" ErrorMessage="Minimum 8 and Maximum 32 characters required."></asp:RegularExpressionValidator>
             </td>
         </tr>
         <tr>
@@ -95,6 +99,7 @@
             </td>
             <td>
                 <asp:Button ID="Button1" Text="Submit" runat="server" OnClick="RegisterUser2" />
+                <!--<asp:Button ID="btnConfirm" runat="server" Text="Login" PostBackUrl="~/Login.aspx" /> -->
             </td>
             <td>
             </td>
