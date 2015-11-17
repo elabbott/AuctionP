@@ -11,8 +11,8 @@ public class CreditCard
     #region Attributes
     private int id;
     private int owner_id;
-    private String number;
-    private String name;
+    private string number;
+    private string name;
     private DateTime expiry_date;
 
     public int Id
@@ -81,7 +81,7 @@ public class CreditCard
     }
     #endregion
 
-    public CreditCard(int id, int owner_id, String number, String name, DateTime expiry_date)
+    public CreditCard(int id, int owner_id, string number, string name, DateTime expiry_date)
     {
         this.id = id;
         this.owner_id = owner_id;

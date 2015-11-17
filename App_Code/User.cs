@@ -20,6 +20,10 @@ public class User
     private string zipcode;
     private string first_name;
     private string last_name;
+    private Account account;
+    private bool hasAccount;
+    private List<CreditCard> cards;
+    private List<UserReview> reviews;
     #endregion
     public User(string username, string password, string email, string address, string city, string state, string zipcode, string first_name, string last_name)
 	{
@@ -32,12 +36,87 @@ public class User
         this.zipcode = zipcode;
         this.first_name = first_name;
         this.last_name = last_name;
+
+        //How is the account id determined?
+        int account_id = 0;
+        this.account = new Account(account_id, this.id);
+        this.cards = new List<CreditCard>();
+        this.reviews = new List<UserReview>();
 	}
     public User(string username, string password, string email)
     {
         this.Username = username;
         this.Password = password;
         this.Email = email;
+    }
+
+    public void createAccount()
+    {
+        //How is the account id determined?
+        int account_id = 0;
+        this.account = new Account(account_id, this.id);
+    }
+
+    public void AddCard(string name, string number, DateTime expiry_date)
+    {
+        //How is the card id determined?
+        int card_id = 0;
+        CreditCard newCard = new CreditCard(card_id, this.id, number, name, expiry_date);
+        this.addCard(newCard);
+    }
+
+    private void addCard(CreditCard card)
+    {
+        this.cards.Add(card);
+    }
+
+    public void bid(double amount, Auction auction)
+    {
+        //Check if bid amount is more than the top bid, and user has available funds
+        if ((amount > auction.Top_bid) && (amount <= this.account.Available_balance))
+        {
+            auction.bid(amount, this);
+            this.account.Available_balance -= amount;
+        }
+    }
+
+    public void buyout(Auction auction)
+    {
+        if (auction.Buyout_price <= this.account.Available_balance)
+        {
+            auction.bid(auction.Buyout_price, this);
+            account.Available_balance -= auction.Buyout_price;
+            account.withdraw(auction.Buyout_price);
+        }
+    }
+
+    public void createAuction(double min_bid, double buyout_price, DateTime end_time, string description, string img_url)
+    {
+        //How are these determined, and what's the difference between 'id' and 'item_id'?
+        //Setting to 0 for now
+        int id = 0;
+        int item_id = 0;
+
+        Auction newAuction = new Auction(id, this, item_id, min_bid, buyout_price, end_time, description, img_url);
+
+        // Magic goes here
+    }
+
+    public void addReview(User submitter, string review_text, int rating)
+    {
+        //How is review_id determined?
+        int review_id = 0;
+        UserReview newReview = new UserReview(review_id, submitter.Id, this.Id, review_text, DateTime.Now, rating);
+        reviews.Add(newReview);
+    }
+
+    public void writeReview(User user, string review_text, int rating)
+    {
+        //Can't write a review of yourself, dummy
+        if (!user.Equals(this))
+        {
+            user.addReview(this, review_text, rating);
+        }
     }
     //this doesn't belong here
     //public void Create_User(User user)
@@ -102,6 +181,14 @@ public class User
     {
         get { return created_date; }
         set { created_date = value; }//should never really be used
+    }
+
+    public List<UserReview> Reviews
+    {
+        get
+        {
+            return reviews;
+        }
     }
     #endregion
 

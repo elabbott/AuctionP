@@ -21,11 +21,6 @@ public class Account
         {
             return id;
         }
-
-        set
-        {
-            id = value;
-        }
     }
 
     public int Owner_id
@@ -34,11 +29,6 @@ public class Account
         {
             return owner_id;
         }
-
-        set
-        {
-            owner_id = value;
-        }
     }
 
     public double Balance
@@ -46,11 +36,6 @@ public class Account
         get
         {
             return balance;
-        }
-
-        set
-        {
-            balance = value;
         }
     }
 
@@ -81,7 +66,7 @@ public class Account
     }
     #endregion
 
-
+    /* Not sure we'll have a use case for this
 
     public Account(int id, int owner_id, double balance)
     {
@@ -94,7 +79,7 @@ public class Account
         // Initializing it to 'false' for now
         this.enabled = false;
     }
-
+    */
     public Account(int id, int owner_id)
     {
         // Constructor with no initial balance given
@@ -109,11 +94,11 @@ public class Account
 
     public void withdraw(double amount)
     {
-        Balance -= amount;
+        this.balance -= amount;
     }
 
     public void deposit(double amount)
     {
-        Balance += amount;
+        this.balance += amount;
     }
 }
