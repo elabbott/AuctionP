@@ -105,7 +105,7 @@ public class MySQLClient
                     cmd.Parameters.AddWithValue("?password", user.Password);
                     cmd.Parameters.AddWithValue("?email", user.Email);
                     cmd.Connection = this.Conn;
-                    cmd.CommandText = "INSERT INTO user (username, `password`, email) VALUES (?username, ?password, ?email)";
+                    cmd.CommandText = "INSERT INTO user (Username, `Password`, Email) VALUES (?username, ?password, ?email)";
                     cmd.ExecuteNonQuery();
                     this.Close();
                 }
