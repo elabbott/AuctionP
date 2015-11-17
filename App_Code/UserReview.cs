@@ -15,7 +15,7 @@ public class UserReview
     private int id;
     private int reviewer_id;
     private int reviewee_id;
-    private String review_text;
+    private string review_text;
     private DateTime review_date;
     private int rating;
 
@@ -98,7 +98,7 @@ public class UserReview
     }
     #endregion
 
-    public UserReview(int id, int reviewer_id, int reviewee_id, String review_text, DateTime review_date, int rating)
+    public UserReview(int id, int reviewer_id, int reviewee_id, string review_text, DateTime review_date, int rating)
     {
         this.id = id;
         this.reviewer_id = reviewer_id;
