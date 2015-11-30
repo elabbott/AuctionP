@@ -21,7 +21,6 @@ public class User
     private string first_name;
     private string last_name;
     private Account account;
-    private bool hasAccount;
     private List<CreditCard> cards;
     private List<UserReview> reviews;
     #endregion
@@ -70,37 +69,36 @@ public class User
         this.cards.Add(card);
     }
 
-    public void bid(double amount, Auction auction)
-    {
-        //Check if bid amount is more than the top bid, and user has available funds
-        if ((amount > auction.Top_bid) && (amount <= this.account.Available_balance))
-        {
-            auction.bid(amount, this);
-            this.account.Available_balance -= amount;
-        }
-    }
+    //public void bid(double amount, Auction auction)
+    //{
+    //    //Check if bid amount is more than the top bid, and user has available funds
+    //    if ((amount > auction.Top_bid) && (amount <= this.account.Available_balance))
+    //    {
+    //        auction.bid(amount, this);
+    //        this.account.Available_balance -= amount;
+    //    }
+    //}
 
-    public void buyout(Auction auction)
-    {
-        if (auction.Buyout_price <= this.account.Available_balance)
-        {
-            auction.bid(auction.Buyout_price, this);
-            account.Available_balance -= auction.Buyout_price;
-            account.withdraw(auction.Buyout_price);
-        }
-    }
+    //public void buyout(Auction auction)
+    //{
+    //    if (auction.Buyout_price <= this.account.Available_balance)
+    //    {
+    //        auction.bid(auction.Buyout_price, this);
+    //        account.Available_balance -= auction.Buyout_price;
+    //        account.withdraw(auction.Buyout_price);
+    //    }
+    //}
 
-    public void createAuction(double min_bid, double buyout_price, DateTime end_time, string description, string img_url)
-    {
-        //How are these determined, and what's the difference between 'id' and 'item_id'?
-        //Setting to 0 for now
-        int id = 0;
-        int item_id = 0;
+    //public void createAuction(double min_bid, double buyout_price, DateTime end_time, string description, string img_url)
+    //{
+    //    //How are these determined, and what's the difference between 'id' and 'item_id'?
+    //    //Setting to 0 for now
+    //    int id = 0;
 
-        Auction newAuction = new Auction(id, this, item_id, min_bid, buyout_price, end_time, description, img_url);
+    //    Auction newAuction = new Auction(id, this, min_bid, buyout_price, end_time, description, img_url);
 
-        // Magic goes here
-    }
+    //    // Magic goes here
+    //}
 
     public void addReview(User submitter, string review_text, int rating)
     {

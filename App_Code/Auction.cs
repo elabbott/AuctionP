@@ -20,6 +20,32 @@ public class Auction
     private string description;
     private string img_url;
     private List<User> bidders;
+    private string category;
+    private string title;
+
+
+    public string Title
+    {
+        get
+        {
+            return title;
+        }
+        set
+        {
+            title = value;
+        }
+    }
+    public string Category
+    {
+        get
+        {
+            return category;
+        }
+        set
+        {
+            category = value;
+        }
+    }
 
     public int Id
     {
@@ -121,8 +147,7 @@ public class Auction
     }
     #endregion
 
-    public Auction(int id, User owner, double min_bid, double buyout_price,
-        DateTime end_time, string description, string img_url)
+    public Auction(int id, User owner, double min_bid, double buyout_price, DateTime end_time, string description, string img_url, string title, string category)
     {
         this.id = id;
         this.owner = owner;
@@ -131,67 +156,12 @@ public class Auction
         this.end_time = end_time;
         this.description = description;
         this.img_url = img_url;
+        this.Title = title;
+        this.Category = category;
 
         this.auction_open = true;
         this.bidders = new List<User>();
     }
 
-    public void bid(double amount, User bidder)
-    {
-        Top_bid = amount;
-        Top_bidder = bidder;
-        if (amount == buyout_price)
-        {
-            this.endAuction();
-        }
-        else
-        {
-            this.notifyBidders();
-            if (!bidders.Contains(bidder))
-            {
-                bidders.Add(bidder);
-            }
-        }
-    }
 
-    private void endAuction()
-    {
-        this.auction_open = false;
-        this.notifySeller();
-        this.notifyWinner();
-        this.notifyBidders();
-    }
-
-    private void notifyWinner()
-    {
-        this.notifyWinner(this.Top_bidder.Id);
-    }
-
-    private void notifyWinner(int winner_id)
-    {
-        // Magic goes here
-    }
- 
-    private void notifySeller()
-    {
-        this.notifySeller(this.Owner.Id);
-    }
-
-    private void notifySeller(int owner_id)
-    {
-        // Magic goes here
-    }
-
-    private void notifyBidders()
-    {
-        foreach (User bidder in Bidders)
-        {
-            this.notifyBidders(bidder.Id);
-        }
-    }
-
-    private void notifyBidders(int bidder_id)
-    {
-        // Magic goes here
-    }
 }

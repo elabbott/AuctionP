@@ -19,10 +19,12 @@ public partial class Item : System.Web.UI.Page
     protected string description;
     protected string image_url;
     protected User owner;
+    protected string title;
+    protected string category;
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        Auction item = new Auction(auction_id, owner, min_bid, buyout, end_date, description, image_url);
+        Auction item = new Auction(auction_id, owner, min_bid, buyout, end_date, description, image_url, title, category);
         item.Top_bid = current_high_bid;
         lblHighBid.Text = item.Top_bid.ToString("0.00");
 
@@ -34,5 +36,37 @@ public partial class Item : System.Web.UI.Page
         {
             lblNextMinBid.Text = (item.Top_bid + item.Min_bid).ToString("0.00");
         }
+    }
+    public void bid(double amount, User bidder)
+    {
+        throw new NotImplementedException();
+    }
+
+    private void endAuction( int auction_id, int owner_id, int top_bidder_id)
+    {
+        notifySeller(owner_id);
+        notifyWinner(top_bidder_id);
+        notifyBidders();
+        doTransactions();
+    }
+
+    private void doTransactions()
+    {
+        throw new NotImplementedException();
+    }
+
+    private void notifyWinner(int top_bidder_id)
+    {
+        throw new NotImplementedException();
+    }
+
+    private void notifySeller(int owner_id)
+    {
+        throw new NotImplementedException();
+    }
+
+    private void notifyBidders()
+    {
+        throw new NotImplementedException();
     }
 }
