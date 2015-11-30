@@ -51,6 +51,7 @@ public partial class Login : System.Web.UI.Page
                     Login1.FailureText = "User Account has not been activated.";
                     break;
                 default:
+                    Session["userID"] = userId;
                     FormsAuthentication.RedirectFromLoginPage(Login1.UserName, Login1.RememberMeSet);
                     break;
             }

@@ -129,15 +129,17 @@
                         <tr>
                             <td class="auto-style15" style="border: thin solid #000000">
                                 <img src="http://i.ebayimg.com/00/s/NDY4WDQ2OQ==/z/Ev4AAOSwBP9UV-N4/$_1.JPG?set_id=2" /></td>
-                            <td style="border: thin solid #000000"><span class="newStyle1">Highest Bid: $18.50<br />
+                            <td style="border: thin solid #000000"><span class="newStyle1">Highest Bid: $<asp:Label ID="lblHighBid" runat="server"></asp:Label>
                                 <br />
-                                Next Minimum Bid: $19.25<br />
                                 <br />
-                                $<input id="Text3" type="text" />
-                                <input id="Button1" type="button" value="Bid" /><br />
+                                Next Minimum Bid: $<asp:Label ID="lblNextMinBid" runat="server"></asp:Label>
+                                <br />
+                                <br />
+                                $<input id="txtBidAmount" type="text" />
+                                <input id="btnBid" type="button" value="Bid" /><br />
                                 or<br />
                                 Get now for $25.00
-                                <input id="Button2" type="button" value="Buy Now" /><br />
+                                <input id="btnBuyNow" type="button" value="Buy Now" /><br />
                                 <hr />
                                 <br />
                                 <span class="auto-style14">Edit Auction</span><br class="auto-style14" />

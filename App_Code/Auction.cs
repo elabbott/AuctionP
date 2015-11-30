@@ -11,7 +11,6 @@ public class Auction
     #region Attributes
     private int id;
     private User owner;
-    private int item_id;
     private User top_bidder;
     private double top_bid;
     private double min_bid;
@@ -35,14 +34,6 @@ public class Auction
         get
         {
             return owner;
-        }
-    }
-
-    public int Item_id
-    {
-        get
-        {
-            return item_id;
         }
     }
 
@@ -130,12 +121,11 @@ public class Auction
     }
     #endregion
 
-    public Auction(int id, User owner, int item_id, double min_bid, double buyout_price,
+    public Auction(int id, User owner, double min_bid, double buyout_price,
         DateTime end_time, string description, string img_url)
     {
         this.id = id;
         this.owner = owner;
-        this.item_id = item_id;
         this.min_bid = min_bid;
         this.buyout_price = buyout_price;
         this.end_time = end_time;

@@ -7,10 +7,11 @@ using System.Web.UI.WebControls;
 
 public partial class AddCard : System.Web.UI.Page
 {
-    protected string name;
-    protected string number;
-    protected string ccv;
-    protected string date;
+    protected int user_id;
+    protected string card_number;
+    protected string owner_name;
+    protected string ccv_number;
+    protected DateTime expiration_date;
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -30,13 +31,12 @@ public partial class AddCard : System.Web.UI.Page
 
     protected void btnAdd_Click(object sender, EventArgs e)
     {
-        name = txtName.Text;
-        number = txtNum.Text;
-        ccv = txtCCV.Text;
+        owner_name = txtName.Text;
+        card_number = txtNum.Text;
+        ccv_number = txtCCV.Text;
         int year = int.Parse("20" + ddListYear.SelectedValue);
         int month = int.Parse(ddListMonth.SelectedValue);
-        DateTime expiration = new DateTime(year, month, DateTime.DaysInMonth(year, month));
-        date = expiration.ToString();
+        expiration_date = new DateTime(year, month, DateTime.DaysInMonth(year, month));
 
         addCard();
     }
