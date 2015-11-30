@@ -52,3 +52,30 @@ BEGIN
 	end if;
 END$$
 DELIMITER ;
+DELIMITER $$
+CREATE DEFINER=`root`@`%` PROCEDURE `Bid`(
+	Amount double,
+    AuctionID int,
+    BidderID int)
+BEGIN
+	declare min double;
+    
+    select Min_Bid into min
+    from Auction
+    where Auction_Id = AuctionID;
+    
+    if Amount < min then
+		select -1; #bid too small
+	else
+		Update Auction
+        Set Current_High_Bid = Amount
+        where Auction_Id = AuctionID;
+        Update Auction
+        Set User_Id_High_Bid = BidderID
+        where Auction_Id = AuctionID;
+        select Auction_Id
+        from Auction
+        where Auction_Id = AuctionID;
+	end if;
+END$$
+DELIMITER ;
