@@ -7,10 +7,19 @@ using System.Web.UI.WebControls;
 
 public partial class AddCard : System.Web.UI.Page
 {
-    
+    protected string name;
+    protected string number;
+    protected string ccv;
+    protected string date;
+
     protected void Page_Load(object sender, EventArgs e)
     {
-        
+        for (int i = 0; i <= 11; i++)
+        {
+            String year = (DateTime.Today.Year + i).ToString();
+            ListItem li = new ListItem(year, year);
+            ddListYear.Items.Add(li);
+        }
     }
 
 
@@ -21,11 +30,19 @@ public partial class AddCard : System.Web.UI.Page
 
     protected void btnAdd_Click(object sender, EventArgs e)
     {
-        string name = txtName.Text;
-        string number = txtNum.Text;
-        string ccv = txtCCV.Text;
-        string date = ddListMonth.Text + txtYear.Text;
+        name = txtName.Text;
+        number = txtNum.Text;
+        ccv = txtCCV.Text;
+        int year = int.Parse("20" + ddListYear.SelectedValue);
+        int month = int.Parse(ddListMonth.SelectedValue);
+        DateTime expiration = new DateTime(year, month, DateTime.DaysInMonth(year, month));
+        date = expiration.ToString();
 
-        //need stored procedure for inserting credit card
+        addCard();
+    }
+
+    protected void addCard()
+    {
+        // DB magic goes here
     }
 }
