@@ -166,15 +166,8 @@
                     <asp:ListItem>12</asp:ListItem>
                 </asp:DropDownList>
 &nbsp;/
-                <asp:RequiredFieldValidator runat=server 
-                    ControlToValidate=txtYear
-                    ErrorMessage="Year is required."> *
-                </asp:RequiredFieldValidator>
-                <asp:RegularExpressionValidator runat=server display=dynamic
-                    ControlToValidate="txtYear" 
-                    ErrorMessage="Year must be 2 digits." 
-                    ValidationExpression="^[0-9]{2}$" />
-                <asp:TextBox ID="txtYear" runat="server" Width="37px"></asp:TextBox>
+                <asp:DropDownList ID="ddListYear" runat="server" Width="66px">
+                </asp:DropDownList>
                 
                 
                 

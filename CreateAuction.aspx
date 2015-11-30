@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="User.aspx.cs" Inherits="User" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="CreateAuction.aspx.cs" Inherits="CreateAuction" %>
 
 <!DOCTYPE html>
 
@@ -56,17 +56,9 @@
             height: 200px;
         }
 
-        .auto-style14 {
-            text-decoration: underline;
-            color: #0000FF;
-        }
         .newStyle2 {
             font-family: Arial, Helvetica, sans-serif;
-        }
-        .auto-style16 {
-            font-family: Arial, Helvetica, sans-serif;
-            color: #0000FF;
-            text-decoration: underline;
+            width: 651px;
         }
         .auto-style18 {
             width: 20%;
@@ -99,7 +91,7 @@
     </style>
 </head>
 <body>
-
+    <form id="form1" runat="server">
     <table style="width:100%;">
         <tr>
             <td class="auto-style6">
@@ -109,7 +101,6 @@
                 <input id="Text1" class="auto-style7" type="text" /> <input id="Search" type="button" value="Search" />
             </td>
             <td class="auto-style8">
-                <form id="form1" runat="server">
                 <div>
                 Welcome
                 <asp:LoginName ID="LoginName1" runat="server" Font-Bold = "true" />
@@ -117,7 +108,6 @@
                 <br />
                 <asp:LoginStatus ID="LoginStatus1" runat="server" />
                 </div>
-                </form>
             </td>
         </tr>
         <tr>
@@ -132,23 +122,52 @@
                 <img class="auto-style20" src="http://i.ebayimg.com/00/s/MjY3WDQ2OA==/z/emIAAOSwGWNUV-Oa/$_1.JPG?set_id=2" /><br />
                 $6.46</td>
             <td class="auto-style4">
-                <h2 class="newStyle2">Account Information</h2>
+                <asp:ValidationSummary runat=server 
+                    HeaderText="There were errors on the page:" />
+                <h3 class="newStyle2">Describe your item</h3>
+            <p class="newStyle2">
+                    Title:
+                <asp:RequiredFieldValidator runat=server 
+                    ControlToValidate=txtTitle
+                    ErrorMessage="Title is required."> *
+                </asp:RequiredFieldValidator>
+                    <asp:TextBox ID="txtTitle" runat="server" Width="433px"></asp:TextBox>
+                </p>
                 <p class="newStyle2">
-                    &nbsp;</p>
+                    Image url:
+                <asp:RequiredFieldValidator runat=server 
+                    ControlToValidate=txtImage
+                    ErrorMessage="Image URL is required."> *
+                </asp:RequiredFieldValidator>
+                    <asp:TextBox ID="txtImage" runat="server" Width="405px"></asp:TextBox>
+                </p>
                 <p class="newStyle2">
-                    Account Balance: $450.67</p>
-                <p class="auto-style16">
-                    Deposit</p>
-                <p class="auto-style16">
-                    Withdraw</p>
-                <p class="auto-style16">
-                    <a href="AddCard.aspx">Add Credit Card</a></p>
-                <hr />
-                <p class="auto-style16">
-                    <a href="CreateAuction.aspx">Create an Auction</a></p>
-                <hr />
-                <p class="auto-style16">
-                    Delete User Account</p>
+                    Description:    <p class="newStyle2">
+                    <asp:RequiredFieldValidator runat=server 
+                        ControlToValidate=txtDescription
+                        ErrorMessage="Description is required."> *
+                    </asp:RequiredFieldValidator>
+                    <asp:TextBox ID="txtDescription" runat="server" Height="160px" Width="488px"></asp:TextBox>
+                </p>
+                <h3 class="newStyle2">Select duration</h3>
+                <p class="newStyle2">
+                    <asp:DropDownList ID="ddListDuration" runat="server">
+                        <asp:ListItem Value="3">3 days</asp:ListItem>
+                        <asp:ListItem Value="5">5 days</asp:ListItem>
+                        <asp:ListItem Value="7">7 days</asp:ListItem>
+                    </asp:DropDownList>
+                </p>
+                    <h3 class="newStyle2">Select price (optional)</h3>
+                <p class="newStyle2">Starting price:
+                    <asp:TextBox ID="txtMinBid" runat="server"></asp:TextBox>
+                <p class="newStyle2">Buyout price:
+                    <asp:TextBox ID="txtBuyout" runat="server"></asp:TextBox>
+                </p>
+                <p class="newStyle2">
+                    <asp:Button ID="btnCreate" runat="server" OnClick="btnCreate_Click" Text="Create Auction" />
+&nbsp;
+                    <asp:Button ID="btnCancel" runat="server" CausesValidation="False" OnClick="btnCancel_Click" Text="Cancel" />
+                </p>
             </td>
             <td class="auto-style18"><strong><span class="auto-style10">Items You&#39;ve Bid On</span><br />
                 <br />
@@ -160,5 +179,6 @@
             </td>
         </tr>
         </table>
+        </form>
 </body>
 </html>
