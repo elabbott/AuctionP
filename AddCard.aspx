@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="User.aspx.cs" Inherits="User" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="AddCard.aspx.cs" Inherits="AddCard" %>
 
 <!DOCTYPE html>
 
@@ -56,17 +56,9 @@
             height: 200px;
         }
 
-        .auto-style14 {
-            text-decoration: underline;
-            color: #0000FF;
-        }
         .newStyle2 {
             font-family: Arial, Helvetica, sans-serif;
-        }
-        .auto-style16 {
-            font-family: Arial, Helvetica, sans-serif;
-            color: #0000FF;
-            text-decoration: underline;
+            width: 651px;
         }
         .auto-style18 {
             width: 20%;
@@ -117,7 +109,6 @@
                 <br />
                 <asp:LoginStatus ID="LoginStatus1" runat="server" />
                 </div>
-                </form>
             </td>
         </tr>
         <tr>
@@ -132,23 +123,67 @@
                 <img class="auto-style20" src="http://i.ebayimg.com/00/s/MjY3WDQ2OA==/z/emIAAOSwGWNUV-Oa/$_1.JPG?set_id=2" /><br />
                 $6.46</td>
             <td class="auto-style4">
-                <h2 class="newStyle2">Account Information</h2>
-                <p class="newStyle2">
-                    &nbsp;</p>
-                <p class="newStyle2">
-                    Account Balance: $450.67</p>
-                <p class="auto-style16">
-                    Deposit</p>
-                <p class="auto-style16">
-                    Withdraw</p>
-                <p class="auto-style16">
-                    <a href="AddCard.aspx">Add Credit Card</a></p>
-                <hr />
-                <p class="auto-style16">
-                    Create an Auction</p>
-                <hr />
-                <p class="auto-style16">
-                    Delete User Account</p>
+                <asp:ValidationSummary runat=server 
+                    HeaderText="There were errors on the page:" />
+                Name:
+                <asp:RequiredFieldValidator runat=server 
+                    ControlToValidate=txtName
+                    ErrorMessage="Name is required."> *
+                </asp:RequiredFieldValidator>
+                <asp:TextBox ID="txtName" runat="server"></asp:TextBox>
+                <br />
+                <br />
+                Number:
+                <asp:RequiredFieldValidator runat=server 
+                    ControlToValidate=txtNum
+                    ErrorMessage="Number is required."> *
+                </asp:RequiredFieldValidator>
+                <asp:TextBox ID="txtNum" runat="server"></asp:TextBox>
+                <br />
+                <br />
+                CCV #:
+                <asp:RequiredFieldValidator runat=server 
+                    ControlToValidate=txtCCV
+                    ErrorMessage="CCV is required."> *
+                </asp:RequiredFieldValidator>
+                <asp:TextBox ID="txtCCV" runat="server" Width="47px"></asp:TextBox>
+                <br />
+                <br />
+                Expiration date:
+
+                <asp:DropDownList ID="ddListMonth" runat="server">
+                    <asp:ListItem>01</asp:ListItem>
+                    <asp:ListItem>02</asp:ListItem>
+                    <asp:ListItem>03</asp:ListItem>
+                    <asp:ListItem>04</asp:ListItem>
+                    <asp:ListItem>05</asp:ListItem>
+                    <asp:ListItem>06</asp:ListItem>
+                    <asp:ListItem>07</asp:ListItem>
+                    <asp:ListItem>08</asp:ListItem>
+                    <asp:ListItem>09</asp:ListItem>
+                    <asp:ListItem>10</asp:ListItem>
+                    <asp:ListItem>11</asp:ListItem>
+                    <asp:ListItem>12</asp:ListItem>
+                </asp:DropDownList>
+&nbsp;/
+                <asp:RequiredFieldValidator runat=server 
+                    ControlToValidate=txtYear
+                    ErrorMessage="Year is required."> *
+                </asp:RequiredFieldValidator>
+                <asp:RegularExpressionValidator runat=server display=dynamic
+                    ControlToValidate="txtYear" 
+                    ErrorMessage="Year must be 2 digits." 
+                    ValidationExpression="^[0-9]{2}$" />
+                <asp:TextBox ID="txtYear" runat="server" Width="37px"></asp:TextBox>
+                
+                
+                
+                <br />
+                <br />
+                <asp:Button ID="btnAdd" runat="server" Text="Add card" OnClick="btnAdd_Click" />
+&nbsp;
+                <asp:Button ID="btnCancel" runat="server" Text="Cancel" CausesValidation="False" OnClick="btnCancel_Click" UseSubmitBehavior="False" ValidateRequestMode="Disabled" />
+                </form>
             </td>
             <td class="auto-style18"><strong><span class="auto-style10">Items You&#39;ve Bid On</span><br />
                 <br />
