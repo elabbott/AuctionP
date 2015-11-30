@@ -10,9 +10,9 @@ public partial class CreateAuction : System.Web.UI.Page
     protected string title;
     protected string imageURL;
     protected string description;
-    protected string end_date;
-    protected string min_bid;
-    protected string buyout;
+    protected DateTime end_date;
+    protected double min_bid;
+    protected double buyout;
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -32,25 +32,24 @@ public partial class CreateAuction : System.Web.UI.Page
         DateTime now = DateTime.Now;
         int days = int.Parse(ddListDuration.SelectedValue);
         TimeSpan duration = new System.TimeSpan(days, 0, 0, 0);
-        DateTime end = now.Add(duration);
-        end_date = end.ToString();
-
+        end_date = now.Add(duration);
+        
         if(txtMinBid.Text != null)
         {
-            min_bid = txtMinBid.Text;
+            min_bid = double.Parse(txtMinBid.Text);
         }
         else
         {
-            min_bid = "0";
+            min_bid = 0.0;
         }
 
         if(txtBuyout.Text != null)
         {
-            buyout = txtBuyout.Text;
+            buyout = double.Parse(txtBuyout.Text);
         }
         else
         {
-            buyout = "0";
+            buyout = 0.0;
         }
 
         createAuction();
