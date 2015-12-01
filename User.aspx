@@ -110,14 +110,19 @@
                 <asp:LoginName ID="LoginName1" runat="server" Font-Bold = "true" />
                 <br />
                 <br />
-                <asp:LoginStatus ID="LoginStatus1" runat="server" />
+                    
+                    <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/Home.aspx">Home</asp:HyperLink>
+                    |<asp:LoginStatus ID="LoginStatus1" runat="server" OnLoggingOut="LoginStatus1_LoggingOut" />
                 </div>
             </td>
         </tr>
         <tr>
             <td class="auto-style3">
                 <span class="newStyle1">
-                    <span class="auto-style10"><strong>Your Items On Auction</strong><br />
+                    <span class="auto-style10">
+                
+                        <asp:HyperLink ID="HyperLink2" runat="server" NavigateUrl="~/UserAuctions.aspx">Your Items on Auction</asp:HyperLink>
+                <br />
                         <br />
                 <img class="auto-style19" src="http://i.ebayimg.com/00/s/NDY4WDQ2OQ==/z/Ev4AAOSwBP9UV-N4/$_1.JPG?set_id=2" /><br />
                     </span>$18.50<br />

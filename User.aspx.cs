@@ -91,4 +91,19 @@ public partial class UserPage : System.Web.UI.Page
             Response.Redirect("User.aspx");
         }
     }
+
+    protected void LoginStatus1_LoggingOut(object sender, LoginCancelEventArgs e)
+    {
+        Response.Redirect("~/Search.aspx");
+    }
+
+    protected void LinkButton1_Click(object sender, EventArgs e)
+    {
+        Response.Redirect("~/UserAuctions.aspx");
+    }
+
+    protected void LinkButton2_Click(object sender, EventArgs e)
+    {
+        Response.Redirect("~Home.aspx");
+    }
 }
