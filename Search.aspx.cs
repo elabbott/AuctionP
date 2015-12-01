@@ -131,4 +131,26 @@ public partial class Search : System.Web.UI.Page
             cmd.Connection.Close();
         }
     }
+
+    protected void btnSearch_Click(object sender, EventArgs e)
+    {
+        var search = txtSearch.Text;
+        var constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+        using (var con = new MySqlConnection(constr))
+        {
+            var cmd = new MySqlCommand("SELECT Title, Current_High_Bid as High, Date_Format(End_Date, '%W, %M %e') as Date, Description, Image_URL FROM Auction WHERE Category Like '" + search + "' OR Title Like '" + search + "'", con);
+
+            var adapter = new MySqlDataAdapter(cmd);
+
+            var dt = new DataTable();
+
+            adapter.Fill(dt);
+
+            GridView1.DataSource = dt;
+
+            GridView1.DataBind();
+
+            cmd.Connection.Close();
+        }
+    }
 }

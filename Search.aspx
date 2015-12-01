@@ -26,10 +26,6 @@
             text-align: center;
         }
 
-        .auto-style7 {
-            width: 400px;
-        }
-
         .newStyle1 {
             font-family: Arial, Helvetica, sans-serif;
         }
@@ -97,7 +93,8 @@
                 <img class="auto-style11" src="AuctionPowers.jpg" />
             </td>
             <td class="auto-style2">
-                <input id="Text1" class="auto-style7" type="text" /> <input id="Search" type="button" value="Search" />
+                &nbsp;<asp:TextBox ID="txtSearch" runat="server" Width="444px"></asp:TextBox>
+                <asp:Button ID="btnSearch" runat="server" Text="Search" OnClick="btnSearch_Click" />
             </td>
             <td class="auto-style8">
                 
