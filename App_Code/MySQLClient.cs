@@ -93,7 +93,7 @@ public class MySQLClient
             catch { }
             return;
         }
-        public void Insert_Users(User user)
+        public void Insert_Users(Account user)
         {
             MySqlCommand cmd = null;
             try

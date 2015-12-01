@@ -56,10 +56,6 @@
             height: 200px;
         }
 
-        .auto-style14 {
-            text-decoration: underline;
-            color: #0000FF;
-        }
         .newStyle2 {
             font-family: Arial, Helvetica, sans-serif;
         }
@@ -99,7 +95,7 @@
     </style>
 </head>
 <body>
-
+    <form id="form1" runat="server">
     <table style="width:100%;">
         <tr>
             <td class="auto-style6">
@@ -109,7 +105,6 @@
                 <input id="Text1" class="auto-style7" type="text" /> <input id="Search" type="button" value="Search" />
             </td>
             <td class="auto-style8">
-                <form id="form1" runat="server">
                 <div>
                 Welcome
                 <asp:LoginName ID="LoginName1" runat="server" Font-Bold = "true" />
@@ -117,7 +112,6 @@
                 <br />
                 <asp:LoginStatus ID="LoginStatus1" runat="server" />
                 </div>
-                </form>
             </td>
         </tr>
         <tr>
@@ -133,22 +127,39 @@
                 $6.46</td>
             <td class="auto-style4">
                 <h2 class="newStyle2">Account Information</h2>
+                <p class="newStyle2">&nbsp;</p>
+                <p class="newStyle2">
+                    Account Balance: $<asp:Label ID="lblBalance" runat="server"></asp:Label>
+                </p>
                 <p class="newStyle2">
                     &nbsp;</p>
                 <p class="newStyle2">
-                    Account Balance: $450.67</p>
-                <p class="auto-style16">
-                    Deposit</p>
-                <p class="auto-style16">
-                    Withdraw</p>
+                    <h3>Deposit / withdraw funds</h3>
+                    Choose card:
+                    <asp:RequiredFieldValidator runat=server 
+                        ControlToValidate=ddListCard
+                        ErrorMessage="Credit card is required."> *
+                    </asp:RequiredFieldValidator>
+                    <asp:DropDownList ID="ddListCard" runat="server" OnSelectedIndexChanged="ddListCard_SelectedIndexChanged">
+                    </asp:DropDownList>
+                <p class="newStyle2">
+                    <asp:RequiredFieldValidator runat=server 
+                        ControlToValidate=txtAmount
+                        ErrorMessage="Amount is required."> *
+                    </asp:RequiredFieldValidator>
+                    Amount: <asp:TextBox ID="txtAmount" runat="server" Width="89px"></asp:TextBox>
+                    <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ControlToValidate="txtAmount" Display="Dynamic" ErrorMessage="Must be valid dollar amount" ValidationExpression="^\d+(\.\d{2})?$"></asp:RegularExpressionValidator>
+                </p>
+                <p class="newStyle2">
+                    <asp:Button ID="btnDeposit" runat="server" Text="Deposit" OnClick="btnDeposit_Click" />
+                &nbsp;
+                    <asp:Button ID="btnWithdraw" runat="server" Text="Withdraw" />
+                </p>
                 <p class="auto-style16">
                     <a href="AddCard.aspx">Add Credit Card</a></p>
                 <hr />
                 <p class="auto-style16">
                     <a href="CreateAuction.aspx">Create an Auction</a></p>
-                <hr />
-                <p class="auto-style16">
-                    Delete User Account</p>
             </td>
             <td class="auto-style18"><strong><span class="auto-style10">Items You&#39;ve Bid On</span><br />
                 <br />
@@ -160,5 +171,6 @@
             </td>
         </tr>
         </table>
+        </form>
 </body>
 </html>

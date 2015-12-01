@@ -4,6 +4,9 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Data;
+using System.Configuration;
+using MySql.Data.MySqlClient;
 
 public partial class AddCard : System.Web.UI.Page
 {
@@ -15,11 +18,34 @@ public partial class AddCard : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
+
         for (int i = 0; i <= 11; i++)
         {
             String year = (DateTime.Today.Year + i).ToString();
             ListItem li = new ListItem(year, year);
             ddListYear.Items.Add(li);
+        }
+
+        string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+        string username = HttpContext.Current.User.Identity.Name;
+        
+        using (MySqlConnection con = new MySqlConnection(constr))
+        {
+            MySqlCommand cmd = new MySqlCommand();
+            try
+            {
+                con.Open();
+                cmd.Connection = con;
+                cmd.CommandText = "SELECT User_Id FROM User WHERE Username=@text";
+                cmd.Prepare();
+                cmd.Parameters.AddWithValue("@text", username);
+                user_id = Convert.ToInt32(cmd.ExecuteScalar());
+                con.Close();
+            }
+            catch (MySql.Data.MySqlClient.MySqlException ex)
+            {
+
+            }
         }
     }
 
@@ -34,7 +60,7 @@ public partial class AddCard : System.Web.UI.Page
         owner_name = txtName.Text;
         card_number = txtNum.Text;
         ccv_number = txtCCV.Text;
-        int year = int.Parse("20" + ddListYear.SelectedValue);
+        int year = int.Parse(ddListYear.SelectedValue);
         int month = int.Parse(ddListMonth.SelectedValue);
         expiration_date = new DateTime(year, month, DateTime.DaysInMonth(year, month));
 
@@ -43,6 +69,29 @@ public partial class AddCard : System.Web.UI.Page
 
     protected void addCard()
     {
-        // DB magic goes here
+        string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+        using (MySqlConnection con = new MySqlConnection(constr))
+        {
+            using (MySqlCommand cmd = new MySqlCommand("Insert_CreditCard"))
+            {
+                using (MySqlDataAdapter sda = new MySqlDataAdapter())
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("UserID", user_id);
+                    cmd.Parameters.AddWithValue("CardNumber", card_number);
+                    cmd.Parameters.AddWithValue("OwnerName", owner_name);
+                    cmd.Parameters.AddWithValue("CCVNumber", ccv_number);
+                    cmd.Parameters.AddWithValue("Expiration", expiration_date);
+                    cmd.Connection = con;
+                    con.Open();
+                    int card_id = Convert.ToInt32(cmd.ExecuteScalar());
+                    cmd.CommandType = CommandType.Text;
+                    cmd.CommandText = "INSERT INTO CreditCard(Card_Id) VALUES(@number)";
+                    cmd.Parameters.AddWithValue("@number", card_id);
+                    cmd.ExecuteNonQuery();
+                    con.Close();
+                }
+            }
+        }
     }
 }
