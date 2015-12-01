@@ -22,22 +22,26 @@ public partial class UserAuctions : System.Web.UI.Page
 
     protected void Load_Auctions()
     {
-        int user_id;
+        var user_id = 0;
         var username = HttpContext.Current.User.Identity.Name;
 
         var constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
         using (var con = new MySqlConnection(constr))
         {
-            var cmd = new MySqlCommand("SELECT User_Id FROM auction_powers.User WHERE Username = " + username, con);
+            var cmd = new MySqlCommand("SELECT user_id FROM auction_powers.User WHERE username = '" + username + "'", con);
             cmd.Connection.Open();
 
-            var id_of_user = cmd.ExecuteReader();
+            var id_of_user = cmd.ExecuteScalar();
 
             //user_id = id_of_user.GetInt32(0);
-            user_id = (int)id_of_user["User_Id"];
+            if (id_of_user != null && id_of_user != DBNull.Value)
+            {
+                user_id = (int)id_of_user;
+            }
+            
             cmd.Connection.Close();
 
-            cmd = new MySqlCommand("SELECT Auction_ID, User_Id_Owner, User_Id_High_Bid, Current_High_Bid, Min_Bid, Buyout, Open, Create_Date, End_Date, Description, Image_URL, Category, Title FROM Auction WHERE User_Id_Owner = " + user_id, con);
+            cmd = new MySqlCommand("SELECT Auction_ID, User_Id_Owner, User_Id_High_Bid, Current_High_Bid, Min_Bid, Buyout, Open, Create_Date, End_Date, Description, Image_URL, Category, Title FROM Auction WHERE User_Id_Owner = '" + user_id + "'", con);
 
             var adapter = new MySqlDataAdapter(cmd);
 
