@@ -1,14 +1,15 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
 using System.Linq;
 using System.Web;
+using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Web.Security;
-using System.Configuration;
-using MySql.Data.MySqlClient;
 
-public partial class Home : System.Web.UI.Page
+public partial class UserAuctions : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -16,10 +17,10 @@ public partial class Home : System.Web.UI.Page
         {
             FormsAuthentication.RedirectToLoginPage();
         }
-        Label1.Visible = false;
-        //Label1.Text = Get_Authenticated_User_ID().ToString();//test to make sure userID grab worked
+        Load_Auctions();
     }
-    protected int Get_Authenticated_User_ID()
+
+    protected void Load_Auctions()
     {
         var user_id = 0;
         var username = HttpContext.Current.User.Identity.Name;
@@ -37,15 +38,22 @@ public partial class Home : System.Web.UI.Page
             {
                 user_id = (int)id_of_user;
             }
+            
+            cmd.Connection.Close();
+
+            cmd = new MySqlCommand("SELECT Auction_ID, User_Id_Owner, User_Id_High_Bid, Current_High_Bid, Min_Bid, Buyout, Open, Create_Date, End_Date, Description, Image_URL, Category, Title FROM Auction WHERE User_Id_Owner = '" + user_id + "'", con);
+
+            var adapter = new MySqlDataAdapter(cmd);
+
+            var dt = new DataTable();
+
+            adapter.Fill(dt);
+
+            gvAuctions.DataSource = dt;
+
+            gvAuctions.DataBind();
 
             cmd.Connection.Close();
         }
-
-        return user_id;
-    }
-
-    protected void LoginStatus1_LoggingOut(object sender, LoginCancelEventArgs e)
-    {
-
     }
 }

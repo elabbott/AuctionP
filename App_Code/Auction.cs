@@ -10,8 +10,8 @@ public class Auction
 {
     #region Attributes
     private int id;
-    private Account owner;
-    private Account top_bidder;
+    private int owner_id;
+    private User top_bidder;
     private double top_bid;
     private double min_bid;
     private double buyout_price;
@@ -19,7 +19,33 @@ public class Auction
     private bool auction_open;
     private string description;
     private string img_url;
-    private List<Account> bidders;
+    private List<User> bidders;
+    private string category;
+    private string title;
+
+
+    public string Title
+    {
+        get
+        {
+            return title;
+        }
+        set
+        {
+            title = value;
+        }
+    }
+    public string Category
+    {
+        get
+        {
+            return category;
+        }
+        set
+        {
+            category = value;
+        }
+    }
 
     public int Id
     {
@@ -29,15 +55,15 @@ public class Auction
         }
     }
 
-    public Account Owner
+    public int Owner_Id
     {
         get
         {
-            return owner;
+            return owner_id;
         }
     }
 
-    public Account Top_bidder
+    public User Top_bidder
     {
         get
         {
@@ -112,7 +138,7 @@ public class Auction
         }
     }
 
-    public List<Account> Bidders
+    public List<User> Bidders
     {
         get
         {
@@ -121,77 +147,21 @@ public class Auction
     }
     #endregion
 
-    public Auction(int id, Account owner, double min_bid, double buyout_price,
-        DateTime end_time, string description, string img_url)
+    public Auction(int id, int owner, double min_bid, double buyout_price, DateTime end_time, string description, string img_url, string title, string category)
     {
         this.id = id;
-        this.owner = owner;
+        this.owner_id = owner;
         this.min_bid = min_bid;
         this.buyout_price = buyout_price;
         this.end_time = end_time;
         this.description = description;
         this.img_url = img_url;
+        this.Title = title;
+        this.Category = category;
 
         this.auction_open = true;
-        this.bidders = new List<Account>();
+        this.bidders = new List<User>();
     }
 
-    public void bid(double amount, Account bidder)
-    {
-        Top_bid = amount;
-        Top_bidder = bidder;
-        if (amount == buyout_price)
-        {
-            this.endAuction();
-        }
-        else
-        {
-            this.notifyBidders();
-            if (!bidders.Contains(bidder))
-            {
-                bidders.Add(bidder);
-            }
-        }
-    }
 
-    private void endAuction()
-    {
-        this.auction_open = false;
-        this.notifySeller();
-        this.notifyWinner();
-        this.notifyBidders();
-    }
-
-    private void notifyWinner()
-    {
-        this.notifyWinner(this.Top_bidder.Id);
-    }
-
-    private void notifyWinner(int winner_id)
-    {
-        // Magic goes here
-    }
- 
-    private void notifySeller()
-    {
-        this.notifySeller(this.Owner.Id);
-    }
-
-    private void notifySeller(int owner_id)
-    {
-        // Magic goes here
-    }
-
-    private void notifyBidders()
-    {
-        foreach (Account bidder in Bidders)
-        {
-            this.notifyBidders(bidder.Id);
-        }
-    }
-
-    private void notifyBidders(int bidder_id)
-    {
-        // Magic goes here
-    }
 }
