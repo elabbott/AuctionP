@@ -90,7 +90,7 @@
         </style>
 </head>
 <body>
-
+    <form id="form1" runat="server">
     <table style="width:100%;">
         <tr>
             <td class="auto-style6">
@@ -100,50 +100,78 @@
                 <input id="Text1" class="auto-style7" type="text" /> <input id="Search" type="button" value="Search" />
             </td>
             <td class="auto-style8">
-                <form id="form1" runat="server">
+                
                 <div>
-                Welcome
+                    Watcha searchin&#39; for
                 <asp:LoginName ID="LoginName1" runat="server" Font-Bold = "true" />
-                <br />
+                    ?<br />
                 <br />
                 <asp:LoginStatus ID="LoginStatus1" runat="server" />
                 </div>
-                </form>
+                
             </td>
         </tr>
         <tr>
             <td class="auto-style3" style="vertical-align: top;">
-                <span class="newStyle1">
-                    &nbsp;<span class="auto-style10"><strong>Categories</strong><br />
-                        <br />
-                        <span class="auto-style13">Art</span><br class="auto-style13" />
-                        <br class="auto-style13" />
-                        <span class="auto-style13">Books</span><br class="auto-style13" />
-                        <br class="auto-style13" />
-                        <span class="auto-style13">Clothes</span>
-                    </span><br class="auto-style12" />
+                <span class="newStyle1">&nbsp;<span class="auto-style10"><strong>Categories</strong><br />
+                </span>
+                    <br />
+                    
+                    <asp:LinkButton ID="lbArt" runat="server" OnClick="lbArt_Click">Art</asp:LinkButton>
+                    <br />
+                    <br class="auto-style13" />
+                    <asp:LinkButton ID="lbBooks" runat="server" OnClick="lbBooks_Click">Books</asp:LinkButton>
+                    <br />
+                    <br />
+                    <asp:LinkButton ID="lbClothes" runat="server" OnClick="lbClothes_Click">Clothes</asp:LinkButton>
+                    <br />
                     <br class="auto-style12" />
-                    <span class="auto-style12">Crafts</span><br class="auto-style12" />
+                    <asp:LinkButton ID="lbCrafts" runat="server" OnClick="lbCrafts_Click">Crafts</asp:LinkButton>
+                    <br />
                     <br class="auto-style12" />
-                    <span class="auto-style12">Electronics</span><br class="auto-style12" />
+                    <asp:LinkButton ID="lbElectronics" runat="server" OnClick="lbElectronics_Click">Electronics</asp:LinkButton>
+                    <br />
                     <br class="auto-style12" />
-                    <span class="auto-style12">Home &amp; Garden</span><br class="auto-style12" />
+                    <asp:LinkButton ID="lbHomeGarden" runat="server" OnClick="lbHomeGarden_Click">Home & Garden</asp:LinkButton>
+                    <br />
                     <br class="auto-style12" />
-                    <span class="auto-style12">Jewelry</span><br class="auto-style12" />
+                    <asp:LinkButton ID="lbJewelry" runat="server" OnClick="lbJewelry_Click">Jewelry</asp:LinkButton>
+                    <br />
                     <br class="auto-style12" />
-                    <span class="auto-style12">Music</span><br class="auto-style12" />
+                    <asp:LinkButton ID="lbMusic" runat="server" OnClick="lbMusic_Click">Music</asp:LinkButton>
+                    <br />
                     <br class="auto-style12" />
-                    <span class="auto-style12">Pet Goods</span><br class="auto-style12" />
+                    <asp:LinkButton ID="lbPetGoods" runat="server" OnClick="lbPetGoods_Click">Pet Goods</asp:LinkButton>
+                    <br />
                     <br class="auto-style12" />
-                    <span class="auto-style12">Sports Goods</span><br class="auto-style12" />
+                    <asp:LinkButton ID="lbSportsGoods" runat="server" OnClick="lbSportsGoods_Click">Sports Goods</asp:LinkButton>
+                    <br />
                     <br class="auto-style12" />
-                    <span class="auto-style12">Toys</span><br class="auto-style12" />
+                    <asp:LinkButton ID="lbToys" runat="server" OnClick="lbToys_Click">Toys</asp:LinkButton>
+                    <br />
                     <br class="auto-style12" />
-                    <span class="auto-style12">Video Games</span>
+                    <asp:LinkButton ID="lbVideoGames" runat="server" OnClick="lbVideoGames_Click">Video Games</asp:LinkButton>
+                    
+                </span>
             </td>
             <td colspan="2" style="vertical-align: top;">
-                <h2><span class="newStyle1">Search Results for &quot;Electronics&quot;</span></h2>
-                <p>
+                <h2><span class="newStyle1">Search Results for
+                    <asp:Label ID="LabelCategory" runat="server" Text="Label"></asp:Label>
+&nbsp;<asp:GridView ID="GridView1" runat="server" CellPadding="4" ForeColor="#333333" GridLines="None">
+                        <AlternatingRowStyle BackColor="White" />
+                        <EditRowStyle BackColor="#2461BF" />
+                        <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+                        <HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+                        <PagerStyle BackColor="#2461BF" ForeColor="White" HorizontalAlign="Center" />
+                        <RowStyle BackColor="#EFF3FB" />
+                        <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
+                        <SortedAscendingCellStyle BackColor="#F5F7FB" />
+                        <SortedAscendingHeaderStyle BackColor="#6D95E1" />
+                        <SortedDescendingCellStyle BackColor="#E9EBEF" />
+                        <SortedDescendingHeaderStyle BackColor="#4870BE" />
+                    </asp:GridView>
+                    </span></h2>
+                <div>
                     <table style="width:100%;" border="1" class="auto-style26">
                         <tr>
                             <td class="auto-style24" style="border: thin solid #000000;"><span class="newStyle1">LED Faucet Light<br />
@@ -173,9 +201,10 @@
                                 End Time: 11/15/2015</span></td>
                         </tr>
                     </table>
-                </p>
+                </div>
             </td>
         </tr>
         </table>
+        </form>
 </body>
 </html>

@@ -98,7 +98,7 @@ public partial class Item : System.Web.UI.Page
             category = (string)auction["Category"];
             title = (string)auction["Title"];
             cmd.Connection.Close();
-            Auction item = new Auction(auction_id, owner, min_bid, buyout, end_date, description, image_url, title, category);
+            Auction item = new Auction(auction_id, user_id_owner, min_bid, buyout, end_date, description, image_url, title, category);
             return item;
         }
     }

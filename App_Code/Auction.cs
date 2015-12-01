@@ -10,7 +10,7 @@ public class Auction
 {
     #region Attributes
     private int id;
-    private User owner;
+    private int owner_id;
     private User top_bidder;
     private double top_bid;
     private double min_bid;
@@ -55,11 +55,11 @@ public class Auction
         }
     }
 
-    public User Owner
+    public int Owner_Id
     {
         get
         {
-            return owner;
+            return owner_id;
         }
     }
 
@@ -147,10 +147,10 @@ public class Auction
     }
     #endregion
 
-    public Auction(int id, User owner, double min_bid, double buyout_price, DateTime end_time, string description, string img_url, string title, string category)
+    public Auction(int id, int owner, double min_bid, double buyout_price, DateTime end_time, string description, string img_url, string title, string category)
     {
         this.id = id;
-        this.owner = owner;
+        this.owner_id = owner;
         this.min_bid = min_bid;
         this.buyout_price = buyout_price;
         this.end_time = end_time;
