@@ -10,8 +10,8 @@ public class Auction
 {
     #region Attributes
     private int id;
-    private User owner;
-    private User top_bidder;
+    private Account owner;
+    private Account top_bidder;
     private double top_bid;
     private double min_bid;
     private double buyout_price;
@@ -19,7 +19,7 @@ public class Auction
     private bool auction_open;
     private string description;
     private string img_url;
-    private List<User> bidders;
+    private List<Account> bidders;
 
     public int Id
     {
@@ -29,7 +29,7 @@ public class Auction
         }
     }
 
-    public User Owner
+    public Account Owner
     {
         get
         {
@@ -37,7 +37,7 @@ public class Auction
         }
     }
 
-    public User Top_bidder
+    public Account Top_bidder
     {
         get
         {
@@ -112,7 +112,7 @@ public class Auction
         }
     }
 
-    public List<User> Bidders
+    public List<Account> Bidders
     {
         get
         {
@@ -121,7 +121,7 @@ public class Auction
     }
     #endregion
 
-    public Auction(int id, User owner, double min_bid, double buyout_price,
+    public Auction(int id, Account owner, double min_bid, double buyout_price,
         DateTime end_time, string description, string img_url)
     {
         this.id = id;
@@ -133,10 +133,10 @@ public class Auction
         this.img_url = img_url;
 
         this.auction_open = true;
-        this.bidders = new List<User>();
+        this.bidders = new List<Account>();
     }
 
-    public void bid(double amount, User bidder)
+    public void bid(double amount, Account bidder)
     {
         Top_bid = amount;
         Top_bidder = bidder;
@@ -184,7 +184,7 @@ public class Auction
 
     private void notifyBidders()
     {
-        foreach (User bidder in Bidders)
+        foreach (Account bidder in Bidders)
         {
             this.notifyBidders(bidder.Id);
         }

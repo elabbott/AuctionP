@@ -18,7 +18,7 @@ public partial class Item : System.Web.UI.Page
     protected DateTime end_date;
     protected string description;
     protected string image_url;
-    protected User owner;
+    protected Account owner;
 
     protected void Page_Load(object sender, EventArgs e)
     {

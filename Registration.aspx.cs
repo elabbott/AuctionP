@@ -35,11 +35,11 @@ public partial class Registration : System.Web.UI.Page
         //con.Close();
         #endregion
 
-        User registering_user = new User(txtUsername.Text.Trim(), txtPassword.Text.Trim(), txtEmail.Text.Trim());
+        Account registering_user = new Account(txtUsername.Text.Trim(), txtPassword.Text.Trim(), txtEmail.Text.Trim());
         MySqlConnection conn = new MySqlConnection();
         conn.ConnectionString = "server=173.194.241.131;database=auction_powers;uid=root;pwd=root;";
         MySQLClient register_user = new MySQLClient(conn);
-        register_user.Insert_Users(registering_user);
+        //register_user.Insert_Users()
     }
     protected void RegisterUser2(object sender, EventArgs e)
     {

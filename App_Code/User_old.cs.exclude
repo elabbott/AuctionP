@@ -97,7 +97,7 @@ public class User
         int id = 0;
         int item_id = 0;
 
-        Auction newAuction = new Auction(id, this, item_id, min_bid, buyout_price, end_time, description, img_url);
+        Auction newAuction = new Auction(id, this, min_bid, buyout_price, end_time, description, img_url);
 
         // Magic goes here
     }
