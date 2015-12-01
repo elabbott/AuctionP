@@ -20,7 +20,7 @@ public partial class Item : System.Web.UI.Page
     private DateTime end_date;
     private string description;
     private string image_url;
-    private User owner;
+    //private User owner;
     private string title;
     private string category;
     //private Auction item;
@@ -42,7 +42,7 @@ public partial class Item : System.Web.UI.Page
             lblNextMinBid.Text = (item.Top_bid + item.Min_bid).ToString("0.00");
         }
     }
-    public void bid(double amount, User bidder)
+    public void bid(double amount, int bidder_id)
     {
         throw new NotImplementedException();
     }

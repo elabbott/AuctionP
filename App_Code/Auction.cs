@@ -11,7 +11,7 @@ public class Auction
     #region Attributes
     private int id;
     private int owner_id;
-    private User top_bidder;
+    private Account top_bidder;
     private double top_bid;
     private double min_bid;
     private double buyout_price;
@@ -19,7 +19,7 @@ public class Auction
     private bool auction_open;
     private string description;
     private string img_url;
-    private List<User> bidders;
+    private List<Account> bidders;
     private string category;
     private string title;
 
@@ -63,7 +63,7 @@ public class Auction
         }
     }
 
-    public User Top_bidder
+    public Account Top_bidder
     {
         get
         {
@@ -138,7 +138,7 @@ public class Auction
         }
     }
 
-    public List<User> Bidders
+    public List<Account> Bidders
     {
         get
         {
@@ -160,7 +160,7 @@ public class Auction
         this.Category = category;
 
         this.auction_open = true;
-        this.bidders = new List<User>();
+        this.bidders = new List<Account>();
     }
 
 

@@ -9,7 +9,7 @@ using System.Web.UI;
 using System.Web.Security;
 using System.Web.UI.WebControls;
 
-public partial class User : System.Web.UI.Page
+public partial class UserPage : System.Web.UI.Page
 {
     protected string username;
     protected int user_id;
