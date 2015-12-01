@@ -28,7 +28,7 @@ public partial class UserAuctions : System.Web.UI.Page
         var constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
         using (var con = new MySqlConnection(constr))
         {
-            var cmd = new MySqlCommand("Select User_Id From User Where Username = " + username, con);
+            var cmd = new MySqlCommand("SELECT User_Id FROM auction_powers.User WHERE Username = " + username, con);
             cmd.Connection.Open();
 
             var id_of_user = cmd.ExecuteReader();
@@ -37,7 +37,7 @@ public partial class UserAuctions : System.Web.UI.Page
             user_id = (int)id_of_user["User_Id"];
             cmd.Connection.Close();
 
-            cmd = new MySqlCommand("Select Auction_ID, User_Id_Owner, User_Id_High_Bid, Current_High_Bid, Min_Bid, Buyout, Open, Create_Date, End_Date, Description, Image_URL, Category, Title From Auction Where User_Id_Owner = " + user_id, con);
+            cmd = new MySqlCommand("SELECT Auction_ID, User_Id_Owner, User_Id_High_Bid, Current_High_Bid, Min_Bid, Buyout, Open, Create_Date, End_Date, Description, Image_URL, Category, Title FROM Auction WHERE User_Id_Owner = " + user_id, con);
 
             var adapter = new MySqlDataAdapter(cmd);
 

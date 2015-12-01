@@ -69,37 +69,6 @@ public class User
         this.cards.Add(card);
     }
 
-    //public void bid(double amount, Auction auction)
-    //{
-    //    //Check if bid amount is more than the top bid, and user has available funds
-    //    if ((amount > auction.Top_bid) && (amount <= this.account.Available_balance))
-    //    {
-    //        auction.bid(amount, this);
-    //        this.account.Available_balance -= amount;
-    //    }
-    //}
-
-    //public void buyout(Auction auction)
-    //{
-    //    if (auction.Buyout_price <= this.account.Available_balance)
-    //    {
-    //        auction.bid(auction.Buyout_price, this);
-    //        account.Available_balance -= auction.Buyout_price;
-    //        account.withdraw(auction.Buyout_price);
-    //    }
-    //}
-
-    //public void createAuction(double min_bid, double buyout_price, DateTime end_time, string description, string img_url)
-    //{
-    //    //How are these determined, and what's the difference between 'id' and 'item_id'?
-    //    //Setting to 0 for now
-    //    int id = 0;
-
-    //    Auction newAuction = new Auction(id, this, min_bid, buyout_price, end_time, description, img_url);
-
-    //    // Magic goes here
-    //}
-
     public void addReview(User submitter, string review_text, int rating)
     {
         //How is review_id determined?
@@ -116,14 +85,6 @@ public class User
             user.addReview(this, review_text, rating);
         }
     }
-    //this doesn't belong here
-    //public void Create_User(User user)
-    //{
-    //    MySQLClient add_user = new MySQLClient("173.194.241.131","auction_powers", "root", "root");
-    //    string value = user.Username + ", " + user.Email + ", " + user.Password + ", " + user.Address + ", " + user.City + ", " + user.State + ", " + user.Zipcode + ", " + user.First_name + ", " + user.Last_name;
-    //    add_user.Insert("user", "first_name, last_name, username, password, email, phone, address, city, state, zipcode", value);
-    //}
-
     #region Properties
     public int Id
     {
