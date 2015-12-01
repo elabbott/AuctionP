@@ -116,7 +116,10 @@
             <asp:LoginName ID="LoginName1" runat="server" Font-Bold = "true" />
             <br />
             <br />
-            <asp:LoginStatus ID="LoginStatus1" runat="server" />
+                <asp:Label ID="Label1" runat="server" Text="Label"></asp:Label>
+                <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/User.aspx">My Account</asp:HyperLink>
+                |
+            <asp:LoginStatus ID="LoginStatus1" runat="server" OnLoggingOut="LoginStatus1_LoggingOut" />
             </div>
             </form>
         </tr>
