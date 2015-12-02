@@ -27,9 +27,20 @@ public partial class CreateAuction : System.Web.UI.Page
         {
             FormsAuthentication.RedirectToLoginPage();
         }
-        if (!Page.IsPostBack)
+        username = HttpContext.Current.User.Identity.Name;
+        string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+        using (MySqlConnection con = new MySqlConnection(constr))
         {
-            username = HttpContext.Current.User.Identity.Name;
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText = "SELECT User_Id FROM User WHERE Username=@name";
+                cmd.Parameters.AddWithValue("@name", username);
+                cmd.Connection = con;
+                con.Open();
+                user_id = Convert.ToInt32(cmd.ExecuteScalar());
+                con.Close();
+            }
         }
     }
 
@@ -75,16 +86,6 @@ public partial class CreateAuction : System.Web.UI.Page
         string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
         using (MySqlConnection con = new MySqlConnection(constr))
         {
-            using (MySqlCommand cmd = new MySqlCommand())
-            {
-                cmd.CommandType = CommandType.Text;
-                cmd.CommandText = "SELECT User_Id FROM User WHERE Username=@name";
-                cmd.Parameters.AddWithValue("@name", username);
-                cmd.Connection = con;
-                con.Open();
-                user_id = Convert.ToInt32(cmd.ExecuteScalar());
-                con.Close();
-            }
             using (MySqlCommand cmd = new MySqlCommand("New_Auction"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
