@@ -173,7 +173,7 @@ public partial class Search : System.Web.UI.Page
         var constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
         using (var con = new MySqlConnection(constr))
         {
-            var cmd = new MySqlCommand("SELECT Title, Current_High_Bid as Bid, Date_Format(End_Date, '%W, %M %e') as Date, Description, Image_URL FROM Auction WHERE Open = true AND (Category = '" + search + "' OR Title Like '" + search + "')", con);
+            var cmd = new MySqlCommand("SELECT Title, Current_High_Bid as Bid, Date_Format(End_Date, '%W, %M %e') as Date, Description, Image_URL FROM Auction WHERE Open = 1 AND (Category LIKE '%" + search + "%' OR Title LIKE '%" + search + "%')", con);
 
             var adapter = new MySqlDataAdapter(cmd);
 
