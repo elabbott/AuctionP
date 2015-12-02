@@ -70,12 +70,11 @@ public partial class AddCard : System.Web.UI.Page
     protected void addCard()
     {
         string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+        int card_id;
         using (MySqlConnection con = new MySqlConnection(constr))
         {
             using (MySqlCommand cmd = new MySqlCommand("Insert_CreditCard"))
             {
-                using (MySqlDataAdapter sda = new MySqlDataAdapter())
-                {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("UserID", user_id);
                     cmd.Parameters.AddWithValue("CardNumber", card_number);
@@ -84,14 +83,21 @@ public partial class AddCard : System.Web.UI.Page
                     cmd.Parameters.AddWithValue("Expiration", expiration_date);
                     cmd.Connection = con;
                     con.Open();
-                    int card_id = Convert.ToInt32(cmd.ExecuteScalar());
-                    cmd.CommandType = CommandType.Text;
-                    cmd.CommandText = "INSERT INTO CreditCard(Card_Id) VALUES(@number)";
-                    cmd.Parameters.AddWithValue("@number", card_id);
-                    cmd.ExecuteNonQuery();
+                    card_id = Convert.ToInt32(cmd.ExecuteScalar());
                     con.Close();
-                }
+            }
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText = "UPDATE CreditCard SET Card_Id=@card WHERE User_Id=@user";
+                cmd.Parameters.AddWithValue("@card", card_id);
+                cmd.Parameters.AddWithValue("@user", user_id);
+                cmd.Connection = con;
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
             }
         }
+        Response.Redirect("User.aspx");
     }
 }
