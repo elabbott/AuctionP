@@ -30,23 +30,25 @@ public partial class AddCard : System.Web.UI.Page
 
         string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
         string username = HttpContext.Current.User.Identity.Name;
-        
-        using (MySqlConnection con = new MySqlConnection(constr))
+        if (!Page.IsPostBack)
         {
-            MySqlCommand cmd = new MySqlCommand();
-            try
+            using (MySqlConnection con = new MySqlConnection(constr))
             {
-                con.Open();
-                cmd.Connection = con;
-                cmd.CommandText = "SELECT User_Id FROM User WHERE Username=@text";
-                cmd.Prepare();
-                cmd.Parameters.AddWithValue("@text", username);
-                user_id = Convert.ToInt32(cmd.ExecuteScalar());
-                con.Close();
-            }
-            catch (MySql.Data.MySqlClient.MySqlException ex)
-            {
+                MySqlCommand cmd = new MySqlCommand();
+                try
+                {
+                    con.Open();
+                    cmd.Connection = con;
+                    cmd.CommandText = "SELECT User_Id FROM User WHERE Username=@text";
+                    cmd.Prepare();
+                    cmd.Parameters.AddWithValue("@text", username);
+                    user_id = Convert.ToInt32(cmd.ExecuteScalar());
+                    con.Close();
+                }
+                catch (MySql.Data.MySqlClient.MySqlException ex)
+                {
 
+                }
             }
         }
     }
@@ -88,17 +90,19 @@ public partial class AddCard : System.Web.UI.Page
                     card_id = Convert.ToInt32(cmd.ExecuteScalar());
                     con.Close();
             }
-            /*using (MySqlCommand cmd = new MySqlCommand())
-            {
-                cmd.CommandType = CommandType.Text;
-                cmd.CommandText = "UPDATE CreditCard SET Card_Id=@card WHERE User_Id=@user";
-                cmd.Parameters.AddWithValue("@card", card_id);
-                cmd.Parameters.AddWithValue("@user", user_id);
-                cmd.Connection = con;
-                con.Open();
-                cmd.ExecuteNonQuery();
-                con.Close();
-            }*/
+
+            //using (MySqlCommand cmd = new MySqlCommand())
+            //{
+            //    cmd.CommandType = CommandType.Text;
+            //    cmd.CommandText = "UPDATE CreditCard SET Card_Id=@card WHERE User_Id=@user";
+            //    cmd.Parameters.AddWithValue("@card", card_id);
+            //    cmd.Parameters.AddWithValue("@user", user_id);
+            //    cmd.Connection = con;
+            //    con.Open();
+            //    cmd.ExecuteNonQuery();
+            //    con.Close();
+            //}
+
         }
         Response.Redirect("User.aspx");
     }
