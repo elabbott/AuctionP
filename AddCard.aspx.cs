@@ -26,6 +26,8 @@ public partial class AddCard : System.Web.UI.Page
             ddListYear.Items.Add(li);
         }
 
+        CompareValidatorExpire.ValueToCompare = Convert.ToString(DateTime.Now.Month);
+
         string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
         string username = HttpContext.Current.User.Identity.Name;
         
@@ -86,7 +88,7 @@ public partial class AddCard : System.Web.UI.Page
                     card_id = Convert.ToInt32(cmd.ExecuteScalar());
                     con.Close();
             }
-            using (MySqlCommand cmd = new MySqlCommand())
+            /*using (MySqlCommand cmd = new MySqlCommand())
             {
                 cmd.CommandType = CommandType.Text;
                 cmd.CommandText = "UPDATE CreditCard SET Card_Id=@card WHERE User_Id=@user";
@@ -96,7 +98,7 @@ public partial class AddCard : System.Web.UI.Page
                 con.Open();
                 cmd.ExecuteNonQuery();
                 con.Close();
-            }
+            }*/
         }
         Response.Redirect("User.aspx");
     }

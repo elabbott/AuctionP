@@ -124,11 +124,11 @@
                 $6.46</td>
             <td class="auto-style4">
                 <asp:ValidationSummary runat=server 
-                    HeaderText="There were errors on the page:" />
+                    HeaderText="There were errors on the page:" ForeColor="Red" />
                 Name:
                 <asp:RequiredFieldValidator runat=server 
                     ControlToValidate=txtName
-                    ErrorMessage="Name is required."> *
+                    ErrorMessage="Name is required." ForeColor="Red"> *
                 </asp:RequiredFieldValidator>
                 <asp:TextBox ID="txtName" runat="server"></asp:TextBox>
                 <br />
@@ -136,7 +136,7 @@
                 Number:
                 <asp:RequiredFieldValidator runat=server 
                     ControlToValidate=txtNum
-                    ErrorMessage="Number is required."> *
+                    ErrorMessage="Number is required." ForeColor="Red"> *
                 </asp:RequiredFieldValidator>
                 <asp:TextBox ID="txtNum" runat="server"></asp:TextBox>
                 <br />
@@ -144,7 +144,7 @@
                 CCV #:
                 <asp:RequiredFieldValidator runat=server 
                     ControlToValidate=txtCCV
-                    ErrorMessage="CCV is required."> *
+                    ErrorMessage="CCV is required." ForeColor="Red"> *
                 </asp:RequiredFieldValidator>
                 <asp:TextBox ID="txtCCV" runat="server" Width="47px"></asp:TextBox>
                 <br />
@@ -166,8 +166,12 @@
                     <asp:ListItem>12</asp:ListItem>
                 </asp:DropDownList>
 &nbsp;/
-                <asp:DropDownList ID="ddListYear" runat="server" Width="66px">
+                <asp:DropDownList ID="ddListYear" runat="server" Width="66px" >
                 </asp:DropDownList>
+                
+                
+                
+                <asp:CompareValidator ID="CompareValidatorExpire" runat="server" ControlToValidate="ddListMonth" ErrorMessage="Invalid expiration" ForeColor="Red" Operator="GreaterThanEqual">*</asp:CompareValidator>
                 
                 
                 
