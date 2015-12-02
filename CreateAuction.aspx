@@ -125,11 +125,29 @@
                 <asp:ValidationSummary runat=server 
                     HeaderText="There were errors on the page:" />
                 <h3 class="newStyle2">Describe your item</h3>
+                <p class="newStyle2">Category:
+                    <asp:CompareValidator ID="CompareValidator1" runat="server" ControlToValidate="ddListCategory" ForeColor="Red" Operator="NotEqual" ValueToCompare="None">*</asp:CompareValidator>
+&nbsp;<asp:DropDownList ID="ddListCategory" runat="server">
+                        <asp:ListItem Value="None">-Choose Category-</asp:ListItem>
+                        <asp:ListItem>Art</asp:ListItem>
+                        <asp:ListItem>Book</asp:ListItem>
+                        <asp:ListItem>Clothes</asp:ListItem>
+                        <asp:ListItem>Crafts</asp:ListItem>
+                        <asp:ListItem>Electronics</asp:ListItem>
+                        <asp:ListItem>Home &amp; Garden</asp:ListItem>
+                        <asp:ListItem>Jewelry</asp:ListItem>
+                        <asp:ListItem>Music</asp:ListItem>
+                        <asp:ListItem>Pet Goods</asp:ListItem>
+                        <asp:ListItem>Sports Goods</asp:ListItem>
+                        <asp:ListItem>Toys</asp:ListItem>
+                        <asp:ListItem>Video Games</asp:ListItem>
+                    </asp:DropDownList>
+                </p>
             <p class="newStyle2">
                     Title:
                 <asp:RequiredFieldValidator runat=server 
                     ControlToValidate=txtTitle
-                    ErrorMessage="Title is required."> *
+                    ErrorMessage="Title is required." ForeColor="Red"> *
                 </asp:RequiredFieldValidator>
                     <asp:TextBox ID="txtTitle" runat="server" Width="433px"></asp:TextBox>
                 </p>
@@ -137,16 +155,16 @@
                     Image url:
                 <asp:RequiredFieldValidator runat=server 
                     ControlToValidate=txtImage
-                    ErrorMessage="Image URL is required."> *
+                    ErrorMessage="Image URL is required." ForeColor="Red"> *
                 </asp:RequiredFieldValidator>
                     <asp:TextBox ID="txtImage" runat="server" Width="405px"></asp:TextBox>
                 </p>
                 <p class="newStyle2">
-                    Description:    <p class="newStyle2">
                     <asp:RequiredFieldValidator runat=server 
                         ControlToValidate=txtDescription
-                        ErrorMessage="Description is required."> *
+                        ErrorMessage="Description is required." ForeColor="Red"> *
                     </asp:RequiredFieldValidator>
+                    Description:    <p class="newStyle2">
                     <asp:TextBox ID="txtDescription" runat="server" Height="160px" Width="488px"></asp:TextBox>
                 </p>
                 <h3 class="newStyle2">Select duration</h3>

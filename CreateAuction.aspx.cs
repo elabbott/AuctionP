@@ -11,12 +11,13 @@ using System.Web.UI.WebControls;
 
 public partial class CreateAuction : System.Web.UI.Page
 {
+    private string category;
     private string title;
     private string imageURL;
     private string description;
     private DateTime end_date;
-    private double min_bid;
-    private double buyout;
+    private double? min_bid;
+    private double? buyout;
     private string username;
     private int user_id;
     private int auction_id;
@@ -27,9 +28,20 @@ public partial class CreateAuction : System.Web.UI.Page
         {
             FormsAuthentication.RedirectToLoginPage();
         }
-        if (!Page.IsPostBack)
+        username = HttpContext.Current.User.Identity.Name;
+        string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+        using (MySqlConnection con = new MySqlConnection(constr))
         {
-            username = HttpContext.Current.User.Identity.Name;
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText = "SELECT User_Id FROM User WHERE Username=@name";
+                cmd.Parameters.AddWithValue("@name", username);
+                cmd.Connection = con;
+                con.Open();
+                user_id = Convert.ToInt32(cmd.ExecuteScalar());
+                con.Close();
+            }
         }
     }
 
@@ -40,6 +52,7 @@ public partial class CreateAuction : System.Web.UI.Page
 
     protected void btnCreate_Click(object sender, EventArgs e)
     {
+        category = ddListCategory.SelectedValue;
         title = txtTitle.Text.Trim();
         imageURL = txtImage.Text.Trim();
         description = txtDescription.Text.Trim();
@@ -54,7 +67,7 @@ public partial class CreateAuction : System.Web.UI.Page
         }
         else
         {
-            min_bid = 0.0;
+            min_bid = 0.01;
         }
 
         if(txtBuyout.Text != String.Empty)
@@ -63,11 +76,12 @@ public partial class CreateAuction : System.Web.UI.Page
         }
         else
         {
-            buyout = 0.0;
+            buyout = null;
         }
 
         createAuction();
-
+        Session["auction_id"] = auction_id;
+        Response.Redirect("Item.aspx");
     }
 
     protected void createAuction()
@@ -75,16 +89,6 @@ public partial class CreateAuction : System.Web.UI.Page
         string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
         using (MySqlConnection con = new MySqlConnection(constr))
         {
-            using (MySqlCommand cmd = new MySqlCommand())
-            {
-                cmd.CommandType = CommandType.Text;
-                cmd.CommandText = "SELECT User_Id FROM User WHERE Username=@name";
-                cmd.Parameters.AddWithValue("@name", username);
-                cmd.Connection = con;
-                con.Open();
-                user_id = Convert.ToInt32(cmd.ExecuteScalar());
-                con.Close();
-            }
             using (MySqlCommand cmd = new MySqlCommand("New_Auction"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -95,6 +99,8 @@ public partial class CreateAuction : System.Web.UI.Page
                 cmd.Parameters.AddWithValue("EndDate", end_date);
                 cmd.Parameters.AddWithValue("Description", description);
                 cmd.Parameters.AddWithValue("Image", imageURL);
+                cmd.Parameters.AddWithValue("ItemCategory", category);
+                cmd.Parameters.AddWithValue("ItemTitle", title);
                 con.Open();
                 auction_id = Convert.ToInt32(cmd.ExecuteScalar());
                 con.Close();
