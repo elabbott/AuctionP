@@ -51,36 +51,23 @@ public partial class Item : System.Web.UI.Page
         //var item = new Auction(auction_id, owner, min_bid, buyout, end_date, description, image_url, title, category);
         var item = Load_Auction(auction_id);
         item.Top_bid = current_high_bid;
-        if(current_high_bid > 0)
+
+        if (isActive())
         {
-            min_bid = current_high_bid + 0.01;
-        }
-        lblHighBid.Text = item.Top_bid.ToString("0.00");
-        lblNextMinBid.Text = min_bid.ToString("0.00");
-        imgItem.ImageUrl = image_url;
-        lblTitle.Text = title;
-        lblDescription.Text = description;
-        CompareValidator1.ValueToCompare = Convert.ToString(min_bid);
-        if (user_id == user_id_owner)
-        {
-            txtAmount.Enabled = false;
-            txtAmount.Visible = false;
-            btnBid.Enabled = false;
-            btnBid.Visible = false;
-            lblBuyOut.Visible = false;
-            btnBuyOut.Enabled = false;
-            btnBuyOut.Visible = false;
+            updateAuction();
+            showControls();
         }
         else
         {
-            if (buyout != 0)
-            {
-                lblBuyOut.Text = "Or Buy Now for $" + Convert.ToString(buyout);
-                lblBuyOut.Visible = true;
-                btnBuyOut.Enabled = true;
-                btnBuyOut.Visible = true;
-            }
+            open = false;
+            endAuction(auction_id, user_id_owner, user_id_high_bid);
         }
+ 
+        lblHighBid.Text = item.Top_bid.ToString("0.00");
+        imgItem.ImageUrl = image_url;
+        lblTitle.Text = title;
+        lblDescription.Text = description;
+        
     }
     public void bid(double amount, int bidder_id)
     {
@@ -184,6 +171,53 @@ public partial class Item : System.Web.UI.Page
         double amount = Convert.ToDouble(txtAmount.Text);
 
         bid(amount, user_id);
+        notifyBidders();
         Response.Redirect("Item.aspx");
+    }
+
+    private bool isActive()
+    {
+        bool result = true;
+
+        if(end_date.CompareTo(DateTime.Now) < 0)
+        {
+            result = false;
+        }
+
+        return result;
+    }
+
+    private void updateAuction()
+    {
+        if (current_high_bid > 0)
+        {
+            min_bid = current_high_bid + 0.01;
+        }
+    }
+
+    private void showControls()
+    {
+        if (user_id == user_id_owner)
+        {
+            txtAmount.Enabled = false;
+            txtAmount.Visible = false;
+            btnBid.Enabled = false;
+            btnBid.Visible = false;
+            lblBuyOut.Visible = false;
+            btnBuyOut.Enabled = false;
+            btnBuyOut.Visible = false;
+        }
+        else
+        {
+            if (buyout != 0)
+            {
+                lblBuyOut.Text = "Or Buy Now for $" + Convert.ToString(buyout);
+                lblBuyOut.Visible = true;
+                btnBuyOut.Enabled = true;
+                btnBuyOut.Visible = true;
+            }
+            CompareValidator1.ValueToCompare = Convert.ToString(min_bid);
+        }
+        lblNextMinBid.Text = min_bid.ToString("0.00");
     }
 }
