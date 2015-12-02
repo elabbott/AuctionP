@@ -19,6 +19,10 @@ public partial class UserPage : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
+        if (!this.Page.User.Identity.IsAuthenticated)
+        {
+            FormsAuthentication.RedirectToLoginPage();
+        }
         username = HttpContext.Current.User.Identity.Name;
             string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
             using (MySqlConnection con = new MySqlConnection(constr))
