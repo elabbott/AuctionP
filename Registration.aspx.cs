@@ -97,4 +97,9 @@ public partial class Registration : System.Web.UI.Page
             smtp.Send(mm);
         }
     }
+
+    protected void lbSearch_Click(object sender, EventArgs e)
+    {
+
+    }
 }

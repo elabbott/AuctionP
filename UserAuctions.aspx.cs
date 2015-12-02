@@ -56,4 +56,9 @@ public partial class UserAuctions : System.Web.UI.Page
             cmd.Connection.Close();
         }
     }
+
+    protected void lbSearch_Click(object sender, EventArgs e)
+    {
+
+    }
 }

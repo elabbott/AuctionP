@@ -93,45 +93,30 @@ public partial class Search : System.Web.UI.Page
     protected void All()
     {
         LabelCategory.Text = "All";
-        var constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
-        using (var con = new MySqlConnection(constr))
-        {
-            var cmd = new MySqlCommand("SELECT Title, Current_High_Bid as High, DATE_FORMAT(End_Date,'%W, %M %e') AS date, Description, Image_URL FROM Auction", con);
-
-            var adapter = new MySqlDataAdapter(cmd);
-
-            var dt = new DataTable();
-
-            adapter.Fill(dt);
-
-            GridView1.DataSource = dt;
-
-            GridView1.DataBind();
-
-            cmd.Connection.Close();
-        }
+        var all = "_";
+        Load_Search(all);
 
     }
-    protected void Load_Search1(string search)
-    {
-        var constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
-        using (var con = new MySqlConnection(constr))
-        {
-            var cmd = new MySqlCommand("SELECT Title, Current_High_Bid as High, Date_Format(End_Date, '%W, %M %e') as Date, Description, Image_URL FROM Auction WHERE Category Like '" + search + "'", con);
+    //protected void Load_Search1(string search)
+    //{
+    //    var constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+    //    using (var con = new MySqlConnection(constr))
+    //    {
+    //        var cmd = new MySqlCommand("SELECT Title, Current_High_Bid as High, Date_Format(End_Date, '%W, %M %e') as Date, Description, Image_URL FROM Auction WHERE Category Like '" + search + "'", con);
 
-            var adapter = new MySqlDataAdapter(cmd);
+    //        var adapter = new MySqlDataAdapter(cmd);
 
-            var dt = new DataTable();
+    //        var dt = new DataTable();
 
-            adapter.Fill(dt);
+    //        adapter.Fill(dt);
 
-            GridView1.DataSource = dt;
+    //        GridView1.DataSource = dt;
 
-            GridView1.DataBind();
+    //        GridView1.DataBind();
 
-            cmd.Connection.Close();
-        }
-    }
+    //        cmd.Connection.Close();
+    //    }
+    //}
     protected void Load_Search(string search)
     {
         var dt = GetData(search);
@@ -167,30 +152,14 @@ public partial class Search : System.Web.UI.Page
     protected void btnSearch_Click(object sender, EventArgs e)
     {
         var search = txtSearch.Text;
-        var constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
-        using (var con = new MySqlConnection(constr))
-        {
-            var cmd = new MySqlCommand("SELECT Title, Current_High_Bid as High, Date_Format(End_Date, '%W, %M %e') as Date, Description, Image_URL FROM Auction WHERE Category Like '" + search + "' OR Title Like '" + search + "'", con);
-
-            var adapter = new MySqlDataAdapter(cmd);
-
-            var dt = new DataTable();
-
-            adapter.Fill(dt);
-
-            GridView1.DataSource = dt;
-
-            GridView1.DataBind();
-
-            cmd.Connection.Close();
-        }
+        Load_Search(search);
     }
     private DataTable GetData(string search)
     {
         var constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
         using (var con = new MySqlConnection(constr))
         {
-            var cmd = new MySqlCommand("SELECT Title, Current_High_Bid as High, Date_Format(End_Date, '%W, %M %e') as Date, Description, Image_URL FROM Auction WHERE Open = true AND (Category = '" + search + "' OR Title Like '" + search + "')", con);
+            var cmd = new MySqlCommand("SELECT Title, Current_High_Bid as Bid, Date_Format(End_Date, '%W, %M %e') as Date, Description, Image_URL FROM Auction WHERE Open = true AND (Category = '" + search + "' OR Title Like '" + search + "')", con);
 
             var adapter = new MySqlDataAdapter(cmd);
 
@@ -199,5 +168,10 @@ public partial class Search : System.Web.UI.Page
             adapter.Fill(dt);
             return dt;
         }
+    }
+
+    protected void lbSearch_Click(object sender, EventArgs e)
+    {
+
     }
 }
