@@ -121,8 +121,6 @@ public partial class Search : System.Web.UI.Page
     {
         var dt = GetData(search);
         var html = new StringBuilder();
-        Uri uriResult;
-
         html.Append("<table class=\"table\"");
 
         html.Append("<tr>");
@@ -137,21 +135,27 @@ public partial class Search : System.Web.UI.Page
 
         foreach (DataRow row in dt.Rows)
         {
+            var i = 1; // this keeps track which column we are on, reference select statement in GetData() for corresponding column values
             html.Append("<tr>");
             foreach(DataColumn column in dt.Columns)
             {
                 var columnString = row[column.ColumnName].ToString();
                 html.Append("<td>");
                 //if (row[column.ColumnName].ToString().Contains(".com"))
-                if (Uri.TryCreate(columnString, UriKind.Absolute, out uriResult) && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps))
+                if (i == 5 && CheckURLValid(columnString)) //column value check for fifth column <may be unnessarry> and then checks if link is valid url
                 {
                     html.Append("<img src='" + columnString + "'/>");
                 }
+                else if (i == 5 && !CheckURLValid(columnString))
+                {
+                    html.Append("<img src =\"noimage.jpg\"");
+                }
                 else
                 {
-                    html.Append(row[column.ColumnName]);
+                    html.Append(columnString);
                 }
                 html.Append("</td>");
+                i++;
             }
             html.Append("</tr>");
         }
@@ -179,7 +183,11 @@ public partial class Search : System.Web.UI.Page
             return dt;
         }
     }
-
+    public static bool CheckURLValid(string source)
+    {
+        Uri uriResult;
+        return Uri.TryCreate(source, UriKind.Absolute, out uriResult) && uriResult.Scheme == Uri.UriSchemeHttp;
+    }
     protected void lbSearch_Click(object sender, EventArgs e)
     {
 
