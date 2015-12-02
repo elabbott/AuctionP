@@ -20,7 +20,6 @@ public partial class UserPage : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         username = HttpContext.Current.User.Identity.Name;
-        selectedCard = 0;
             string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
             using (MySqlConnection con = new MySqlConnection(constr))
             {
@@ -59,7 +58,9 @@ public partial class UserPage : System.Web.UI.Page
                 }
             }
         ddListCard.Items.Insert(0, new ListItem("--Select Card--", "0"));
+        ddListCard.ClearSelection();
         lblBalance.Text = Convert.ToString(balance);
+        //RangeValidator1.MaximumValue = lblBalance.Text;
     }
 
     protected void ddListCard_SelectedIndexChanged(object sender, EventArgs e)
@@ -69,9 +70,9 @@ public partial class UserPage : System.Web.UI.Page
 
 
 
-    protected void btnDeposit_Click(object sender, EventArgs e)
+    protected void deposit()
     {
-        if (txtAmount.Text.Trim() != null)
+        if (txtAmount.Text != null)
         {
             string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
             MySqlConnection con = new MySqlConnection(constr);
@@ -79,7 +80,7 @@ public partial class UserPage : System.Web.UI.Page
             {
                 con.Open();
                 cmd.CommandType = CommandType.Text;
-                double amount = Convert.ToDouble(txtAmount.Text);
+                double amount = Convert.ToDouble(txtAmount.Text.Trim());
                 amount += balance;
                 cmd.Parameters.AddWithValue("@bal", amount);
                 cmd.Parameters.AddWithValue("@name", username);
@@ -89,6 +90,65 @@ public partial class UserPage : System.Web.UI.Page
             }
             con.Dispose();
             Response.Redirect("User.aspx");
+        }
+    }
+
+    protected void withdraw()
+    {
+        if(txtAmount.Text != null)
+        {
+            double amount = Convert.ToDouble(txtAmount.Text.Trim());
+            if(amount <= balance)
+            {
+                balance -= amount;
+                string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+                MySqlConnection con = new MySqlConnection(constr);
+                using (MySqlCommand cmd = new MySqlCommand("UPDATE User SET Balance=@bal WHERE Username=@name"))
+                {
+                    con.Open();
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Parameters.AddWithValue("@bal", balance);
+                    cmd.Parameters.AddWithValue("@name", username);
+                    cmd.Connection = con;
+                    cmd.ExecuteScalar();
+                    con.Close();
+                }
+                con.Dispose();
+                Response.Redirect("User.aspx");
+            }
+        }
+    }
+
+    protected void rdBtnType_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        if(rdBtnType.SelectedValue == "Withdraw")
+        {
+            CompareValidator2.Operator = ValidationCompareOperator.LessThanEqual;
+            CompareValidator2.ValueToCompare = Convert.ToString(balance);
+            CompareValidator2.Enabled = true;
+        }
+        else
+        {
+            CompareValidator2.Enabled = false;
+        }
+    }
+
+    protected void btnSubmit_Click(object sender, EventArgs e)
+    {
+        double amount = Convert.ToDouble(txtAmount.Text.Trim());
+        switch(rdBtnType.SelectedIndex)
+        {
+            case 0:
+                deposit();
+                break;
+            case 1:
+                if(amount <= balance)
+                {
+                    withdraw();
+                }
+                break;
+            default:
+                break;
         }
     }
 }
