@@ -27,19 +27,23 @@ public partial class Item : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
+        auction_id = Convert.ToInt32(Session["auction_id"]);
         //Auction item = new Auction(auction_id, owner, min_bid, buyout, end_date, description, image_url, title, category);
         //var item = new Auction(auction_id, owner, min_bid, buyout, end_date, description, image_url, title, category);
         var item = Load_Auction(auction_id);
         item.Top_bid = current_high_bid;
         lblHighBid.Text = item.Top_bid.ToString("0.00");
+        lblNextMinBid.Text = (item.Top_bid + item.Min_bid).ToString("0.00");
+        imgItem.ImageUrl = image_url;
+        lblTitle.Text = title;
+        lblDescription.Text = description;
 
-        if(item.Min_bid == 0)
+        if(buyout != 0)
         {
-            lblNextMinBid.Text = (item.Top_bid + 0.01).ToString("0.00");
-        }
-        else
-        {
-            lblNextMinBid.Text = (item.Top_bid + item.Min_bid).ToString("0.00");
+            lblBuyOut.Text = "Or Buy Now for $" + Convert.ToString(buyout);
+            lblBuyOut.Visible = true;
+            btnBuyOut.Enabled = true;
+            btnBuyOut.Visible = true;
         }
     }
     public void bid(double amount, int bidder_id)
@@ -83,23 +87,43 @@ public partial class Item : System.Web.UI.Page
             cmd.Connection.Open();
 
             var auction = cmd.ExecuteReader();
-
             //user_id = id_of_user.GetInt32(0);
-            user_id_owner = (int)auction["User_Id_Owner"];
-            user_id_high_bid = (int)auction["User_Id_High_Bid"];
-            current_high_bid = (Double)auction["Current_High_Bid"];
-            min_bid = (Double)auction["Min_Bid"];
-            buyout = (Double)auction["Buyout"];
-            open = (Boolean)auction["Open"];
-            create_date = (DateTime)auction["Create_Date"];
-            end_date = (DateTime)auction["End_Date"];
-            description = (string)auction["Description"];
-            image_url = (string)auction["Image_URL"];
-            category = (string)auction["Category"];
-            title = (string)auction["Title"];
+            object dbNullTesterObject;
+
+            if (auction.Read())
+            {
+                user_id_owner = (int)auction["User_Id_Owner"];
+                dbNullTesterObject = auction["User_Id_High_Bid"];
+                user_id_high_bid = dbNullTesterObject == DBNull.Value ? 0 : Convert.ToInt32(dbNullTesterObject);
+                //user_id_high_bid = (int)auction["User_Id_High_Bid"];
+                dbNullTesterObject = auction["Current_High_Bid"];
+                current_high_bid = dbNullTesterObject == DBNull.Value ? 0 : Convert.ToDouble(dbNullTesterObject);
+                //current_high_bid = (Double)auction["Current_High_Bid"];
+                min_bid = (Double)auction["Min_Bid"];
+                dbNullTesterObject = auction["Buyout"];
+                buyout = dbNullTesterObject == DBNull.Value ? 0 : Convert.ToDouble(dbNullTesterObject);
+                //buyout = (Double)auction["Buyout"];
+                open = (Boolean)auction["Open"];
+                create_date = (DateTime)auction["Create_Date"];
+                end_date = (DateTime)auction["End_Date"];
+                description = (string)auction["Description"];
+                image_url = (string)auction["Image_URL"];
+                category = (string)auction["Category"];
+                title = (string)auction["Title"];
+            }
             cmd.Connection.Close();
             Auction item = new Auction(auction_id, user_id_owner, min_bid, buyout, end_date, description, image_url, title, category);
             return item;
         }
+    }
+
+    protected void btnBuyOut_Click(object sender, EventArgs e)
+    {
+        buyOut();
+    }
+
+    private void buyOut()
+    {
+        throw new NotImplementedException();
     }
 }
