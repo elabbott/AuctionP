@@ -138,9 +138,13 @@
                                 <br />
                                 Next Minimum Bid: $<asp:Label ID="lblNextMinBid" runat="server"></asp:Label>
                                 <br />
+                                <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ControlToValidate="txtAmount" ErrorMessage="Must be valid dollar amount" ForeColor="Red" ValidationExpression="^\d+\.\d{2}$"></asp:RegularExpressionValidator>
                                 <br />
-                                $<input id="txtBidAmount" type="text" />
-                                <input id="btnBid" type="button" value="Bid" /><br />
+                                <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtAmount" ErrorMessage="RequiredFieldValidator" ForeColor="Red">*</asp:RequiredFieldValidator>
+                                <asp:TextBox ID="txtAmount" runat="server"></asp:TextBox>
+&nbsp;<asp:Button ID="btnBid" runat="server" OnClick="btnBid_Click" Text="Bid" />
+                                <br />
+                                <asp:CompareValidator ID="CompareValidator1" runat="server" ControlToValidate="txtAmount" ErrorMessage="Must be at least minimum bid amount" ForeColor="Red" Operator="GreaterThanEqual"></asp:CompareValidator>
                                 <br />
                                 <asp:Label ID="lblBuyOut" runat="server" Visible="False"></asp:Label>
                                 <br />

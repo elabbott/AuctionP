@@ -1,5 +1,6 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
+using System.Data;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -10,6 +11,8 @@ using System.Web.UI.WebControls;
 public partial class Item : System.Web.UI.Page
 {
     private int auction_id; //this value needs to be passed through the session
+    private int user_id;
+    private string username;
     private int user_id_owner;
     private int user_id_high_bid;
     private double current_high_bid;
@@ -27,28 +30,77 @@ public partial class Item : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
+        username = HttpContext.Current.User.Identity.Name;
+        string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+        using (MySqlConnection con = new MySqlConnection(constr))
+        {
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandType = CommandType.Text;
+                cmd.Connection = con;
+                cmd.CommandText = "SELECT User_Id FROM User WHERE Username=@user";
+                cmd.Parameters.AddWithValue("@user", username);
+                con.Open();
+                user_id = Convert.ToInt32(cmd.ExecuteScalar());
+                con.Close();
+            }
+        }
+
         auction_id = Convert.ToInt32(Session["auction_id"]);
         //Auction item = new Auction(auction_id, owner, min_bid, buyout, end_date, description, image_url, title, category);
         //var item = new Auction(auction_id, owner, min_bid, buyout, end_date, description, image_url, title, category);
         var item = Load_Auction(auction_id);
         item.Top_bid = current_high_bid;
+        if(current_high_bid > 0)
+        {
+            min_bid = current_high_bid + 0.01;
+        }
         lblHighBid.Text = item.Top_bid.ToString("0.00");
-        lblNextMinBid.Text = (item.Top_bid + item.Min_bid).ToString("0.00");
+        lblNextMinBid.Text = min_bid.ToString("0.00");
         imgItem.ImageUrl = image_url;
         lblTitle.Text = title;
         lblDescription.Text = description;
-
-        if(buyout != 0)
+        CompareValidator1.ValueToCompare = Convert.ToString(min_bid);
+        if (user_id == user_id_owner)
         {
-            lblBuyOut.Text = "Or Buy Now for $" + Convert.ToString(buyout);
-            lblBuyOut.Visible = true;
-            btnBuyOut.Enabled = true;
-            btnBuyOut.Visible = true;
+            txtAmount.Enabled = false;
+            txtAmount.Visible = false;
+            btnBid.Enabled = false;
+            btnBid.Visible = false;
+            lblBuyOut.Visible = false;
+            btnBuyOut.Enabled = false;
+            btnBuyOut.Visible = false;
+        }
+        else
+        {
+            if (buyout != 0)
+            {
+                lblBuyOut.Text = "Or Buy Now for $" + Convert.ToString(buyout);
+                lblBuyOut.Visible = true;
+                btnBuyOut.Enabled = true;
+                btnBuyOut.Visible = true;
+            }
         }
     }
     public void bid(double amount, int bidder_id)
     {
-        throw new NotImplementedException();
+        int result;
+        string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+        using (MySqlConnection con = new MySqlConnection(constr))
+        {
+            using (MySqlCommand cmd = new MySqlCommand("Bid"))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Connection = con;
+                cmd.Parameters.AddWithValue("Amount", amount);
+                cmd.Parameters.AddWithValue("AuctionID", auction_id);
+                cmd.Parameters.AddWithValue("BidderID", bidder_id);
+                con.Open();
+                result = Convert.ToInt32(cmd.ExecuteScalar());
+                con.Close();
+            }
+        }
+        //return result;
     }
 
     private void endAuction( int auction_id, int owner_id, int top_bidder_id)
@@ -125,5 +177,13 @@ public partial class Item : System.Web.UI.Page
     private void buyOut()
     {
         throw new NotImplementedException();
+    }
+
+    protected void btnBid_Click(object sender, EventArgs e)
+    {
+        double amount = Convert.ToDouble(txtAmount.Text);
+
+        bid(amount, user_id);
+        Response.Redirect("Item.aspx");
     }
 }
