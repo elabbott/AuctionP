@@ -67,11 +67,15 @@
         }
         .auto-style15 {
             width: 500px;
+            height: 397px;
+        }
+        .auto-style16 {
+            height: 397px;
         }
     </style>
 </head>
 <body>
-
+    <form id="form1" runat="server">
     <table style="width:100%;">
         <tr>
             <td class="auto-style6">
@@ -81,7 +85,6 @@
                 <input id="Text1" class="auto-style7" type="text" /> <input id="Search" type="button" value="Search" />
             </td>
             <td class="auto-style8">
-                <form id="form1" runat="server">
                 <div>
                 Welcome
                 <asp:LoginName ID="LoginName1" runat="server" Font-Bold = "true" />
@@ -89,7 +92,6 @@
                 <br />
                 <asp:LoginStatus ID="LoginStatus1" runat="server" />
                 </div>
-                </form>
             </td>
         </tr>
         <tr>
@@ -123,13 +125,15 @@
                     <span class="auto-style12">Video Games</span>
             </td>
             <td colspan="2" style="vertical-align: top;">
-                <h2><span class="newStyle1"><span class="auto-style10">Waterproof Bluetooth Speaker</span> by <span class="auto-style14"><em>Username</em></span></span></h2>
+                <h2><span class="newStyle1">&nbsp;<asp:Label ID="lblTitle" runat="server"></asp:Label>
+                    </span></h2>
                 <p>
                     <table style="width:100%;" border="1">
                         <tr>
                             <td class="auto-style15" style="border: thin solid #000000">
-                                <img src="http://i.ebayimg.com/00/s/NDY4WDQ2OQ==/z/Ev4AAOSwBP9UV-N4/$_1.JPG?set_id=2" /></td>
-                            <td style="border: thin solid #000000"><span class="newStyle1">Highest Bid: $<asp:Label ID="lblHighBid" runat="server"></asp:Label>
+                                <asp:Image ID="imgItem" runat="server" />
+                            </td>
+                            <td style="border: thin solid #000000" class="auto-style16"><span class="newStyle1">Highest Bid: $<asp:Label ID="lblHighBid" runat="server"></asp:Label>
                                 <br />
                                 <br />
                                 Next Minimum Bid: $<asp:Label ID="lblNextMinBid" runat="server"></asp:Label>
@@ -137,19 +141,24 @@
                                 <br />
                                 $<input id="txtBidAmount" type="text" />
                                 <input id="btnBid" type="button" value="Bid" /><br />
-                                or<br />
-                                Get now for $25.00
-                                <input id="btnBuyNow" type="button" value="Buy Now" /><br />
+                                <br />
+                                <asp:Label ID="lblBuyOut" runat="server" Visible="False"></asp:Label>
+                                <br />
+                                <asp:Button ID="btnBuyOut" runat="server" Enabled="False" OnClick="btnBuyOut_Click" Text="Buy Now" Visible="False" />
+                                <br />
+                                &nbsp;<br />
                                 <hr />
                                 <br />
                                 <span class="auto-style14">Edit Auction</span><br class="auto-style14" />
                                 <br class="auto-style14" />
                                 <span class="auto-style14">Delete Auction</span></span></td>
                         </tr>
+                        <asp:Label ID="lblDescription" runat="server"></asp:Label>
                     </table>
                 </p>
             </td>
         </tr>
         </table>
+    </form>
 </body>
 </html>
