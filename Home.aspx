@@ -103,6 +103,26 @@
     </style>
 </head>
 <body>
+    <header>
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <img class="navbar-brand" src="AuctionPowers.jpg"/>
+                    </div>
+                    <div>
+                        <ul class="nav navbar-nav">
+                            <li class="active"><a href="Home.aspx">Home</a></li>
+                            <li><a href="Search.aspx">Search</a></li>
+                            <li><a href="User.aspx">User.aspx</a></li>
+                            <li>
+                                <asp:TextBox ID="TextBox1" runat="server"></asp:TextBox></li>
+                            <li>
+                                <asp:LinkButton ID="lbSearch" CssClass="btn btn-primary" runat="server" OnClick="lbSearch_Click">Search</asp:LinkButton></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
     <table style="width:100%;">
         <tr>
             <td class="auto-style6">

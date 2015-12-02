@@ -84,9 +84,33 @@
             width: 100%;
         }
         </style>
+    <link href="Content/bootstrap-theme.css" rel="stylesheet" />
+    <link href="Content/bootstrap-theme.min.css" rel="stylesheet" />
+    <link href="Content/bootstrap.css" rel="stylesheet" />
+    <link href="Content/bootstrap.min.css" rel="stylesheet" />
 </head>
 <body>
     <form id="form1" runat="server">
+        <header>
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <img class="navbar-brand" src="AuctionPowers.jpg"/>
+                    </div>
+                    <div>
+                        <ul class="nav navbar-nav">
+                            <li class="active"><a href="Home.aspx">Home</a></li>
+                            <li><a href="Search.aspx">Search</a></li>
+                            <li><a href="User.aspx">User.aspx</a></li>
+                            <li>
+                                <asp:TextBox ID="TextBox1" runat="server"></asp:TextBox></li>
+                            <li>
+                                <asp:LinkButton ID="lbSearch" CssClass="btn btn-primary" runat="server" OnClick="lbSearch_Click">Search</asp:LinkButton></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
     <table style="width:100%;">
         <tr>
             <td class="auto-style6">
@@ -168,40 +192,17 @@
                         <SortedDescendingHeaderStyle BackColor="#4870BE" />
                     </asp:GridView>
                     </span></h2>
-                <div>
-                    <table style="width:100%;" border="1" class="auto-style26">
-                        <tr>
-                            <td class="auto-style24" style="border: thin solid #000000;"><span class="newStyle1">LED Faucet Light<br />
-                        <img class="auto-style23" src="http://i.ebayimg.com/00/s/MzAwWDMwMA==/z/9g0AAOSwdpxUV9-u/$_1.JPG?set_id=2" /></td>
-                            <td class="newStyle1" style="border: thin solid #000000;">Owner: <em><span class="auto-style14">Username<br />
-                                <br />
-                                </span></em><span class="auto-style25">Highest Bid: $12.00<br />
-                                <br />
-                                End Time: 11/2/2015</span></td>
-                        </tr>
-                        <tr>
-                            <td class="auto-style24" style="border: thin solid #000000;">Waterproof Bluetooth Speaker<br />
-                                <img src="http://i.ebayimg.com/00/s/NDY4WDQ2OQ==/z/Ev4AAOSwBP9UV-N4/$_1.JPG?set_id=2" class="auto-style11" /></td>
-                            <td class="newStyle1" style="border: thin solid #000000;">Owner: <em><span class="auto-style14">Username<br />
-                                <br />
-                                </span></em><span class="auto-style25">Highest Bid: $18.50<br />
-                                <br />
-                                End Time: 11/10/2015</span></td>
-                        </tr>
-                        <tr>
-                            <td class="auto-style24" style="border: thin solid #000000;"><span class="newStyle1"><span class="auto-style25">Samsung Galaxy Gear Smart Watch<br />
-                                </span><img class="auto-style21" src="http://i.ebayimg.com/00/s/NDY4WDQ2OA==/z/E-MAAOSwrx5UV-HO/$_1.JPG?set_id=2" /></td>
-                            <td class="newStyle1" style="border: thin solid #000000;">Owner: <em><span class="auto-style14">Username<br />
-                                <br />
-                                </span></em><span class="auto-style25">Highest Bid: $72.86<br />
-                                <br />
-                                End Time: 11/15/2015</span></td>
-                        </tr>
-                    </table>
+                <div class="table-responsive">
+                    <asp:PlaceHolder ID="PlaceHolderSearchResults" runat="server"></asp:PlaceHolder>
                 </div>
             </td>
         </tr>
         </table>
         </form>
+    <script src="Scripts/bootstrap.js"></script>
+    <script src="Scripts/bootstrap.min.js"></script>
+    <script src="Scripts/jquery-1.9.1.js"></script>
+    <script src="Scripts/jquery-1.9.1.intellisense.js"></script>
+    <script src="Scripts/jquery-1.9.1.min.js"></script>
 </body>
 </html>

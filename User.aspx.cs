@@ -169,4 +169,9 @@ public partial class UserPage : System.Web.UI.Page
                 break;
         }
     }
+
+    protected void lbSearch_Click(object sender, EventArgs e)
+    {
+        Response.Redirect("Search.aspx");
+    }
 }

@@ -93,14 +93,35 @@
             color: #009933;
         }
     </style>
+    <link href="Content/bootstrap-theme.css" rel="stylesheet" />
+    <link href="Content/bootstrap-theme.min.css" rel="stylesheet" />
+    <link href="Content/bootstrap.css" rel="stylesheet" />
+    <link href="Content/bootstrap.min.css" rel="stylesheet" />
 </head>
 <body>
     <form id="form1" runat="server">
+        <header>
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <img class="navbar-brand" src="AuctionPowers.jpg"/>
+                    </div>
+                    <div>
+                        <ul class="nav navbar-nav">
+                            <li class="active"><a href="Home.aspx">Home</a></li>
+                            <li><a href="Search.aspx">Search</a></li>
+                            <li><a href="User.aspx">User.aspx</a></li>
+                            <li>
+                                <asp:TextBox ID="TextBox1" runat="server"></asp:TextBox></li>
+                            <li>
+                                <asp:LinkButton ID="lbSearch" CssClass="btn btn-primary" runat="server" OnClick="lbSearch_Click">Search</asp:LinkButton></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
     <table style="width:100%;">
         <tr>
-            <td class="auto-style6">
-                <img class="auto-style11" src="AuctionPowers.jpg" />
-            </td>
             <td class="auto-style2">
                 <input id="Text1" class="auto-style7" type="text" /> <input id="Search" type="button" value="Search" />
             </td>
@@ -113,7 +134,6 @@
                     
                     <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/Home.aspx">Home</asp:HyperLink>
                     |<asp:LoginStatus ID="LoginStatus1" runat="server" OnLoggingOut="LoginStatus1_LoggingOut" />
-                    <asp:LoginStatus ID="LoginStatus1" runat="server" />
 
                 </div>
             </td>
@@ -183,5 +203,10 @@
         </tr>
         </table>
         </form>
+    <script src="Scripts/bootstrap.js"></script>
+    <script src="Scripts/bootstrap.min.js"></script>
+    <script src="Scripts/jquery-1.9.1.js"></script>
+    <script src="Scripts/jquery-1.9.1.intellisense.js"></script>
+    <script src="Scripts/jquery-1.9.1.min.js"></script>
 </body>
 </html>
