@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Net;
 
 public partial class CreateAuction : System.Web.UI.Page
 {
@@ -55,33 +56,40 @@ public partial class CreateAuction : System.Web.UI.Page
         category = ddListCategory.SelectedValue;
         title = txtTitle.Text.Trim();
         imageURL = txtImage.Text.Trim();
-        description = txtDescription.Text.Trim();
-        DateTime now = DateTime.Now;
-        int days = int.Parse(ddListDuration.SelectedValue);
-        TimeSpan duration = new System.TimeSpan(days, 0, 0, 0);
-        end_date = now.Add(duration);
-        
-        if(txtMinBid.Text != String.Empty)
+        if(!checkImgURL(imageURL))
         {
-            min_bid = double.Parse(txtMinBid.Text.Trim());
+            txtImage.Text = "Invalid image URL";
+            RegularExpressionValidatorImgURL.IsValid = false;
         }
-        else
+        if (Page.IsValid)
         {
-            min_bid = 0.01;
-        }
+            description = txtDescription.Text.Trim();
+            DateTime now = DateTime.Now;
+            int days = int.Parse(ddListDuration.SelectedValue);
+            TimeSpan duration = new System.TimeSpan(days, 0, 0, 0);
+            end_date = now.Add(duration);
 
-        if(txtBuyout.Text != String.Empty)
-        {
-            buyout = double.Parse(txtBuyout.Text);
-        }
-        else
-        {
-            buyout = null;
-        }
+            if (txtMinBid.Text != String.Empty)
+            {
+                min_bid = double.Parse(txtMinBid.Text.Trim());
+            }
+            else
+            {
+                min_bid = 0.01;
+            }
 
-        createAuction();
-        Session["auction_id"] = auction_id;
-        Response.Redirect("Item.aspx");
+            if (txtBuyout.Text != String.Empty)
+            {
+                buyout = double.Parse(txtBuyout.Text);
+            }
+            else
+            {
+                buyout = null;
+            }
+            createAuction();
+            Session["auction_id"] = auction_id;
+            Response.Redirect("Item.aspx");
+        }
     }
 
     protected void createAuction()
@@ -106,5 +114,28 @@ public partial class CreateAuction : System.Web.UI.Page
                 con.Close();
             }
         }
+    }
+
+    private bool checkImgURL(string url)
+    {
+        HttpWebResponse response = null;
+        var request = (HttpWebRequest)WebRequest.Create(url);
+        bool result = true;
+        try
+        {
+            response = (HttpWebResponse)request.GetResponse();
+        }
+        catch (WebException ex)
+        {
+            return false;
+        }
+        finally
+        {
+            if (response != null)
+            {
+                response.Close();
+            }
+        }
+        return result;
     }
 }

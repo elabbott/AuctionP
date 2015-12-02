@@ -158,6 +158,7 @@
                     ErrorMessage="Image URL is required." ForeColor="Red"> *
                 </asp:RequiredFieldValidator>
                     <asp:TextBox ID="txtImage" runat="server" Width="405px"></asp:TextBox>
+                    <asp:RegularExpressionValidator ID="RegularExpressionValidatorImgURL" runat="server" ControlToValidate="txtImage" ErrorMessage="Invalid URL" ForeColor="Red" ValidationExpression="http(s)?://([\w-]+\.)+[\w-]+(/[\w- ./?%&amp;=]*)?"></asp:RegularExpressionValidator>
                 </p>
                 <p class="newStyle2">
                     <asp:RequiredFieldValidator runat=server 
