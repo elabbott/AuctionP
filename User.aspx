@@ -113,6 +113,8 @@
                     
                     <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/Home.aspx">Home</asp:HyperLink>
                     |<asp:LoginStatus ID="LoginStatus1" runat="server" OnLoggingOut="LoginStatus1_LoggingOut" />
+                    <asp:LoginStatus ID="LoginStatus1" runat="server" />
+
                 </div>
             </td>
         </tr>
@@ -134,32 +136,36 @@
                 <h2 class="newStyle2">Account Information</h2>
                 <p class="newStyle2">&nbsp;</p>
                 <p class="newStyle2">
-                    Account Balance: $<asp:Label ID="lblBalance" runat="server"></asp:Label>
+                    <b>Account Balance:</b> $<asp:Label ID="lblBalance" runat="server"></asp:Label>
                 </p>
                 <p class="newStyle2">
                     &nbsp;</p>
-                <p class="newStyle2">
+                <hr />
                     <h3>Deposit / withdraw funds</h3>
                     Choose card:
-                    <asp:RequiredFieldValidator runat=server 
-                        ControlToValidate=ddListCard
-                        ErrorMessage="Credit card is required."> *
-                    </asp:RequiredFieldValidator>
                     <asp:DropDownList ID="ddListCard" runat="server" OnSelectedIndexChanged="ddListCard_SelectedIndexChanged">
                     </asp:DropDownList>
+                &nbsp;<asp:CompareValidator ID="CompareValidator1" runat="server" ControlToValidate="ddListCard" ErrorMessage="Must select card" ForeColor="Red" Operator="NotEqual" ValueToCompare="0"></asp:CompareValidator>
                 <p class="newStyle2">
-                    <asp:RequiredFieldValidator runat=server 
-                        ControlToValidate=txtAmount
-                        ErrorMessage="Amount is required."> *
-                    </asp:RequiredFieldValidator>
-                    Amount: <asp:TextBox ID="txtAmount" runat="server" Width="89px"></asp:TextBox>
-                    <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ControlToValidate="txtAmount" Display="Dynamic" ErrorMessage="Must be valid dollar amount" ValidationExpression="^\d+(\.\d{2})?$"></asp:RegularExpressionValidator>
+                    Amount: $<asp:TextBox ID="txtAmount" runat="server" Width="94px"></asp:TextBox>
+                    <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ControlToValidate="txtAmount" ForeColor="Red">*</asp:RequiredFieldValidator>
+                    <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ControlToValidate="txtAmount" ErrorMessage="Valid dollar amount required" ForeColor="Red" ValidationExpression="^\d+(\.\d{2})?$"></asp:RegularExpressionValidator>
                 </p>
                 <p class="newStyle2">
-                    <asp:Button ID="btnDeposit" runat="server" Text="Deposit" OnClick="btnDeposit_Click" />
-                &nbsp;
-                    <asp:Button ID="btnWithdraw" runat="server" Text="Withdraw" />
+                    <asp:CompareValidator ID="CompareValidator2" runat="server" ControlToValidate="txtAmount" Enabled="False" ErrorMessage="Amount must be no more than Account Balance" ForeColor="Red"></asp:CompareValidator>
                 </p>
+                <p class="newStyle2">
+                    <asp:RadioButtonList ID="rdBtnType" runat="server" OnSelectedIndexChanged="rdBtnType_SelectedIndexChanged">
+                        <asp:ListItem>Deposit</asp:ListItem>
+                        <asp:ListItem>Withdraw</asp:ListItem>
+                    </asp:RadioButtonList>
+                    <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="rdBtnType" ErrorMessage="Must select transaction type" ForeColor="Red"></asp:RequiredFieldValidator>
+                </p>
+                <p class="newStyle2">
+                &nbsp;<asp:Button ID="btnSubmit" runat="server" OnClick="btnSubmit_Click" Text="Submit" />
+                </p>
+                <p class="newStyle2">
+                    &nbsp;</p>
                 <p class="auto-style16">
                     <a href="AddCard.aspx">Add Credit Card</a></p>
                 <hr />
