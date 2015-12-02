@@ -18,6 +18,7 @@ public partial class Item : System.Web.UI.Page
     private double current_high_bid;
     private double min_bid;
     private double buyout;
+    private double bidderAvailableBalance;
     private bool open;
     private DateTime create_date;
     private DateTime end_date;
@@ -60,7 +61,7 @@ public partial class Item : System.Web.UI.Page
         else
         {
             open = false;
-            endAuction(auction_id, user_id_owner, user_id_high_bid);
+            //endAuction(auction_id, user_id_owner, user_id_high_bid);
         }
  
         lblHighBid.Text = item.Top_bid.ToString("0.00");
@@ -86,6 +87,19 @@ public partial class Item : System.Web.UI.Page
                 result = Convert.ToInt32(cmd.ExecuteScalar());
                 con.Close();
             }
+
+            //update bidder available balance
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandType = CommandType.Text;
+                cmd.Connection = con;
+                cmd.CommandText = "UPDATE User SET Available_Balance=Available_Balance-@amount WHERE User_Id=@user";
+                cmd.Parameters.AddWithValue("@amount", amount);
+                cmd.Parameters.AddWithValue("@user", bidder_id);
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
         }
         //return result;
     }
@@ -100,7 +114,39 @@ public partial class Item : System.Web.UI.Page
 
     private void doTransactions()
     {
-        throw new NotImplementedException();
+        double amount = current_high_bid;
+
+        string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+        using (MySqlConnection con = new MySqlConnection(constr))
+        {
+            //update Seller balance
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText = "UPDATE User SET Balance=Balance+@amount, Available_Balance=Available_Balance+@amount WHERE User_Id=@user";
+                cmd.Parameters.AddWithValue("@amount", amount);
+                cmd.Parameters.AddWithValue("@amount", amount);
+                cmd.Parameters.AddWithValue("@user", user_id_owner);
+                cmd.Connection = con;
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
+
+            //update Buyer balance
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText = "UPDATE User SET Balance=Balance-@amount, Available_Balance=Available_Balance-@amount WHERE User_Id=@user";
+                cmd.Parameters.AddWithValue("@amount", amount);
+                cmd.Parameters.AddWithValue("@amount", amount);
+                cmd.Parameters.AddWithValue("@user", user_id_high_bid);
+                cmd.Connection = con;
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
+        }
     }
 
     private void notifyWinner(int top_bidder_id)
@@ -217,7 +263,30 @@ public partial class Item : System.Web.UI.Page
                 btnBuyOut.Visible = true;
             }
             CompareValidator1.ValueToCompare = Convert.ToString(min_bid);
+            bidderAvailableBalance = getBidderAvailableBalance();
+            CompareValidatorAvailableBalance.ValueToCompare = Convert.ToString(bidderAvailableBalance);
         }
         lblNextMinBid.Text = min_bid.ToString("0.00");
+    }
+
+    private double getBidderAvailableBalance()
+    {
+        double result;
+
+        var constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+        using (MySqlConnection con = new MySqlConnection(constr))
+        {
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText = "SELECT Available_Balance FROM User WHERE User_Id=@user";
+                cmd.Parameters.AddWithValue("@user", user_id);
+                cmd.Connection = con;
+                con.Open();
+                result = Convert.ToDouble(cmd.ExecuteScalar());
+                con.Close();
+            }
+        }
+        return result;
     }
 }
