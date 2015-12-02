@@ -103,6 +103,7 @@
     </style>
 </head>
 <body>
+    <form id="form1" runat="server">
     <header>
             <nav class="navbar navbar-default">
                 <div class="container-fluid">
@@ -130,7 +131,7 @@
             <td class="auto-style2">
                 <input id="Text1" class="auto-style7" type="text" /> <input id="Search" type="button" value="Search" /></td>
             <td class="auto-style8">
-            <form id="form1" runat="server">
+            
             <div>
             Welcome
             <asp:LoginName ID="LoginName1" runat="server" Font-Bold = "true" />
@@ -141,7 +142,7 @@
                 |
             <asp:LoginStatus ID="LoginStatus1" runat="server" OnLoggingOut="LoginStatus1_LoggingOut" />
             </div>
-            </form>
+            
         </tr>
         <tr>
             <td class="auto-style3"><span class="newStyle1">&nbsp;<span class="auto-style10"><strong>Categories</strong><br />
@@ -200,5 +201,6 @@
             </td>
         </tr>
         </table>
+        </form>
 </body>
 </html>

@@ -108,13 +108,13 @@
                     </div>
                     <div>
                         <ul class="nav navbar-nav">
-                            <li class="active"><a href="Home.aspx">Home</a></li>
+                            <li><a href="Home.aspx">Home</a></li>
                             <li><a href="Search.aspx">Search</a></li>
                             <li><a href="User.aspx">User.aspx</a></li>
                             <li>
                                 <asp:TextBox ID="TextBox1" runat="server"></asp:TextBox></li>
                             <li>
-                                <asp:LinkButton ID="lbSearch" CssClass="btn btn-primary" runat="server" OnClick="lbSearch_Click">Search</asp:LinkButton></li>
+                                <asp:LinkButton ID="lbSearch" CssClass="btn btn-default" runat="server" OnClick="lbSearch_Click">Search</asp:LinkButton></li>
                         </ul>
                     </div>
                 </div>

@@ -121,6 +121,7 @@ public partial class Search : System.Web.UI.Page
     {
         var dt = GetData(search);
         var html = new StringBuilder();
+        Uri uriResult;
 
         html.Append("<table class=\"table\"");
 
@@ -139,8 +140,17 @@ public partial class Search : System.Web.UI.Page
             html.Append("<tr>");
             foreach(DataColumn column in dt.Columns)
             {
+                var columnString = row[column.ColumnName].ToString();
                 html.Append("<td>");
-                html.Append(row[column.ColumnName]);
+                //if (row[column.ColumnName].ToString().Contains(".com"))
+                if (Uri.TryCreate(columnString, UriKind.Absolute, out uriResult) && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps))
+                {
+                    html.Append("<img src='" + columnString + "'/>");
+                }
+                else
+                {
+                    html.Append(row[column.ColumnName]);
+                }
                 html.Append("</td>");
             }
             html.Append("</tr>");
