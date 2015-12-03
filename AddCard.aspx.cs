@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Web.Security;
 using System.Data;
 using System.Configuration;
 using MySql.Data.MySqlClient;
@@ -18,15 +19,16 @@ public partial class AddCard : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
-
+        if (!this.Page.User.Identity.IsAuthenticated)
+        {
+            FormsAuthentication.RedirectToLoginPage();
+        }
         for (int i = 0; i <= 11; i++)
         {
             String year = (DateTime.Today.Year + i).ToString();
             ListItem li = new ListItem(year, year);
             ddListYear.Items.Add(li);
         }
-
-        CompareValidatorExpire.ValueToCompare = Convert.ToString(DateTime.Now.Month);
 
         string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
         string username = HttpContext.Current.User.Identity.Name;
@@ -67,8 +69,14 @@ public partial class AddCard : System.Web.UI.Page
         int year = int.Parse(ddListYear.SelectedValue);
         int month = int.Parse(ddListMonth.SelectedValue);
         expiration_date = new DateTime(year, month, DateTime.DaysInMonth(year, month));
-
-        addCard();
+        if(expiration_date.CompareTo(DateTime.Now) < 0)
+        {
+            CompareValidatorExpire.IsValid = false;
+        }
+        if (Page.IsValid)
+        {
+            addCard();
+        }
     }
 
     protected void addCard()
@@ -87,7 +95,7 @@ public partial class AddCard : System.Web.UI.Page
                     cmd.Parameters.AddWithValue("Expiration", expiration_date);
                     cmd.Connection = con;
                     con.Open();
-                    card_id = Convert.ToInt32(cmd.ExecuteScalar());
+                    cmd.ExecuteNonQuery();
                     con.Close();
             }
 
