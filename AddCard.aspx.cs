@@ -7,6 +7,7 @@ using System.Web.UI.WebControls;
 using System.Data;
 using System.Configuration;
 using MySql.Data.MySqlClient;
+using System.Globalization;
 
 public partial class AddCard : System.Web.UI.Page
 {
@@ -19,40 +20,45 @@ public partial class AddCard : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
 
-        for (int i = 0; i <= 11; i++)
-        {
-            String year = (DateTime.Today.Year + i).ToString();
-            ListItem li = new ListItem(year, year);
-            ddListYear.Items.Add(li);
-        }
+        //for (int i = 0; i <= 11; i++)
+        //{
+        //    String year = (DateTime.Today.Year + i).ToString();
+        //    ListItem li = new ListItem(year, year);
+        //    ddListYear.Items.Add(li);
+        //}
 
-        CompareValidatorExpire.ValueToCompare = Convert.ToString(DateTime.Now.Month);
+        //CompareValidatorExpire.ValueToCompare = Convert.ToString(DateTime.Now.Month);
 
-        string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
-        string username = HttpContext.Current.User.Identity.Name;
         if (!Page.IsPostBack)
         {
-            using (MySqlConnection con = new MySqlConnection(constr))
-            {
-                MySqlCommand cmd = new MySqlCommand();
-                try
-                {
-                    con.Open();
-                    cmd.Connection = con;
-                    cmd.CommandText = "SELECT User_Id FROM User WHERE Username=@text";
-                    cmd.Prepare();
-                    cmd.Parameters.AddWithValue("@text", username);
-                    user_id = Convert.ToInt32(cmd.ExecuteScalar());
-                    con.Close();
-                }
-                catch (MySql.Data.MySqlClient.MySqlException)
-                {
-
-                }
-            }
+            
         }
+        user_id = Get_Authenticated_User_ID();
     }
+    protected int Get_Authenticated_User_ID()
+    {
+        var id = 0;
+        var username = HttpContext.Current.User.Identity.Name;
 
+        var constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+        using (var con = new MySqlConnection(constr))
+        {
+            var cmd = new MySqlCommand("SELECT user_id FROM auction_powers.User WHERE username = '" + username + "'", con);
+            cmd.Connection.Open();
+
+            var id_of_user = cmd.ExecuteScalar();
+
+            //user_id = id_of_user.GetInt32(0);
+            if (id_of_user != null && id_of_user != DBNull.Value)
+            {
+                id = (int)id_of_user;
+            }
+
+            cmd.Connection.Close();
+        }
+
+        return id;
+    }
 
     protected void btnCancel_Click(object sender, EventArgs e)
     {
@@ -64,10 +70,10 @@ public partial class AddCard : System.Web.UI.Page
         owner_name = txtName.Text;
         card_number = txtNum.Text;
         ccv_number = txtCCV.Text;
-        int year = int.Parse(ddListYear.SelectedValue);
-        int month = int.Parse(ddListMonth.SelectedValue);
-        expiration_date = new DateTime(year, month, DateTime.DaysInMonth(year, month));
-
+        //int year = int.Parse(ddListYear.SelectedValue);
+        //int month = int.Parse(ddListMonth.SelectedValue);
+        //expiration_date = new DateTime(year, month, DateTime.DaysInMonth(year, month));
+        expiration_date = Convert.ToDateTime(datepicker.Value.ToString());
         addCard();
     }
 
@@ -87,7 +93,7 @@ public partial class AddCard : System.Web.UI.Page
                     cmd.Parameters.AddWithValue("Expiration", expiration_date);
                     cmd.Connection = con;
                     con.Open();
-                    card_id = Convert.ToInt32(cmd.ExecuteScalar());
+                    card_id = Convert.ToInt32(cmd.ExecuteNonQuery());
                     con.Close();
             }
 
@@ -105,5 +111,11 @@ public partial class AddCard : System.Web.UI.Page
 
         }
         Response.Redirect("User.aspx");
+    }
+
+    protected void OnServerValidate(object source, ServerValidateEventArgs args)
+    {
+        DateTime date;
+        args.IsValid = DateTime.TryParseExact(args.Value, "MM/dd/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out date) && date >= DateTime.Today;
     }
 }

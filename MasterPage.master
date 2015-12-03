@@ -12,6 +12,7 @@
     <link href="Content/bootstrap.css" rel="stylesheet" />
     <link href="Content/bootstrap.min.css" rel="stylesheet" />
     <link href="Content/OurStyle.css" rel="stylesheet" />
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"/>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -33,7 +34,7 @@
                             <li>
                                 <asp:TextBox ID="txtSearch" runat="server"></asp:TextBox></li>
                             <li>
-                                <asp:LinkButton ID="lbSearch" CssClass="btn btn-default" runat="server" OnClick="lbSearch_Click">Search</asp:LinkButton></li>
+                                <asp:LinkButton ID="lbSearch" CssClass="btn btn-default" runat="server" CausesValidation="false" OnClick="lbSearch_Click">Search</asp:LinkButton></li>
                         </ul>
                     </div>
                 </div>
@@ -47,7 +48,13 @@
     <script src="Scripts/bootstrap.js"></script>
     <script src="Scripts/bootstrap.min.js"></script>
     <script src="Scripts/jquery-1.9.1.intellisense.js"></script>
-    <script src="Scripts/jquery-1.9.1.js"></script>
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
     <script src="Scripts/jquery-1.9.1.min.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script>
+        $(function () {
+            $("#datepicker").datepicker();
+        });
+    </script>
 </body>
 </html>
