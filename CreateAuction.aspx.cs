@@ -87,8 +87,8 @@ public partial class CreateAuction : System.Web.UI.Page
                 buyout = null;
             }
             createAuction();
-            Session["auction_id"] = auction_id;
-            Response.Redirect("Item.aspx");
+            //Session["auction_id"] = auction_id;
+            Response.Redirect("Item.aspx?id=" + Convert.ToString(auction_id));
         }
     }
 

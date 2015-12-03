@@ -146,13 +146,18 @@ public partial class Search : System.Web.UI.Page
         foreach (DataRow row in dt.Rows)
         {
             var i = 1; // this keeps track which column we are on, reference select statement in GetData() for corresponding column values
+            var auction_id = row[5];
             html.Append("<tr>");
             foreach(DataColumn column in dt.Columns)
             {
                 var columnString = row[column.ColumnName].ToString();
                 html.Append("<td>");
                 //if (row[column.ColumnName].ToString().Contains(".com"))
-                if (i == 5 && CheckURLValid(columnString)) //column value check for fifth column <may be unnessarry> and then checks if link is valid url
+                if(i == 1)
+                {
+                    html.Append("<a href='Item.aspx?id=" + auction_id + "'>" + columnString + "</a>");
+                }
+                else if (i == 5 && CheckURLValid(columnString)) //column value check for fifth column <may be unnessarry> and then checks if link is valid url
                 {
                     html.Append("<img src='" + columnString + "' width=\"275\" height=\"275\" />");
                 }
@@ -162,10 +167,11 @@ public partial class Search : System.Web.UI.Page
                 }
                 else if (i == 6)
                 {
-                    var lbGoToAuction = new LinkButton();
+                    /*var lbGoToAuction = new LinkButton();
                     lbGoToAuction.Text = "Go To Auction Page";
                     HttpContext.Current.Session["auction_id"] = columnString;
-                    lbGoToAuction.PostBackUrl = "Items.aspx";
+                    lbGoToAuction.PostBackUrl = "Items.aspx";*/
+
                     html.Append("");
                 }
                 else
