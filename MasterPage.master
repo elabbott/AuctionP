@@ -22,7 +22,7 @@
                         <img class="navbar-brand" src="AuctionPowers.jpg" />
                     </div>
                     <div class="navbar-right">
-                        <asp:LoginName ID="LoginName1" runat="server" Font-Bold="true" />
+                        Welcome, <asp:LoginName ID="LoginName1" runat="server" Font-Bold="true" /> | 
                         <asp:LoginStatus ID="LoginStatus1" runat="server" />
                     </div>
                     <div>

@@ -17,7 +17,7 @@ public partial class Home : System.Web.UI.Page
         if (!this.Page.User.Identity.IsAuthenticated)
         {
             FormsAuthentication.RedirectToLoginPage();
-            Load_Search("");
+            All();
         }
         
     }
@@ -122,6 +122,7 @@ public partial class Home : System.Web.UI.Page
         LabelCategory.Text = "All";
         //var all = "%";
         Load_Search("");
+
     }
     protected void Load_Search(string search)
     {
