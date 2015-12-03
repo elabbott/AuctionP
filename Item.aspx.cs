@@ -18,6 +18,7 @@ public partial class Item : System.Web.UI.Page
     private double current_high_bid;
     private double min_bid;
     private double buyout;
+    private double bidderAvailableBalance;
     private bool open;
     private DateTime create_date;
     private DateTime end_date;
@@ -51,36 +52,23 @@ public partial class Item : System.Web.UI.Page
         //var item = new Auction(auction_id, owner, min_bid, buyout, end_date, description, image_url, title, category);
         var item = Load_Auction(auction_id);
         item.Top_bid = current_high_bid;
-        if(current_high_bid > 0)
+
+        if (isActive())
         {
-            min_bid = current_high_bid + 0.01;
-        }
-        lblHighBid.Text = item.Top_bid.ToString("0.00");
-        lblNextMinBid.Text = min_bid.ToString("0.00");
-        imgItem.ImageUrl = image_url;
-        lblTitle.Text = title;
-        lblDescription.Text = description;
-        CompareValidator1.ValueToCompare = Convert.ToString(min_bid);
-        if (user_id == user_id_owner)
-        {
-            txtAmount.Enabled = false;
-            txtAmount.Visible = false;
-            btnBid.Enabled = false;
-            btnBid.Visible = false;
-            lblBuyOut.Visible = false;
-            btnBuyOut.Enabled = false;
-            btnBuyOut.Visible = false;
+            updateAuction();
+            showControls();
         }
         else
         {
-            if (buyout != 0)
-            {
-                lblBuyOut.Text = "Or Buy Now for $" + Convert.ToString(buyout);
-                lblBuyOut.Visible = true;
-                btnBuyOut.Enabled = true;
-                btnBuyOut.Visible = true;
-            }
+            open = false;
+            //endAuction(auction_id, user_id_owner, user_id_high_bid);
         }
+ 
+        lblHighBid.Text = item.Top_bid.ToString("0.00");
+        imgItem.ImageUrl = image_url;
+        lblTitle.Text = title;
+        lblDescription.Text = description;
+        
     }
     public void bid(double amount, int bidder_id)
     {
@@ -99,6 +87,19 @@ public partial class Item : System.Web.UI.Page
                 result = Convert.ToInt32(cmd.ExecuteScalar());
                 con.Close();
             }
+
+            //update bidder available balance
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandType = CommandType.Text;
+                cmd.Connection = con;
+                cmd.CommandText = "UPDATE User SET Available_Balance=Available_Balance-@amount WHERE User_Id=@user";
+                cmd.Parameters.AddWithValue("@amount", amount);
+                cmd.Parameters.AddWithValue("@user", bidder_id);
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
         }
         //return result;
     }
@@ -113,7 +114,39 @@ public partial class Item : System.Web.UI.Page
 
     private void doTransactions()
     {
-        throw new NotImplementedException();
+        double amount = current_high_bid;
+
+        string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+        using (MySqlConnection con = new MySqlConnection(constr))
+        {
+            //update Seller balance
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText = "UPDATE User SET Balance=Balance+@amount, Available_Balance=Available_Balance+@amount WHERE User_Id=@user";
+                cmd.Parameters.AddWithValue("@amount", amount);
+                cmd.Parameters.AddWithValue("@amount", amount);
+                cmd.Parameters.AddWithValue("@user", user_id_owner);
+                cmd.Connection = con;
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
+
+            //update Buyer balance
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText = "UPDATE User SET Balance=Balance-@amount, Available_Balance=Available_Balance-@amount WHERE User_Id=@user";
+                cmd.Parameters.AddWithValue("@amount", amount);
+                cmd.Parameters.AddWithValue("@amount", amount);
+                cmd.Parameters.AddWithValue("@user", user_id_high_bid);
+                cmd.Connection = con;
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
+        }
     }
 
     private void notifyWinner(int top_bidder_id)
@@ -184,6 +217,76 @@ public partial class Item : System.Web.UI.Page
         double amount = Convert.ToDouble(txtAmount.Text);
 
         bid(amount, user_id);
+        notifyBidders();
         Response.Redirect("Item.aspx");
+    }
+
+    private bool isActive()
+    {
+        bool result = true;
+
+        if(end_date.CompareTo(DateTime.Now) < 0)
+        {
+            result = false;
+        }
+
+        return result;
+    }
+
+    private void updateAuction()
+    {
+        if (current_high_bid > 0)
+        {
+            min_bid = current_high_bid + 0.01;
+        }
+    }
+
+    private void showControls()
+    {
+        if (user_id == user_id_owner)
+        {
+            txtAmount.Enabled = false;
+            txtAmount.Visible = false;
+            btnBid.Enabled = false;
+            btnBid.Visible = false;
+            lblBuyOut.Visible = false;
+            btnBuyOut.Enabled = false;
+            btnBuyOut.Visible = false;
+        }
+        else
+        {
+            if (buyout != 0)
+            {
+                lblBuyOut.Text = "Or Buy Now for $" + Convert.ToString(buyout);
+                lblBuyOut.Visible = true;
+                btnBuyOut.Enabled = true;
+                btnBuyOut.Visible = true;
+            }
+            CompareValidator1.ValueToCompare = Convert.ToString(min_bid);
+            bidderAvailableBalance = getBidderAvailableBalance();
+            CompareValidatorAvailableBalance.ValueToCompare = Convert.ToString(bidderAvailableBalance);
+        }
+        lblNextMinBid.Text = min_bid.ToString("0.00");
+    }
+
+    private double getBidderAvailableBalance()
+    {
+        double result;
+
+        var constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+        using (MySqlConnection con = new MySqlConnection(constr))
+        {
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText = "SELECT Available_Balance FROM User WHERE User_Id=@user";
+                cmd.Parameters.AddWithValue("@user", user_id);
+                cmd.Connection = con;
+                con.Open();
+                result = Convert.ToDouble(cmd.ExecuteScalar());
+                con.Close();
+            }
+        }
+        return result;
     }
 }

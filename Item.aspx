@@ -146,6 +146,8 @@
                                 <br />
                                 <asp:CompareValidator ID="CompareValidator1" runat="server" ControlToValidate="txtAmount" ErrorMessage="Must be at least minimum bid amount" ForeColor="Red" Operator="GreaterThanEqual"></asp:CompareValidator>
                                 <br />
+                                <asp:CompareValidator ID="CompareValidatorAvailableBalance" runat="server" ControlToValidate="txtAmount" ErrorMessage="Must be no greater than Available Balance" ForeColor="Red"></asp:CompareValidator>
+                                <br />
                                 <asp:Label ID="lblBuyOut" runat="server" Visible="False"></asp:Label>
                                 <br />
                                 <asp:Button ID="btnBuyOut" runat="server" Enabled="False" OnClick="btnBuyOut_Click" Text="Buy Now" Visible="False" />
