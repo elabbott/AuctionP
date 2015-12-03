@@ -32,6 +32,7 @@ public partial class Item : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         username = HttpContext.Current.User.Identity.Name;
+        auction_id = Convert.ToInt32(Request.QueryString["id"]);
         string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
         using (MySqlConnection con = new MySqlConnection(constr))
         {
@@ -47,7 +48,7 @@ public partial class Item : System.Web.UI.Page
             }
         }
 
-        auction_id = Convert.ToInt32(Session["auction_id"]);
+        //auction_id = Convert.ToInt32(Session["auction_id"]);
         //Auction item = new Auction(auction_id, owner, min_bid, buyout, end_date, description, image_url, title, category);
         //var item = new Auction(auction_id, owner, min_bid, buyout, end_date, description, image_url, title, category);
         var item = Load_Auction(auction_id);
