@@ -45,7 +45,7 @@ public partial class AddCard : System.Web.UI.Page
                     user_id = Convert.ToInt32(cmd.ExecuteScalar());
                     con.Close();
                 }
-                catch (MySql.Data.MySqlClient.MySqlException ex)
+                catch (MySql.Data.MySqlClient.MySqlException)
                 {
 
                 }

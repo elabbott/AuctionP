@@ -125,7 +125,7 @@ public partial class CreateAuction : System.Web.UI.Page
         {
             response = (HttpWebResponse)request.GetResponse();
         }
-        catch (WebException ex)
+        catch (WebException)
         {
             return false;
         }

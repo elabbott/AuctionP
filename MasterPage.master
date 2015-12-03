@@ -1,0 +1,53 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="MasterPage.master.cs" Inherits="MasterPage" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>Auction Powers</title>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+    <link href="Content/bootstrap-theme.css" rel="stylesheet" />
+    <link href="Content/bootstrap-theme.min.css" rel="stylesheet" />
+    <link href="Content/bootstrap.css" rel="stylesheet" />
+    <link href="Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="Content/OurStyle.css" rel="stylesheet" />
+</head>
+<body>
+    <form id="form1" runat="server">
+        <header>
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <img class="navbar-brand" src="AuctionPowers.jpg" />
+                    </div>
+                    <div class="navbar-right">
+                        <asp:LoginName ID="LoginName1" runat="server" Font-Bold="true" />
+                        <asp:LoginStatus ID="LoginStatus1" runat="server" />
+                    </div>
+                    <div>
+                        <ul class="nav navbar-nav">
+                            <li class="active"><a href="Home.aspx">Home</a></li>
+                            <li><a href="Search.aspx">Search</a></li>
+                            <li><a href="User.aspx">My Account</a></li>
+                            <li>
+                                <asp:TextBox ID="txtSearch" runat="server"></asp:TextBox></li>
+                            <li>
+                                <asp:LinkButton ID="lbSearch" CssClass="btn btn-default" runat="server" OnClick="lbSearch_Click">Search</asp:LinkButton></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        <div>
+            <asp:ContentPlaceHolder ID="Body" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+    </form>
+    <script src="Scripts/bootstrap.js"></script>
+    <script src="Scripts/bootstrap.min.js"></script>
+    <script src="Scripts/jquery-1.9.1.intellisense.js"></script>
+    <script src="Scripts/jquery-1.9.1.js"></script>
+    <script src="Scripts/jquery-1.9.1.min.js"></script>
+</body>
+</html>

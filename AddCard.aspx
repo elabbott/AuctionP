@@ -1,97 +1,10 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="AddCard.aspx.cs" Inherits="AddCard" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="AddCard.aspx.cs" Inherits="AddCard" MasterPageFile="~/MasterPage.Master"%>
 
-<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-    <title></title>
-    <meta charset="utf-8" />
-    <style type="text/css">
-        
-        .auto-style2 {
-            height: 20px;
-            width: 60%;
-            text-align: center;
-            vertical-align: top;
-        }
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 
-        .auto-style3 {
-            width: 20%;
-            text-align: center;
-            vertical-align: top;
-        }
-
-        .auto-style4 {
-            width: 60%;
-            vertical-align: top;
-        }
-
-        .auto-style6 {
-            height: 20px;
-            width: 20%;
-            text-align: center;
-        }
-
-        .auto-style7 {
-            width: 400px;
-        }
-
-        .newStyle1 {
-            font-family: Arial, Helvetica, sans-serif;
-        }
-
-        .auto-style8 {
-            height: 20px;
-            width: 20%;
-            text-align: right;
-            vertical-align: top;
-        }
-
-        .auto-style10 {
-            text-decoration: underline;
-        }
-
-        .auto-style11 {
-            width: 200px;
-            height: 200px;
-        }
-
-        .newStyle2 {
-            font-family: Arial, Helvetica, sans-serif;
-            width: 651px;
-        }
-        .auto-style18 {
-            width: 20%;
-            text-align: center;
-            vertical-align: top;
-            font-family: Arial, Helvetica, sans-serif;
-        }
-        .auto-style19 {
-            width: 200px;
-            height: 198px;
-        }
-        .auto-style20 {
-            width: 200px;
-            height: 112px;
-        }
-        .auto-style21 {
-            width: 200px;
-            height: 197px;
-        }
-        .auto-style22 {
-            width: 200px;
-            height: 201px;
-        }
-        .auto-style23 {
-            color: #FF0000;
-        }
-        .auto-style24 {
-            color: #009933;
-        }
-    </style>
-</head>
-<body>
-
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="Body" runat="server">
     <table style="width:100%;">
         <tr>
             <td class="auto-style6">
@@ -101,7 +14,6 @@
                 <input id="Text1" class="auto-style7" type="text" /> <input id="Search" type="button" value="Search" />
             </td>
             <td class="auto-style8">
-                <form id="form1" runat="server">
                 <div>
                 Welcome
                 <asp:LoginName ID="LoginName1" runat="server" Font-Bold = "true" />
@@ -123,28 +35,22 @@
                 <img class="auto-style20" src="http://i.ebayimg.com/00/s/MjY3WDQ2OA==/z/emIAAOSwGWNUV-Oa/$_1.JPG?set_id=2" /><br />
                 $6.46</td>
             <td class="auto-style4">
-                <asp:ValidationSummary runat=server 
+                <asp:ValidationSummary runat="server" 
                     HeaderText="There were errors on the page:" ForeColor="Red" />
                 Name:
-                <asp:RequiredFieldValidator runat=server 
-                    ControlToValidate=txtName
-                    ErrorMessage="Name is required." ForeColor="Red"> *
+                <asp:RequiredFieldValidator runat="server" ControlToValidate="txtName" ErrorMessage="Name is required." ForeColor="Red"> *
                 </asp:RequiredFieldValidator>
                 <asp:TextBox ID="txtName" runat="server"></asp:TextBox>
                 <br />
                 <br />
                 Number:
-                <asp:RequiredFieldValidator runat=server 
-                    ControlToValidate=txtNum
-                    ErrorMessage="Number is required." ForeColor="Red"> *
+                <asp:RequiredFieldValidator runat="server" ControlToValidate="txtNum" ErrorMessage="Number is required." ForeColor="Red"> *
                 </asp:RequiredFieldValidator>
                 <asp:TextBox ID="txtNum" runat="server"></asp:TextBox>
                 <br />
                 <br />
                 CCV #:
-                <asp:RequiredFieldValidator runat=server 
-                    ControlToValidate=txtCCV
-                    ErrorMessage="CCV is required." ForeColor="Red"> *
+                <asp:RequiredFieldValidator runat="server" ControlToValidate="txtCCV" ErrorMessage="CCV is required." ForeColor="Red"> *
                 </asp:RequiredFieldValidator>
                 <asp:TextBox ID="txtCCV" runat="server" Width="47px"></asp:TextBox>
                 <br />
@@ -180,7 +86,7 @@
                 <asp:Button ID="btnAdd" runat="server" Text="Add card" OnClick="btnAdd_Click" />
 &nbsp;
                 <asp:Button ID="btnCancel" runat="server" Text="Cancel" CausesValidation="False" OnClick="btnCancel_Click" UseSubmitBehavior="False" ValidateRequestMode="Disabled" />
-                </form>
+                
             </td>
             <td class="auto-style18"><strong><span class="auto-style10">Items You&#39;ve Bid On</span><br />
                 <br />
@@ -192,5 +98,4 @@
             </td>
         </tr>
         </table>
-</body>
-</html>
+</asp:Content>

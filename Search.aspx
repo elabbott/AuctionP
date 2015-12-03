@@ -1,84 +1,11 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Search.aspx.cs" Inherits="Search" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Search.aspx.cs" Inherits="Search" MasterPageFile="~/MasterPage.Master"%>
 
-<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-    <title></title>
-    <meta charset="utf-8" />
-    <style type="text/css">
-        
-        .auto-style2 {
-            height: 20px;
-            width: 60%;
-            text-align: center;
-            vertical-align: top;
-        }
+<asp:Content ID="Content1" ContentPlaceHolderID="Head" runat="server">
 
-        .auto-style6 {
-            height: 20px;
-            width: 20%;
-            text-align: center;
-        }
-
-        .newStyle1 {
-            font-family: Arial, Helvetica, sans-serif;
-        }
-
-        .auto-style8 {
-            height: 20px;
-            width: 20%;
-            text-align: right;
-        }
-
-        .auto-style10 {
-            text-decoration: underline;
-        }
-
-        .auto-style12 {
-            text-decoration: underline;
-            color: #0000FF;
-            background-color: #FFFFFF;
-        }
-
-        .auto-style13 {
-            color: #0000FF;
-            background-color: #FFFFFF;
-        }
-
-        </style>
-    <link href="Content/bootstrap-theme.css" rel="stylesheet" />
-    <link href="Content/bootstrap-theme.min.css" rel="stylesheet" />
-    <link href="Content/bootstrap.css" rel="stylesheet" />
-    <link href="Content/bootstrap.min.css" rel="stylesheet" />
-</head>
-<body>
-    <form id="form1" runat="server">
-        <header>
-            <nav class="navbar navbar-default">
-                <div class="container-fluid">
-                    <div class="navbar-header">
-                        <img class="navbar-brand" src="AuctionPowers.jpg"/>
-                    </div>
-                    <div class="navbar-right">
-                        <asp:LoginName ID="LoginName1" runat="server" Font-Bold = "true" />
-                        <asp:LoginStatus ID="LoginStatus1" runat="server" />
-                    </div>
-                    <div>
-                        <ul class="nav navbar-nav">
-                            <li class="active"><a href="Home.aspx">Home</a></li>
-                            <li><a href="Search.aspx">Search</a></li>
-                            <li><a href="User.aspx">My Account</a></li>
-                            <li>
-                                <asp:TextBox ID="txtSearch" runat="server"></asp:TextBox></li>
-                            <li>
-                                <asp:LinkButton ID="lbSearch" CssClass="btn btn-default" runat="server" OnClick="lbSearch_Click">Search</asp:LinkButton></li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
-        </header>
-        <div class="navbar-form navbar-left">
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="Body" runat="server">
+    <div class="navbar-form navbar-left">
                 <ul class="nav nav-pills nav-stacked">
                     <li>
                         <asp:LinkButton ID="lbArt" runat="server" OnClick="lbArt_Click">Art</asp:LinkButton>
@@ -126,11 +53,4 @@
                     <asp:PlaceHolder ID="PlaceHolderSearchResults" runat="server"></asp:PlaceHolder>
                 </div>
             </div>
-        </form>
-    <script src="Scripts/bootstrap.js"></script>
-    <script src="Scripts/bootstrap.min.js"></script>
-    <script src="Scripts/jquery-1.9.1.js"></script>
-    <script src="Scripts/jquery-1.9.1.intellisense.js"></script>
-    <script src="Scripts/jquery-1.9.1.min.js"></script>
-</body>
-</html>
+</asp:Content>

@@ -11,11 +11,21 @@ using System.Web.UI.WebControls;
 
 public partial class Search : System.Web.UI.Page
 {
+    private string search_html;
     protected void Page_Load(object sender, EventArgs e)
     {
+
         if (!Page.IsPostBack)
         {
-            All();
+            search_html = HttpContext.Current.Session["Search_HTML"].ToString();
+            if (search_html != null)
+            {
+                Load_Search(search_html);
+            }
+            else
+            {
+                All();
+            }
         }
     }
 
@@ -171,11 +181,7 @@ public partial class Search : System.Web.UI.Page
 
         PlaceHolderSearchResults.Controls.Add(new Literal { Text = html.ToString() });
     }
-    protected void btnSearch_Click(object sender, EventArgs e)
-    {
-        var search = txtSearch.Text;
-        Load_Search(search);
-    }
+    
     private DataTable GetData(string search)
     {
         var constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
@@ -195,9 +201,5 @@ public partial class Search : System.Web.UI.Page
     {
         Uri uriResult;
         return Uri.TryCreate(source, UriKind.Absolute, out uriResult) && uriResult.Scheme == Uri.UriSchemeHttp;
-    }
-    protected void lbSearch_Click(object sender, EventArgs e)
-    {
-
     }
 }
