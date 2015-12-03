@@ -93,8 +93,8 @@ public partial class Search : System.Web.UI.Page
     protected void All()
     {
         LabelCategory.Text = "All";
-        var all = "_";
-        Load_Search(all);
+        //var all = "%";
+        Load_Search("");
 
     }
     //protected void Load_Search1(string search)
@@ -150,6 +150,14 @@ public partial class Search : System.Web.UI.Page
                 {
                     html.Append("<img src =\"noimage.jpg\"");
                 }
+                else if (i == 6)
+                {
+                    var lbGoToAuction = new LinkButton();
+                    lbGoToAuction.Text = "Go To Auction Page";
+                    HttpContext.Current.Session["auction_id"] = columnString;
+                    lbGoToAuction.PostBackUrl = "Items.aspx";
+                    html.Append("");
+                }
                 else
                 {
                     html.Append(columnString);
@@ -173,7 +181,7 @@ public partial class Search : System.Web.UI.Page
         var constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
         using (var con = new MySqlConnection(constr))
         {
-            var cmd = new MySqlCommand("SELECT Title, Current_High_Bid as Bid, Date_Format(End_Date, '%W, %M %e') as Date, Description, Image_URL FROM Auction WHERE Open = 1 AND (Category LIKE '%" + search + "%' OR Title LIKE '%" + search + "%')", con);
+            var cmd = new MySqlCommand("SELECT Title, Current_High_Bid as `High Bid`, Date_Format(End_Date, '%W, %M %e') as `End Date`, Description, Image_URL AS Image, Auction_Id FROM Auction WHERE Open = 1 AND (Category LIKE '%" + search + "%' OR Title LIKE '%" + search + "%')", con);
 
             var adapter = new MySqlDataAdapter(cmd);
 
