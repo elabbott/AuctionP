@@ -107,9 +107,24 @@ public partial class Item : System.Web.UI.Page
 
     private void endAuction( int auction_id, int owner_id, int top_bidder_id)
     {
-        notifySeller(owner_id);
-        notifyWinner(top_bidder_id);
-        notifyBidders();
+        //update DB
+        string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+        using (MySqlConnection con = new MySqlConnection(constr))
+        {
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText = "UPDATE Auction SET Open=0 WHERE Auction_Id=@id";
+                cmd.Parameters.AddWithValue("@id", auction_id);
+                cmd.Connection = con;
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
+        }
+        //notifySeller(owner_id);
+        //notifyWinner(top_bidder_id);
+        //notifyBidders();
         doTransactions();
     }
 
@@ -126,7 +141,6 @@ public partial class Item : System.Web.UI.Page
                 cmd.CommandType = CommandType.Text;
                 cmd.CommandText = "UPDATE User SET Balance=Balance+@amount, Available_Balance=Available_Balance+@amount WHERE User_Id=@user";
                 cmd.Parameters.AddWithValue("@amount", amount);
-                cmd.Parameters.AddWithValue("@amount", amount);
                 cmd.Parameters.AddWithValue("@user", user_id_owner);
                 cmd.Connection = con;
                 con.Open();
@@ -139,7 +153,6 @@ public partial class Item : System.Web.UI.Page
             {
                 cmd.CommandType = CommandType.Text;
                 cmd.CommandText = "UPDATE User SET Balance=Balance-@amount, Available_Balance=Available_Balance-@amount WHERE User_Id=@user";
-                cmd.Parameters.AddWithValue("@amount", amount);
                 cmd.Parameters.AddWithValue("@amount", amount);
                 cmd.Parameters.AddWithValue("@user", user_id_high_bid);
                 cmd.Connection = con;
@@ -210,7 +223,9 @@ public partial class Item : System.Web.UI.Page
 
     private void buyOut()
     {
-        throw new NotImplementedException();
+        current_high_bid = buyout;
+        endAuction(auction_id, user_id_owner, user_id);
+        doTransactions();
     }
 
     protected void btnBid_Click(object sender, EventArgs e)
@@ -218,7 +233,7 @@ public partial class Item : System.Web.UI.Page
         double amount = Convert.ToDouble(txtAmount.Text);
 
         bid(amount, user_id);
-        notifyBidders();
+        //notifyBidders();
         Response.Redirect("Item.aspx");
     }
 
@@ -256,15 +271,19 @@ public partial class Item : System.Web.UI.Page
         }
         else
         {
+            bidderAvailableBalance = getBidderAvailableBalance();
+
             if (buyout != 0)
             {
                 lblBuyOut.Text = "Or Buy Now for $" + Convert.ToString(buyout);
                 lblBuyOut.Visible = true;
                 btnBuyOut.Enabled = true;
-                btnBuyOut.Visible = true;
+                if (bidderAvailableBalance >= buyout)
+                {
+                    btnBuyOut.Visible = true;
+                }
             }
             CompareValidator1.ValueToCompare = Convert.ToString(min_bid);
-            bidderAvailableBalance = getBidderAvailableBalance();
             CompareValidatorAvailableBalance.ValueToCompare = Convert.ToString(bidderAvailableBalance);
         }
         lblNextMinBid.Text = min_bid.ToString("0.00");
