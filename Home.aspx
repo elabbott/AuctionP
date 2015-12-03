@@ -46,7 +46,7 @@
         </div>
             <div>
                 <h2><span class="newStyle1">Search Results for
-                    <asp:Label ID="LabelCategory" runat="server" Text="Label"></asp:Label>
+                    <asp:Label ID="LabelCategory" runat="server" Text="All"></asp:Label>
                     </span></h2>
                 <div class="table-responsive">
                     <asp:PlaceHolder ID="PlaceHolderSearchResults" runat="server"></asp:PlaceHolder>

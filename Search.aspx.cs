@@ -17,12 +17,12 @@ public partial class Search : System.Web.UI.Page
 
         if (!Page.IsPostBack)
         {
-            search_html = HttpContext.Current.Session["Search_HTML"].ToString();
-            if (search_html != null)
+            try
             {
+                search_html = HttpContext.Current.Session["Search_HTML"].ToString();
                 Load_Search(search_html);
             }
-            else
+            catch(NullReferenceException)
             {
                 All();
             }
@@ -154,7 +154,7 @@ public partial class Search : System.Web.UI.Page
                 //if (row[column.ColumnName].ToString().Contains(".com"))
                 if (i == 5 && CheckURLValid(columnString)) //column value check for fifth column <may be unnessarry> and then checks if link is valid url
                 {
-                    html.Append("<img src='" + columnString + "'/>");
+                    html.Append("<img src='" + columnString + "' width=\"275\" height=\"275\" />");
                 }
                 else if (i == 5 && !CheckURLValid(columnString))
                 {
@@ -185,21 +185,22 @@ public partial class Search : System.Web.UI.Page
     private DataTable GetData(string search)
     {
         var constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+        var dt = new DataTable();
         using (var con = new MySqlConnection(constr))
         {
-            var cmd = new MySqlCommand("SELECT Title, Current_High_Bid as `High Bid`, Date_Format(End_Date, '%W, %M %e') as `End Date`, Description, Image_URL AS Image, Auction_Id FROM Auction WHERE Open = 1 AND (Category LIKE '%" + search + "%' OR Title LIKE '%" + search + "%')", con);
+            var cmd = new MySqlCommand("SELECT Title, Current_High_Bid as `High Bid`, Date_Format(End_Date, '%W, %M %e') as `End Date`, Description, Image_URL AS Image, Auction_Id as `Select Auction` FROM Auction WHERE Open = 1 AND (Category LIKE '%" + search + "%' OR Title LIKE '%" + search + "%')", con);
 
-            var adapter = new MySqlDataAdapter(cmd);
-
-            var dt = new DataTable();
-
-            adapter.Fill(dt);
+            using (var adapter = new MySqlDataAdapter(cmd))
+            {
+                adapter.Fill(dt);
+            }
+            cmd.Connection.Close();
             return dt;
         }
     }
     public static bool CheckURLValid(string source)
     {
         Uri uriResult;
-        return Uri.TryCreate(source, UriKind.Absolute, out uriResult) && uriResult.Scheme == Uri.UriSchemeHttp;
+        return Uri.TryCreate(source, UriKind.Absolute, out uriResult) && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
     }
 }

@@ -24,6 +24,30 @@ public partial class MasterPage : System.Web.UI.MasterPage
         var search = txtSearch.Text;
         Perform_Search(search);
     }
+    protected int Get_Authenticated_User_ID()
+    {
+        var user_id = 0;
+        var username = HttpContext.Current.User.Identity.Name;
+
+        var constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+        using (var con = new MySqlConnection(constr))
+        {
+            var cmd = new MySqlCommand("SELECT user_id FROM auction_powers.User WHERE username = '" + username + "'", con);
+            cmd.Connection.Open();
+
+            var id_of_user = cmd.ExecuteScalar();
+
+            //user_id = id_of_user.GetInt32(0);
+            if (id_of_user != null && id_of_user != DBNull.Value)
+            {
+                user_id = (int)id_of_user;
+            }
+
+            cmd.Connection.Close();
+        }
+
+        return user_id;
+    }
     protected void Perform_Search(string search)
     {
         var dt = GetData(search);
@@ -51,7 +75,7 @@ public partial class MasterPage : System.Web.UI.MasterPage
                 //if (row[column.ColumnName].ToString().Contains(".com"))
                 if (i == 5 && CheckURLValid(columnString)) //column value check for fifth column <may be unnessarry> and then checks if link is valid url
                 {
-                    html.Append("<img src='" + columnString + "'/>");
+                    html.Append("<img src='" + columnString + "' width=\"275\" height=\"275\" />");
                 }
                 else if (i == 5 && !CheckURLValid(columnString))
                 {
@@ -81,7 +105,7 @@ public partial class MasterPage : System.Web.UI.MasterPage
         HttpContext.Current.Session["Search_HTML"] = html;
         HttpContext.Current.Response.Redirect("Search.aspx");
     }
-    public static bool CheckURLValid(string source)
+    protected static bool CheckURLValid(string source)
     {
         Uri uriResult;
         return Uri.TryCreate(source, UriKind.Absolute, out uriResult) && uriResult.Scheme == Uri.UriSchemeHttp;
@@ -89,15 +113,16 @@ public partial class MasterPage : System.Web.UI.MasterPage
     private DataTable GetData(string search)
     {
         var constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+        var dt = new DataTable();
         using (var con = new MySqlConnection(constr))
         {
-            var cmd = new MySqlCommand("SELECT Title, Current_High_Bid as `High Bid`, Date_Format(End_Date, '%W, %M %e') as `End Date`, Description, Image_URL AS Image, Auction_Id FROM Auction WHERE Open = 1 AND (Category LIKE '%" + search + "%' OR Title LIKE '%" + search + "%')", con);
+            var cmd = new MySqlCommand("SELECT Title, Current_High_Bid as `High Bid`, Date_Format(End_Date, '%W, %M %e') as `End Date`, Description, Image_URL AS Image, Auction_Id as ` ` FROM Auction WHERE Open = 1 AND (Category LIKE '%" + search + "%' OR Title LIKE '%" + search + "%')", con);
 
-            var adapter = new MySqlDataAdapter(cmd);
-
-            var dt = new DataTable();
-
-            adapter.Fill(dt);
+            using (var adapter = new MySqlDataAdapter(cmd))
+            {
+                adapter.Fill(dt);
+            }
+            cmd.Connection.Close();
             return dt;
         }
     }
