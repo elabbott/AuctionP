@@ -130,7 +130,7 @@
 &nbsp;<asp:DropDownList ID="ddListCategory" runat="server">
                         <asp:ListItem Value="None">-Choose Category-</asp:ListItem>
                         <asp:ListItem>Art</asp:ListItem>
-                        <asp:ListItem>Book</asp:ListItem>
+                        <asp:ListItem>Books</asp:ListItem>
                         <asp:ListItem>Clothes</asp:ListItem>
                         <asp:ListItem>Crafts</asp:ListItem>
                         <asp:ListItem>Electronics</asp:ListItem>
