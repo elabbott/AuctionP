@@ -41,7 +41,7 @@ public partial class UserAuctions : System.Web.UI.Page
     //        gvAuctions.DataBind();
 
     //        cmd.Connection.Close();
-            
+
     //    }
     //}
     protected int Get_Authenticated_User_ID()
@@ -112,7 +112,7 @@ public partial class UserAuctions : System.Web.UI.Page
                 //}
                 //else
                 //{
-                    html.Append(columnString);
+                html.Append(columnString);
                 //}
                 html.Append("</td>");
                 //i++;
