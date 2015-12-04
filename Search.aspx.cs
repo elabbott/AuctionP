@@ -21,7 +21,7 @@ public partial class Search : System.Web.UI.Page
             {
                 //search_html = HttpContext.Current.Session["Search_HTML"].ToString();
                 var search_string = Request.QueryString["search"].ToString();
-                if (search_string != null || search_string != "")
+                if (!String.IsNullOrEmpty(search_string))
                 {
                     Load_Search(search_string);
                 }

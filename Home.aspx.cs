@@ -19,7 +19,9 @@ public partial class Home : System.Web.UI.Page
             FormsAuthentication.RedirectToLoginPage();
             
         }
-        All();
+        //All();
+        Load_Search();
+        
     }
     protected int Get_Authenticated_User_ID()
     {
@@ -46,87 +48,87 @@ public partial class Home : System.Web.UI.Page
         return user_id;
     }
 
-    protected void lbArt_Click(object sender, EventArgs e)
-    {
-        LabelCategory.Text = lbArt.Text;
-        Load_Search(LabelCategory.Text);
-    }
+    //protected void lbArt_Click(object sender, EventArgs e)
+    //{
+    //    LabelCategory.Text = lbArt.Text;
+    //    Load_Search(LabelCategory.Text);
+    //}
 
-    protected void lbBooks_Click(object sender, EventArgs e)
-    {
-        LabelCategory.Text = lbBooks.Text;
-        Load_Search(LabelCategory.Text);
-    }
+    //protected void lbBooks_Click(object sender, EventArgs e)
+    //{
+    //    LabelCategory.Text = lbBooks.Text;
+    //    Load_Search(LabelCategory.Text);
+    //}
 
-    protected void lbClothes_Click(object sender, EventArgs e)
-    {
-        LabelCategory.Text = lbClothes.Text;
-        Load_Search(LabelCategory.Text);
-    }
+    //protected void lbClothes_Click(object sender, EventArgs e)
+    //{
+    //    LabelCategory.Text = lbClothes.Text;
+    //    Load_Search(LabelCategory.Text);
+    //}
 
-    protected void lbCrafts_Click(object sender, EventArgs e)
-    {
-        LabelCategory.Text = lbCrafts.Text;
-        Load_Search(LabelCategory.Text);
-    }
+    //protected void lbCrafts_Click(object sender, EventArgs e)
+    //{
+    //    LabelCategory.Text = lbCrafts.Text;
+    //    Load_Search(LabelCategory.Text);
+    //}
 
-    protected void lbElectronics_Click(object sender, EventArgs e)
-    {
-        LabelCategory.Text = lbElectronics.Text;
-        Load_Search(LabelCategory.Text);
-    }
+    //protected void lbElectronics_Click(object sender, EventArgs e)
+    //{
+    //    LabelCategory.Text = lbElectronics.Text;
+    //    Load_Search(LabelCategory.Text);
+    //}
 
-    protected void lbHomeGarden_Click(object sender, EventArgs e)
-    {
-        LabelCategory.Text = lbHomeGarden.Text;
-        Load_Search(LabelCategory.Text);
-    }
+    //protected void lbHomeGarden_Click(object sender, EventArgs e)
+    //{
+    //    LabelCategory.Text = lbHomeGarden.Text;
+    //    Load_Search(LabelCategory.Text);
+    //}
 
-    protected void lbJewelry_Click(object sender, EventArgs e)
-    {
-        LabelCategory.Text = lbJewelry.Text;
-        Load_Search(LabelCategory.Text);
-    }
+    //protected void lbJewelry_Click(object sender, EventArgs e)
+    //{
+    //    LabelCategory.Text = lbJewelry.Text;
+    //    Load_Search(LabelCategory.Text);
+    //}
 
-    protected void lbMusic_Click(object sender, EventArgs e)
-    {
-        LabelCategory.Text = lbMusic.Text;
-        Load_Search(LabelCategory.Text);
-    }
+    //protected void lbMusic_Click(object sender, EventArgs e)
+    //{
+    //    LabelCategory.Text = lbMusic.Text;
+    //    Load_Search(LabelCategory.Text);
+    //}
 
-    protected void lbPetGoods_Click(object sender, EventArgs e)
-    {
-        LabelCategory.Text = lbPetGoods.Text;
-        Load_Search(LabelCategory.Text);
-    }
+    //protected void lbPetGoods_Click(object sender, EventArgs e)
+    //{
+    //    LabelCategory.Text = lbPetGoods.Text;
+    //    Load_Search(LabelCategory.Text);
+    //}
 
-    protected void lbSportsGoods_Click(object sender, EventArgs e)
-    {
-        LabelCategory.Text = lbSportsGoods.Text;
-        Load_Search(LabelCategory.Text);
-    }
+    //protected void lbSportsGoods_Click(object sender, EventArgs e)
+    //{
+    //    LabelCategory.Text = lbSportsGoods.Text;
+    //    Load_Search(LabelCategory.Text);
+    //}
 
-    protected void lbToys_Click(object sender, EventArgs e)
-    {
-        LabelCategory.Text = lbToys.Text;
-        Load_Search(LabelCategory.Text);
-    }
+    //protected void lbToys_Click(object sender, EventArgs e)
+    //{
+    //    LabelCategory.Text = lbToys.Text;
+    //    Load_Search(LabelCategory.Text);
+    //}
 
-    protected void lbVideoGames_Click(object sender, EventArgs e)
-    {
-        LabelCategory.Text = lbVideoGames.Text;
-        Load_Search(LabelCategory.Text);
-    }
-    protected void All()
-    {
-        LabelCategory.Text = "All";
-        //var all = "%";
-        Load_Search("");
+    //protected void lbVideoGames_Click(object sender, EventArgs e)
+    //{
+    //    LabelCategory.Text = lbVideoGames.Text;
+    //    Load_Search(LabelCategory.Text);
+    //}
+    //protected void All()
+    //{
+    //    LabelCategory.Text = "All";
+    //    //var all = "%";
+    //    Load_Search("");
 
-    }
-    protected void Load_Search(string search)
+    //}
+    protected void Load_Search()
     {
-        var dt = GetData(search);
+        var dt = GetRecentAuctions();
         var html = new StringBuilder();
         html.Append("<table class=\"table\"");
 
@@ -143,12 +145,17 @@ public partial class Home : System.Web.UI.Page
         foreach (DataRow row in dt.Rows)
         {
             var i = 1; // this keeps track which column we are on, reference select statement in GetData() for corresponding column values
+            var auction_id = row[5];
             html.Append("<tr>");
             foreach (DataColumn column in dt.Columns)
             {
                 var columnString = row[column.ColumnName].ToString();
                 html.Append("<td>");
                 //if (row[column.ColumnName].ToString().Contains(".com"))
+                if (i == 1)
+                {
+                    html.Append("<a href='Item.aspx?id=" + auction_id + "'>" + columnString + "</a>");
+                }
                 if (i == 5 && CheckURLValid(columnString)) //column value check for fifth column <may be unnessarry> and then checks if link is valid url
                 {
                     html.Append("<img src='" + columnString + "' width=\"275\" height=\"275\" />");
@@ -157,14 +164,14 @@ public partial class Home : System.Web.UI.Page
                 {
                     html.Append("<img src =\"noimage.jpg\"");
                 }
-                else if (i == 6)
-                {
-                    var lbGoToAuction = new LinkButton();
-                    lbGoToAuction.Text = "Go To Auction Page";
-                    HttpContext.Current.Session["auction_id"] = columnString;
-                    lbGoToAuction.PostBackUrl = "Items.aspx";
-                    html.Append("");
-                }
+                //else if (i == 6)
+                //{
+                //    var lbGoToAuction = new LinkButton();
+                //    lbGoToAuction.Text = "Go To Auction Page";
+                //    HttpContext.Current.Session["auction_id"] = columnString;
+                //    lbGoToAuction.PostBackUrl = "Items.aspx";
+                //    html.Append("");
+                //}
                 else
                 {
                     html.Append(columnString);
@@ -179,13 +186,13 @@ public partial class Home : System.Web.UI.Page
         PlaceHolderSearchResults.Controls.Add(new Literal { Text = html.ToString() });
     }
 
-    private DataTable GetData(string search)
+    private DataTable GetRecentAuctions()
     {
         var constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
         var dt = new DataTable();
         using (var con = new MySqlConnection(constr))
         {
-            var cmd = new MySqlCommand("SELECT Title, Current_High_Bid as `High Bid`, Date_Format(End_Date, '%W, %M %e') as `End Date`, Description, Image_URL AS Image, Auction_Id as `Select Auction` FROM Auction WHERE Open = 1 AND (Category LIKE '%" + search + "%' OR Title LIKE '%" + search + "%')", con);
+            var cmd = new MySqlCommand("SELECT Title, Current_High_Bid as `High Bid`, Date_Format(End_Date, '%W, %M %e') as `End Date`, Description, Image_URL AS Image, Auction_Id as `Select Auction` FROM Auction WHERE Open = 1 ORDER BY Create_Date DESC LIMIT 10", con);
 
             using (var adapter = new MySqlDataAdapter(cmd))
             {
