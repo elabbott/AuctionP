@@ -42,6 +42,10 @@
                 <p class="newStyle2">&nbsp;</p>
                 <p class="newStyle2">
                     <b>Account Balance:</b> $<asp:Label ID="lblBalance" runat="server"></asp:Label>
+                    <br />
+                    <b>Outstanding bids:</b> $<asp:Label ID="lblCurrentBids" runat="server"></asp:Label>
+                    <hr />
+                    <b>Available Balance:</b> $<asp:Label ID="lblAvailableBalance" runat="server"></asp:Label>
                 </p>
                 <p class="newStyle2">
                     &nbsp;</p>
@@ -57,7 +61,7 @@
                     <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ControlToValidate="txtAmount" ErrorMessage="Valid dollar amount required" ForeColor="Red" ValidationExpression="^\d+(\.\d{2})?$"></asp:RegularExpressionValidator>
                 </p>
                 <p class="newStyle2">
-                    <asp:CompareValidator ID="CompareValidator2" runat="server" ControlToValidate="txtAmount" Enabled="False" ErrorMessage="Amount must be no more than Account Balance" ForeColor="Red"></asp:CompareValidator>
+                    <asp:CompareValidator ID="CompareValidator2" runat="server" ControlToValidate="txtAmount" Enabled="False" ErrorMessage="Amount must be no more than available Account Balance" ForeColor="Red" Type="Double"></asp:CompareValidator>
                 </p>
                 <p class="newStyle2">
                     <asp:RadioButtonList ID="rdBtnType" runat="server" OnSelectedIndexChanged="rdBtnType_SelectedIndexChanged">
