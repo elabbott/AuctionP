@@ -18,7 +18,14 @@ public partial class UserBids : System.Web.UI.Page
         {
             FormsAuthentication.RedirectToLoginPage();
         }
-        Load_Auctions();
+        
+        String option = Request.QueryString["opt"];
+        int open = 1;
+        if ((option != null) && (option.Equals("won")))
+        {
+            open = 0;
+        }
+        Load_Auctions(open);
     }
 
     protected int Get_Authenticated_User_ID()
@@ -45,10 +52,10 @@ public partial class UserBids : System.Web.UI.Page
 
         return user_id;
     }
-    protected void Load_Auctions()
+    protected void Load_Auctions(int open)
     {
         var user_id = Get_Authenticated_User_ID();
-        var dt = GetDataForAuctions();
+        var dt = GetDataForAuctions(open);
         var html = new StringBuilder();
         html.Append("<table class=\"table\"");
 
@@ -115,16 +122,15 @@ public partial class UserBids : System.Web.UI.Page
         Uri uriResult;
         return Uri.TryCreate(source, UriKind.Absolute, out uriResult) && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
     }
-    protected DataTable GetDataForAuctions()
+    protected DataTable GetDataForAuctions(int open)
     {
         var constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
         var dt = new DataTable();
         using (var con = new MySqlConnection(constr))
         {
             var user_id = Get_Authenticated_User_ID();
-
-            var cmd = new MySqlCommand("SELECT Title, Category, Description, Current_High_Bid, Buyout, Create_Date, End_Date, Auction_Id FROM Auction WHERE User_Id_High_Bid = '" + user_id + "'", con);
-
+            var cmd = new MySqlCommand("SELECT Title, Category, Description, Current_High_Bid, Buyout, Create_Date, End_Date, Auction_Id FROM Auction WHERE Open=@open AND User_Id_High_Bid = '" + user_id + "'", con);
+            cmd.Parameters.AddWithValue("@open", open);
             using (var adapter = new MySqlDataAdapter(cmd))
             {
                 adapter.Fill(dt);
