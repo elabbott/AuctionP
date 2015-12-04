@@ -29,8 +29,8 @@ public partial class Login : System.Web.UI.Page
             using (MySqlCommand cmd = new MySqlCommand("Validate_User"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("Username", Login1.UserName);
-                cmd.Parameters.AddWithValue("Pass", Login1.Password);
+                cmd.Parameters.AddWithValue("Username", Login2.UserName);
+                cmd.Parameters.AddWithValue("Pass", Login2.Password);
                 cmd.Connection = con;
                 con.Open();
                 dbNullTesterObject = cmd.ExecuteScalar();
@@ -42,17 +42,17 @@ public partial class Login : System.Web.UI.Page
             switch (userId)
             {
                 case 0:
-                    Login1.FailureText = "Error with stored procedure\nUserId: " + userId;
+                    Login2.FailureText = "Error with stored procedure\nUserId: " + userId;
                     break;
                 case -1:
-                    Login1.FailureText = "Username and/or password is incorrect.";
+                    Login2.FailureText = "Username and/or password is incorrect.";
                     break;
                 case -2:
-                    Login1.FailureText = "User Account has not been activated.";
+                    Login2.FailureText = "User Account has not been activated.";
                     break;
                 default:
                     Session["userID"] = userId;
-                    FormsAuthentication.RedirectFromLoginPage(Login1.UserName, Login1.RememberMeSet);
+                    FormsAuthentication.RedirectFromLoginPage(Login2.UserName, Login2.RememberMeSet);
                     break;
             }
         }
