@@ -77,6 +77,8 @@ public partial class Item : System.Web.UI.Page
         string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
         using (MySqlConnection con = new MySqlConnection(constr))
         {
+            updatePreviousHighBidder();
+            //perform bid
             using (MySqlCommand cmd = new MySqlCommand("Bid"))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -88,8 +90,7 @@ public partial class Item : System.Web.UI.Page
                 result = Convert.ToInt32(cmd.ExecuteScalar());
                 con.Close();
             }
-
-            //update bidder available balance
+            //update current bidder available balance
             using (MySqlCommand cmd = new MySqlCommand())
             {
                 cmd.CommandType = CommandType.Text;
@@ -105,7 +106,7 @@ public partial class Item : System.Web.UI.Page
         //return result;
     }
 
-    private void endAuction( int auction_id, int owner_id, int top_bidder_id)
+    private void endAuction(int auction_id, int owner_id, int top_bidder_id)
     {
         //update DB
         string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
@@ -223,9 +224,10 @@ public partial class Item : System.Web.UI.Page
 
     private void buyOut()
     {
+        updatePreviousHighBidder();
         current_high_bid = buyout;
+        user_id_high_bid = user_id;
         endAuction(auction_id, user_id_owner, user_id);
-        doTransactions();
     }
 
     protected void btnBid_Click(object sender, EventArgs e)
@@ -234,7 +236,7 @@ public partial class Item : System.Web.UI.Page
 
         bid(amount, user_id);
         //notifyBidders();
-        Response.Redirect("Item.aspx");
+        Response.Redirect("Item.aspx?id=" + auction_id);
     }
 
     private bool isActive()
@@ -308,5 +310,25 @@ public partial class Item : System.Web.UI.Page
             }
         }
         return result;
+    }
+
+    private void updatePreviousHighBidder()
+    {
+        string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+        using (MySqlConnection con = new MySqlConnection(constr))
+        {
+            //update previous high bidder available balance
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandType = CommandType.Text;
+                cmd.Connection = con;
+                cmd.CommandText = "UPDATE User SET Available_Balance=Available_Balance+@amount WHERE User_Id=@user";
+                cmd.Parameters.AddWithValue("@amount", current_high_bid);
+                cmd.Parameters.AddWithValue("@user", user_id_high_bid);
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
+        }
     }
 }
