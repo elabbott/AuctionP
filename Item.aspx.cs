@@ -219,9 +219,11 @@ public partial class Item : System.Web.UI.Page
             var loser = cmd.ExecuteScalar();
             var loser_email = loser.ToString();
             cmd.Connection.Close();
+            if (!String.IsNullOrEmpty(loser_email)) { 
             var message = "<br /><br />You have been outbid! Auction: " + title + "<br /><br /><a href='Item.aspx?id=" + auction_id + "'>Link to page.</a>";
             var subject = "Currently Outbid!";
             Send_Email(message, loser_email, subject);
+            }
         }
     }
 
