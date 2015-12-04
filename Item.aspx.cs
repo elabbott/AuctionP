@@ -8,6 +8,8 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.Security;
+using System.Net.Mail;
+using System.Net;
 
 public partial class Item : System.Web.UI.Page
 {
@@ -129,8 +131,8 @@ public partial class Item : System.Web.UI.Page
                 con.Close();
             }
         }
-        //notifySeller(owner_id);
-        //notifyWinner(top_bidder_id);
+        notifySeller();
+        notifyWinner();
         //notifyBidders();
         doTransactions();
     }
@@ -170,19 +172,64 @@ public partial class Item : System.Web.UI.Page
         }
     }
 
-    private void notifyWinner(int top_bidder_id)
+    private void notifyWinner()
     {
-        throw new NotImplementedException();
-    }
+        var constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+        using (var con = new MySqlConnection(constr))
+        {
+            var cmd = new MySqlCommand("SELECT Email FROM User WHERE User_Id_High_Bid = " + user_id_high_bid, con);
+            cmd.Connection.Open();
 
-    private void notifySeller(int owner_id)
+            object dbNullTesterObject;
+            var winner = cmd.ExecuteScalar();
+            var winner_email = winner.ToString();
+            cmd.Connection.Close();
+            var message = "<br /><br />You won the auction! of " + title + "";
+            var subject = "Auction Won!";
+            Send_Email(message, winner_email, subject);
+        }
+    }
+    private void notifySeller()
     {
-        throw new NotImplementedException();
+        var constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+        using (var con = new MySqlConnection(constr))
+        {
+            var cmd = new MySqlCommand("SELECT Email FROM User WHERE User_Id_Owner = " + user_id_owner, con);
+            cmd.Connection.Open();
+
+            object dbNullTesterObject;
+            var owner = cmd.ExecuteScalar();
+            var owner_email = owner.ToString();
+            cmd.Connection.Close();
+            var message = "<br /><br />Your auction of " + title + " has been won for " + current_high_bid + "";
+            var subject = "Auction Over!";
+            Send_Email(message, owner_email, subject);
+        }
     }
 
     private void notifyBidders()
     {
         throw new NotImplementedException();
+    }
+
+    private void Send_Email(string message, string sendTo, string subject)
+    {
+        using (MailMessage mm = new MailMessage("auctionpowers2015fall@gmail.com", sendTo))
+        {
+            mm.Subject = subject;
+            string body = "Hello " + sendTo + ",";
+            body += message;
+            mm.Body = body;
+            mm.IsBodyHtml = true;
+            SmtpClient smtp = new SmtpClient();
+            smtp.Host = "smtp.gmail.com";
+            smtp.EnableSsl = true;
+            NetworkCredential NetworkCred = new NetworkCredential("auctionpowers2015fall@gmail.com", "auctionp1");
+            smtp.UseDefaultCredentials = true;
+            smtp.Credentials = NetworkCred;
+            smtp.Port = 587;
+            smtp.Send(mm);
+        }
     }
     private Auction Load_Auction(int auction_id)
     {
