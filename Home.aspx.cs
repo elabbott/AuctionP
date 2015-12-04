@@ -133,18 +133,22 @@ public partial class Home : System.Web.UI.Page
         html.Append("<table class=\"table\"");
 
         html.Append("<tr>");
-
+        int i = 1;
         foreach (DataColumn column in dt.Columns)
         {
-            html.Append("<th>");
-            html.Append(column.ColumnName);
-            html.Append("</th>");
+            if (i < 5)
+            {
+                html.Append("<th>");
+                html.Append(column.ColumnName);
+                html.Append("</th>");
+            }
+            i++;
         }
         html.Append("</tr>");
 
         foreach (DataRow row in dt.Rows)
         {
-            var i = 1; // this keeps track which column we are on, reference select statement in GetData() for corresponding column values
+            i = 1; // this keeps track which column we are on, reference select statement in GetData() for corresponding column values
             var auction_id = row[5];
             html.Append("<tr>");
             foreach (DataColumn column in dt.Columns)
@@ -156,7 +160,7 @@ public partial class Home : System.Web.UI.Page
                 {
                     html.Append("<a href='Item.aspx?id=" + auction_id + "'>" + columnString + "</a>");
                 }
-                if (i == 5 && CheckURLValid(columnString)) //column value check for fifth column <may be unnessarry> and then checks if link is valid url
+                else if (i == 5 && CheckURLValid(columnString)) //column value check for fifth column <may be unnessarry> and then checks if link is valid url
                 {
                     html.Append("<img src='" + columnString + "' width=\"275\" height=\"275\" />");
                 }
@@ -164,15 +168,7 @@ public partial class Home : System.Web.UI.Page
                 {
                     html.Append("<img src =\"noimage.jpg\"");
                 }
-                //else if (i == 6)
-                //{
-                //    var lbGoToAuction = new LinkButton();
-                //    lbGoToAuction.Text = "Go To Auction Page";
-                //    HttpContext.Current.Session["auction_id"] = columnString;
-                //    lbGoToAuction.PostBackUrl = "Items.aspx";
-                //    html.Append("");
-                //}
-                else
+                else if (i < 5)
                 {
                     html.Append(columnString);
                 }
@@ -205,6 +201,6 @@ public partial class Home : System.Web.UI.Page
     public static bool CheckURLValid(string source)
     {
         Uri uriResult;
-        return Uri.TryCreate(source, UriKind.Absolute, out uriResult) && uriResult.Scheme == Uri.UriSchemeHttp;
+        return Uri.TryCreate(source, UriKind.Absolute, out uriResult) && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
     }
 }
