@@ -133,10 +133,10 @@
                             <td class="auto-style15" style="border: thin solid #000000">
                                 <asp:Image ID="imgItem" runat="server" />
                             </td>
-                            <td style="border: thin solid #000000" class="auto-style16"><span class="newStyle1">Highest Bid: $<asp:Label ID="lblHighBid" runat="server"></asp:Label>
+                            <td style="border: thin solid #000000" class="auto-style16"><span class="newStyle1">Highest Bid: <asp:Label ID="lblHighBid" runat="server"></asp:Label>
                                 <br />
                                 <br />
-                                Next Minimum Bid: $<asp:Label ID="lblNextMinBid" runat="server"></asp:Label>
+                                Next Minimum Bid: <asp:Label ID="lblNextMinBid" runat="server"></asp:Label>
                                 <br />
                                 <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ControlToValidate="txtAmount" ErrorMessage="Must be valid dollar amount" ForeColor="Red" ValidationExpression="^\d+\.\d{2}$"></asp:RegularExpressionValidator>
                                 <br />
@@ -144,9 +144,9 @@
                                 <asp:TextBox ID="txtAmount" runat="server"></asp:TextBox>
 &nbsp;<asp:Button ID="btnBid" runat="server" OnClick="btnBid_Click" Text="Bid" />
                                 <br />
-                                <asp:CompareValidator ID="CompareValidator1" runat="server" ControlToValidate="txtAmount" ErrorMessage="Must be at least minimum bid amount" ForeColor="Red" Operator="GreaterThanEqual"></asp:CompareValidator>
+                                <asp:CompareValidator ID="CompareValidator1" runat="server" ControlToValidate="txtAmount" ErrorMessage="Must be at least minimum bid amount" ForeColor="Red" Operator="GreaterThanEqual" Type="Double"></asp:CompareValidator>
                                 <br />
-                                <asp:CompareValidator ID="CompareValidatorAvailableBalance" runat="server" ControlToValidate="txtAmount" ErrorMessage="Must be no greater than Available Balance" ForeColor="Red" Operator="LessThanEqual"></asp:CompareValidator>
+                                <asp:CompareValidator ID="CompareValidatorAvailableBalance" runat="server" ControlToValidate="txtAmount" ErrorMessage="Must be no greater than Available Balance" ForeColor="Red" Operator="LessThanEqual" Type="Double"></asp:CompareValidator>
                                 <br />
                                 <asp:Label ID="lblBuyOut" runat="server" Visible="False"></asp:Label>
                                 <br />

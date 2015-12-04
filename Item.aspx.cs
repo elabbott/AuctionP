@@ -65,7 +65,7 @@ public partial class Item : System.Web.UI.Page
             //endAuction(auction_id, user_id_owner, user_id_high_bid);
         }
  
-        lblHighBid.Text = item.Top_bid.ToString("0.00");
+        lblHighBid.Text = String.Format("{0:C}", item.Top_bid);
         imgItem.ImageUrl = image_url;
         lblTitle.Text = title;
         lblDescription.Text = description;
@@ -277,7 +277,7 @@ public partial class Item : System.Web.UI.Page
 
             if (buyout != 0)
             {
-                lblBuyOut.Text = "Or Buy Now for $" + Convert.ToString(buyout);
+                lblBuyOut.Text = "Or Buy Now for " + String.Format("{0:C}", buyout);
                 lblBuyOut.Visible = true;
                 btnBuyOut.Enabled = true;
                 if (bidderAvailableBalance >= buyout)
@@ -288,7 +288,7 @@ public partial class Item : System.Web.UI.Page
             CompareValidator1.ValueToCompare = Convert.ToString(min_bid);
             CompareValidatorAvailableBalance.ValueToCompare = Convert.ToString(bidderAvailableBalance);
         }
-        lblNextMinBid.Text = min_bid.ToString("0.00");
+        lblNextMinBid.Text = String.Format("{0:C}",min_bid);
     }
 
     private double getBidderAvailableBalance()

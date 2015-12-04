@@ -61,9 +61,9 @@ public partial class UserPage : System.Web.UI.Page
         }
         ddListCard.Items.Insert(0, new ListItem("--Select Card--", "0"));
         ddListCard.ClearSelection();
-        lblBalance.Text = Convert.ToString(balance);
-        lblCurrentBids.Text = Convert.ToString(balance - available_balance);
-        lblAvailableBalance.Text = Convert.ToString(available_balance);
+        lblBalance.Text = String.Format("{0:C}", balance);
+        lblCurrentBids.Text = String.Format("{0:C}", balance-available_balance);
+        lblAvailableBalance.Text = String.Format("{0:C}",available_balance);
     }
 
     protected void ddListCard_SelectedIndexChanged(object sender, EventArgs e)
