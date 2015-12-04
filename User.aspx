@@ -41,11 +41,11 @@
                 <h2 class="newStyle2">Account Information</h2>
                 <p class="newStyle2">&nbsp;</p>
                 <p class="newStyle2">
-                    <b>Account Balance:</b> $<asp:Label ID="lblBalance" runat="server"></asp:Label>
+                    <b>Account Balance:</b> <asp:Label ID="lblBalance" runat="server"></asp:Label>
                     <br />
-                    <b>Outstanding bids:</b> $<asp:Label ID="lblCurrentBids" runat="server"></asp:Label>
+                    <b>Outstanding bids:</b> <asp:Label ID="lblCurrentBids" runat="server"></asp:Label>
                     <hr />
-                    <b>Available Balance:</b> $<asp:Label ID="lblAvailableBalance" runat="server"></asp:Label>
+                    <b>Available Balance:</b> <asp:Label ID="lblAvailableBalance" runat="server"></asp:Label>
                 </p>
                 <p class="newStyle2">
                     &nbsp;</p>
