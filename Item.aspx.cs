@@ -81,6 +81,7 @@ public partial class Item : System.Web.UI.Page
     }
     public void bid(double amount, int bidder_id)
     {
+        notifyBidderAboutOutbid();
         int result;
         string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
         using (MySqlConnection con = new MySqlConnection(constr))
@@ -114,7 +115,7 @@ public partial class Item : System.Web.UI.Page
         //return result;
     }
 
-    private void endAuction(int auction_id, int owner_id, int top_bidder_id)
+    private void endAuction()
     {
         //update DB
         string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
@@ -133,7 +134,6 @@ public partial class Item : System.Web.UI.Page
         }
         notifySeller();
         notifyWinner();
-        //notifyBidders();
         doTransactions();
     }
 
@@ -207,9 +207,22 @@ public partial class Item : System.Web.UI.Page
         }
     }
 
-    private void notifyBidders()
+    private void notifyBidderAboutOutbid()
     {
-        throw new NotImplementedException();
+        var constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+        using (var con = new MySqlConnection(constr))
+        {
+            var cmd = new MySqlCommand("SELECT Email FROM User WHERE User_Id_High_Bid = " + user_id_high_bid, con);
+            cmd.Connection.Open();
+
+            object dbNullTesterObject;
+            var loser = cmd.ExecuteScalar();
+            var loser_email = loser.ToString();
+            cmd.Connection.Close();
+            var message = "<br /><br />You have been outbid! Auction: " + title + "<br /><br /><a href='Item.aspx?id=" + auction_id + "'>Link to page.</a>";
+            var subject = "Currently Outbid!";
+            Send_Email(message, loser_email, subject);
+        }
     }
 
     private void Send_Email(string message, string sendTo, string subject)
@@ -280,7 +293,7 @@ public partial class Item : System.Web.UI.Page
         updatePreviousHighBidder();
         current_high_bid = buyout;
         user_id_high_bid = user_id;
-        endAuction(auction_id, user_id_owner, user_id);
+        endAuction();
     }
 
     protected void btnBid_Click(object sender, EventArgs e)
