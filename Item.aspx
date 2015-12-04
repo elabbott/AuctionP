@@ -1,81 +1,9 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Item.aspx.cs" Inherits="Item" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Item.aspx.cs" Inherits="Item" MasterPageFile="~/MasterPage.Master"%>
 
-<!DOCTYPE html>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-    <title></title>
-    <meta charset="utf-8" />
-    <style type="text/css">
-        
-        .auto-style2 {
-            height: 20px;
-            width: 60%;
-            text-align: center;
-            vertical-align: top;
-        }
-
-        .auto-style3 {
-            width: 20%;
-            text-align: center;
-            vertical-align: top;
-        }
-
-        .auto-style6 {
-            height: 20px;
-            width: 20%;
-            text-align: center;
-        }
-
-        .auto-style7 {
-            width: 400px;
-        }
-
-        .newStyle1 {
-            font-family: Arial, Helvetica, sans-serif;
-        }
-
-        .auto-style8 {
-            height: 20px;
-            width: 20%;
-            text-align: right;
-        }
-
-        .auto-style10 {
-            text-decoration: underline;
-        }
-
-        .auto-style11 {
-            width: 200px;
-            height: 200px;
-        }
-
-        .auto-style12 {
-            text-decoration: underline;
-            color: #0000FF;
-            background-color: #FFFFFF;
-        }
-
-        .auto-style13 {
-            color: #0000FF;
-            background-color: #FFFFFF;
-        }
-
-        .auto-style14 {
-            text-decoration: underline;
-            color: #0000FF;
-        }
-        .auto-style15 {
-            width: 500px;
-            height: 397px;
-        }
-        .auto-style16 {
-            height: 397px;
-        }
-    </style>
-</head>
-<body>
-    <form id="form1" runat="server">
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="Body" runat="server">
     <table style="width:100%;">
         <tr>
             <td class="auto-style6">
@@ -165,6 +93,4 @@
             </td>
         </tr>
         </table>
-    </form>
-</body>
-</html>
+</asp:Content>

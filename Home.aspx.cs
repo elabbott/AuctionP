@@ -17,9 +17,9 @@ public partial class Home : System.Web.UI.Page
         if (!this.Page.User.Identity.IsAuthenticated)
         {
             FormsAuthentication.RedirectToLoginPage();
-            All();
+            
         }
-        
+        All();
     }
     protected int Get_Authenticated_User_ID()
     {

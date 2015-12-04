@@ -50,80 +50,86 @@ public partial class MasterPage : System.Web.UI.MasterPage
     }
     protected void Perform_Search(string search)
     {
-        var dt = GetData(search);
-        var html = new StringBuilder();
-        html.Append("<table class=\"table\"");
+        HttpContext.Current.Response.Redirect("Search.aspx?search=" + search);
+        //var dt = GetData(search);
+        //var html = new StringBuilder();
+        //html.Append("<table class=\"table\"");
 
-        html.Append("<tr>");
+        //html.Append("<tr>");
 
-        foreach (DataColumn column in dt.Columns)
-        {
-            html.Append("<th>");
-            html.Append(column.ColumnName);
-            html.Append("</th>");
-        }
-        html.Append("</tr>");
+        //foreach (DataColumn column in dt.Columns)
+        //{
+        //    html.Append("<th>");
+        //    html.Append(column.ColumnName);
+        //    html.Append("</th>");
+        //}
+        //html.Append("</tr>");
 
-        foreach (DataRow row in dt.Rows)
-        {
-            var i = 1; // this keeps track which column we are on, reference select statement in GetData() for corresponding column values
-            html.Append("<tr>");
-            foreach (DataColumn column in dt.Columns)
-            {
-                var columnString = row[column.ColumnName].ToString();
-                html.Append("<td>");
-                //if (row[column.ColumnName].ToString().Contains(".com"))
-                if (i == 5 && CheckURLValid(columnString)) //column value check for fifth column <may be unnessarry> and then checks if link is valid url
-                {
-                    html.Append("<img src='" + columnString + "' width=\"275\" height=\"275\" />");
-                }
-                else if (i == 5 && !CheckURLValid(columnString))
-                {
-                    html.Append("<img src =\"noimage.jpg\"");
-                }
-                else if (i == 6)
-                {
-                    var lbGoToAuction = new LinkButton();
-                    lbGoToAuction.Text = "Go To Auction Page";
-                    HttpContext.Current.Session["auction_id"] = columnString;
-                    lbGoToAuction.PostBackUrl = "Items.aspx";
-                    html.Append("");
-                }
-                else
-                {
-                    html.Append(columnString);
-                }
-                html.Append("</td>");
-                i++;
-            }
-            html.Append("</tr>");
-        }
-        html.Append("</table>");
+        //foreach (DataRow row in dt.Rows)
+        //{
+        //    var i = 1; // this keeps track which column we are on, reference select statement in GetData() for corresponding column values
+        //    var auction_id = row[5];
+        //    html.Append("<tr>");
+        //    foreach (DataColumn column in dt.Columns)
+        //    {
+        //        var columnString = row[column.ColumnName].ToString();
+        //        html.Append("<td>");
+        //        //if (row[column.ColumnName].ToString().Contains(".com"))
+        //        if (i == 1)
+        //        {
+        //            html.Append("<a href='Item.aspx?id=" + auction_id + "'>" + columnString + "</a>");
+        //        }
+        //        if (i == 5 && CheckURLValid(columnString)) 
+        //        {
+        //            html.Append("<img src='" + columnString + "' width=\"275\" height=\"275\" />");
+        //        }
+        //        else if (i == 5 && !CheckURLValid(columnString))
+        //        {
+        //            html.Append("<img src =\"noimage.jpg\"");
+        //        }
+        //        else if (i == 6)
+        //        {
+        //            var lbGoToAuction = new LinkButton();
+        //            lbGoToAuction.Text = "Go To Auction Page";
+        //            HttpContext.Current.Session["auction_id"] = columnString;
+        //            lbGoToAuction.PostBackUrl = "Items.aspx";
+        //            html.Append("");
+        //        }
+        //        else
+        //        {
+        //            html.Append(columnString);
+        //        }
+        //        html.Append("</td>");
+        //        i++;
+        //    }
+        //    html.Append("</tr>");
+        //}
+        //html.Append("</table>");
 
-        //PlaceHolderSearchResults.Controls.Add(new Literal { Text = html.ToString() });
+        ////PlaceHolderSearchResults.Controls.Add(new Literal { Text = html.ToString() });
 
-        HttpContext.Current.Session["Search_HTML"] = html;
-        HttpContext.Current.Response.Redirect("Search.aspx");
+        //HttpContext.Current.Session["Search_HTML"] = html;
+
     }
-    protected static bool CheckURLValid(string source)
-    {
-        Uri uriResult;
-        return Uri.TryCreate(source, UriKind.Absolute, out uriResult) && uriResult.Scheme == Uri.UriSchemeHttp;
-    }
-    private DataTable GetData(string search)
-    {
-        var constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
-        var dt = new DataTable();
-        using (var con = new MySqlConnection(constr))
-        {
-            var cmd = new MySqlCommand("SELECT Title, Current_High_Bid as `High Bid`, Date_Format(End_Date, '%W, %M %e') as `End Date`, Description, Image_URL AS Image, Auction_Id as `Select Auction` FROM Auction WHERE Open = 1 AND (Category LIKE '%" + search + "%' OR Title LIKE '%" + search + "%')", con);
+    //protected static bool CheckURLValid(string source)
+    //{
+    //    Uri uriResult;
+    //    return Uri.TryCreate(source, UriKind.Absolute, out uriResult) && uriResult.Scheme == Uri.UriSchemeHttp;
+    //}
+    //private DataTable GetData(string search)
+    //{
+    //    var constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+    //    var dt = new DataTable();
+    //    using (var con = new MySqlConnection(constr))
+    //    {
+    //        var cmd = new MySqlCommand("SELECT Title, Current_High_Bid as `High Bid`, Date_Format(End_Date, '%W, %M %e') as `End Date`, Description, Image_URL AS Image, Auction_Id as `Select Auction` FROM Auction WHERE Open = 1 AND (Category LIKE '%" + search + "%' OR Title LIKE '%" + search + "%')", con);
 
-            using (var adapter = new MySqlDataAdapter(cmd))
-            {
-                adapter.Fill(dt);
-            }
-            cmd.Connection.Close();
-            return dt;
-        }
-    }
+    //        using (var adapter = new MySqlDataAdapter(cmd))
+    //        {
+    //            adapter.Fill(dt);
+    //        }
+    //        cmd.Connection.Close();
+    //        return dt;
+    //    }
+    //}
 }

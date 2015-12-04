@@ -7,6 +7,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Web.Security;
 
 public partial class Item : System.Web.UI.Page
 {
@@ -31,6 +32,11 @@ public partial class Item : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
+        if (!this.Page.User.Identity.IsAuthenticated)
+        {
+            FormsAuthentication.RedirectToLoginPage();
+
+        }
         username = HttpContext.Current.User.Identity.Name;
         auction_id = Convert.ToInt32(Request.QueryString["id"]);
         string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;

@@ -19,8 +19,16 @@ public partial class Search : System.Web.UI.Page
         {
             try
             {
-                search_html = HttpContext.Current.Session["Search_HTML"].ToString();
-                Load_Search(search_html);
+                //search_html = HttpContext.Current.Session["Search_HTML"].ToString();
+                var search_string = Request.QueryString["search"].ToString();
+                if (search_string != null || search_string != "")
+                {
+                    Load_Search(search_string);
+                }
+                else
+                {
+                    All();
+                }
             }
             catch(NullReferenceException)
             {
@@ -165,15 +173,15 @@ public partial class Search : System.Web.UI.Page
                 {
                     html.Append("<img src =\"noimage.jpg\"");
                 }
-                else if (i == 6)
-                {
-                    /*var lbGoToAuction = new LinkButton();
-                    lbGoToAuction.Text = "Go To Auction Page";
-                    HttpContext.Current.Session["auction_id"] = columnString;
-                    lbGoToAuction.PostBackUrl = "Items.aspx";*/
+                //else if (i == 6)
+                //{
+                //    /*var lbGoToAuction = new LinkButton();
+                //    lbGoToAuction.Text = "Go To Auction Page";
+                //    HttpContext.Current.Session["auction_id"] = columnString;
+                //    lbGoToAuction.PostBackUrl = "Items.aspx";*/
 
-                    html.Append("");
-                }
+                //    html.Append("");
+                //}
                 else
                 {
                     html.Append(columnString);
