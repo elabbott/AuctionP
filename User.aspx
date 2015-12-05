@@ -14,6 +14,18 @@
             text-align: center;
             vertical-align: top;
         }
+        .auto-style27 {
+            width: 210px;
+            height: 24px;
+            color: #0000FF;
+            text-decoration: underline;
+        }
+        .auto-style28 {
+            width: 210px;
+            height: 22px;
+            color: #0000FF;
+            text-decoration: underline;
+        }
     </style>
 
 </asp:Content>
@@ -34,7 +46,15 @@
                     <span class="auto-style10">
                 
                         <asp:HyperLink ID="HyperLink2" runat="server" NavigateUrl="~/UserAuctions.aspx">Your Items on Auction</asp:HyperLink>
-                <br />
+                        <br />
+                        <br />
+                        <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/UserBids.aspx">Your current Bids</asp:HyperLink>
+                        <br />
+                        <br />
+                        <asp:HyperLink ID="HyperLink4" runat="server" NavigateUrl="~/UserBids.aspx?opt=won">Auctions You've Won</asp:HyperLink>
+                        <br />
+                        <br />
+                        <asp:HyperLink ID="HyperLink3" runat="server" NavigateUrl="~/CreateAuction.aspx">Create New Auction</asp:HyperLink>
                         <br />
 </span></span></td>
             <td class="auto-style4">
@@ -75,14 +95,8 @@
                 </p>
                 <p class="newStyle2">
                     &nbsp;</p>
-                <p class="auto-style16">
+                <p class="auto-style27">
                     <a href="AddCard.aspx">Add Credit Card</a></p>
-                <hr />
-                <p class="auto-style16">
-                    <a href="CreateAuction.aspx">Create an Auction</a></p>
-            </td>
-            <td class="auto-style18"><strong><span class="auto-style10">Items You&#39;ve Bid On</span><br />
-                
             </td>
         </tr>
         </table>

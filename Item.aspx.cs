@@ -41,39 +41,16 @@ public partial class Item : System.Web.UI.Page
         }
         username = HttpContext.Current.User.Identity.Name;
         auction_id = Convert.ToInt32(Request.QueryString["id"]);
-        string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
-        using (MySqlConnection con = new MySqlConnection(constr))
-        {
-            using (MySqlCommand cmd = new MySqlCommand())
-            {
-                cmd.CommandType = CommandType.Text;
-                cmd.Connection = con;
-                cmd.CommandText = "SELECT User_Id FROM User WHERE Username=@user";
-                cmd.Parameters.AddWithValue("@user", username);
-                con.Open();
-                user_id = Convert.ToInt32(cmd.ExecuteScalar());
-                con.Close();
-            }
-        }
+        user_id = getUserId();
 
         //auction_id = Convert.ToInt32(Session["auction_id"]);
         //Auction item = new Auction(auction_id, owner, min_bid, buyout, end_date, description, image_url, title, category);
         //var item = new Auction(auction_id, owner, min_bid, buyout, end_date, description, image_url, title, category);
         var item = Load_Auction(auction_id);
         item.Top_bid = current_high_bid;
-
-        if (isActive())
-        {
-            updateAuction();
-            showControls();
-        }
-        else
-        {
-            open = false;
-            //endAuction(auction_id, user_id_owner, user_id_high_bid);
-        }
- 
-        lblHighBid.Text = String.Format("{0:C}", item.Top_bid);
+        updateStats();
+        showControls();
+        
         imgItem.ImageUrl = image_url;
         lblTitle.Text = title;
         lblDescription.Text = description;
@@ -319,44 +296,68 @@ public partial class Item : System.Web.UI.Page
         return result;
     }
 
-    private void updateAuction()
+    private void updateStats()
     {
-        if (current_high_bid > 0)
+        if (isActive())
         {
-            min_bid = current_high_bid + 0.01;
+            if (current_high_bid > 0)
+            {
+                min_bid = current_high_bid + 0.01;
+            }
+
+            if(user_id != user_id_owner)
+            {
+                bidderAvailableBalance = getBidderAvailableBalance();
+            }
         }
+        else
+        {
+            open = false;
+        }
+    }
+
+    private void showBidControls(bool show)
+    {
+        if (show)
+        {
+            CompareValidator1.ValueToCompare = Convert.ToString(min_bid);
+            CompareValidatorAvailableBalance.ValueToCompare = Convert.ToString(bidderAvailableBalance);
+        }
+        txtAmount.Enabled = show;
+        txtAmount.Visible = show;
+        btnBid.Enabled = show;
+        btnBid.Visible = show;
+    }
+
+    private void showBuyOutControls(bool show)
+    {
+        if (show)
+        {
+            lblBuyOut.Text = "Or Buy Now for " + String.Format("{0:C}", buyout);
+        }
+        lblBuyOut.Enabled = show;
+        lblBuyOut.Visible = show;
+        btnBuyOut.Enabled = (bidderAvailableBalance >= buyout ? true : false);
+        btnBuyOut.Visible = show;
     }
 
     private void showControls()
     {
-        if (user_id == user_id_owner)
+        bool show_buyout = (buyout > 0 ? true : false);
+        if (isActive())
         {
-            txtAmount.Enabled = false;
-            txtAmount.Visible = false;
-            btnBid.Enabled = false;
-            btnBid.Visible = false;
-            lblBuyOut.Visible = false;
-            btnBuyOut.Enabled = false;
-            btnBuyOut.Visible = false;
-        }
-        else
-        {
-            bidderAvailableBalance = getBidderAvailableBalance();
-
-            if (buyout != 0)
+            if (user_id == user_id_owner)
             {
-                lblBuyOut.Text = "Or Buy Now for " + String.Format("{0:C}", buyout);
-                lblBuyOut.Visible = true;
-                btnBuyOut.Enabled = true;
-                if (bidderAvailableBalance >= buyout)
-                {
-                    btnBuyOut.Visible = true;
-                }
+                showBidControls(false);
+                showBuyOutControls(false);
             }
-            CompareValidator1.ValueToCompare = Convert.ToString(min_bid);
-            CompareValidatorAvailableBalance.ValueToCompare = Convert.ToString(bidderAvailableBalance);
+            else
+            {
+                showBidControls(true);
+                showBuyOutControls(show_buyout);
+            }
+            lblNextMinBid.Text = String.Format("{0:C}", min_bid);
         }
-        lblNextMinBid.Text = String.Format("{0:C}",min_bid);
     }
 
     private double getBidderAvailableBalance()
@@ -398,5 +399,25 @@ public partial class Item : System.Web.UI.Page
                 con.Close();
             }
         }
+    }
+
+    private int getUserId()
+    {
+        int result;
+        string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+        using (MySqlConnection con = new MySqlConnection(constr))
+        {
+            using (MySqlCommand cmd = new MySqlCommand())
+            {
+                cmd.CommandType = CommandType.Text;
+                cmd.Connection = con;
+                cmd.CommandText = "SELECT User_Id FROM User WHERE Username=@user";
+                cmd.Parameters.AddWithValue("@user", username);
+                con.Open();
+                result = Convert.ToInt32(cmd.ExecuteScalar());
+                con.Close();
+            }
+        }
+        return result;
     }
 }
