@@ -23,6 +23,7 @@ public partial class Search : System.Web.UI.Page
                 var search_string = Request.QueryString["search"].ToString();
                 if (!String.IsNullOrEmpty(search_string))
                 {
+                    LabelCategory.Text = search_string;
                     Load_Search(search_string);
                 }
                 else
@@ -142,18 +143,22 @@ public partial class Search : System.Web.UI.Page
         html.Append("<table class=\"table\"");
 
         html.Append("<tr>");
-
-        foreach(DataColumn column in dt.Columns)
+        var i = 1;
+        foreach (DataColumn column in dt.Columns)
         {
-            html.Append("<th>");
-            html.Append(column.ColumnName);
-            html.Append("</th>");
+            if (i < 6)
+            {
+                html.Append("<th>");
+                html.Append(column.ColumnName);
+                html.Append("</th>");
+            }
+            i++;
         }
         html.Append("</tr>");
 
         foreach (DataRow row in dt.Rows)
         {
-            var i = 1; // this keeps track which column we are on, reference select statement in GetData() for corresponding column values
+            i = 1; // this keeps track which column we are on, reference select statement in GetData() for corresponding column values
             var auction_id = row[5];
             html.Append("<tr>");
             foreach(DataColumn column in dt.Columns)
@@ -164,6 +169,10 @@ public partial class Search : System.Web.UI.Page
                 if(i == 1)
                 {
                     html.Append("<a href='Item.aspx?id=" + auction_id + "'>" + columnString + "</a>");
+                }
+                else if(i == 2)
+                {
+                    html.Append(String.Format("{0:C}", row[column.ColumnName]));
                 }
                 else if (i == 5 && CheckURLValid(columnString)) //column value check for fifth column <may be unnessarry> and then checks if link is valid url
                 {
@@ -182,7 +191,7 @@ public partial class Search : System.Web.UI.Page
 
                 //    html.Append("");
                 //}
-                else
+                else if (i < 6)
                 {
                     html.Append(columnString);
                 }
