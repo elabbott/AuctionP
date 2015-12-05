@@ -20,12 +20,12 @@ public partial class AddCard : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        //for (int i = 0; i <= 11; i++)
-        //{
-        //    String year = (DateTime.Today.Year + i).ToString();
-        //    ListItem li = new ListItem(year, year);
-        //    ddListYear.Items.Add(li);
-        //}
+        for (int i = 0; i <= 11; i++)
+        {
+            String year = (DateTime.Today.Year + i).ToString();
+            ListItem li = new ListItem(year, year);
+            ddListYear.Items.Add(li);
+        }
 
         //CompareValidatorExpire.ValueToCompare = Convert.ToString(DateTime.Now.Month);
 
@@ -71,35 +71,34 @@ public partial class AddCard : System.Web.UI.Page
         owner_name = txtName.Text;
         card_number = txtNum.Text;
         ccv_number = txtCCV.Text;
-//<<<<<<< HEAD
-//        int year = int.Parse(ddListYear.SelectedValue);
-//        int month = int.Parse(ddListMonth.SelectedValue);
-//        expiration_date = new DateTime(year, month, DateTime.DaysInMonth(year, month));
-//        if(expiration_date.CompareTo(DateTime.Now) < 0)
-//        {
-//            CompareValidatorExpire.IsValid = false;
-//        }
-//        if (Page.IsValid)
-//        {
-//            addCard();
-//        }
-//=======
-        //int year = int.Parse(ddListYear.SelectedValue);
-        //int month = int.Parse(ddListMonth.SelectedValue);
-        //expiration_date = new DateTime(year, month, DateTime.DaysInMonth(year, month));
-        expiration_date = Convert.ToDateTime(datepicker.Value.ToString());
+        int year = int.Parse(ddListYear.SelectedValue);
+        int month = int.Parse(ddListMonth.SelectedValue);
+        expiration_date = new DateTime(year, month, DateTime.DaysInMonth(year, month));
+        if(expiration_date.CompareTo(DateTime.Now) < 0)
+        {
+            validatorMonth.IsValid = false;
+        }
+        if(txtNum.Text.Length < 16)
+        {
+            validatorNum.IsValid = false;
+        }
+        if(txtCCV.Text.Length < 3)
+        {
+            validatorCCV.IsValid = false;
+        }
         addCard();
-
     }
 
     protected void addCard()
     {
-        string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
-        int card_id;
-        using (MySqlConnection con = new MySqlConnection(constr))
+        if (Page.IsValid)
         {
-            using (MySqlCommand cmd = new MySqlCommand("Insert_CreditCard"))
+            string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+            int card_id;
+            using (MySqlConnection con = new MySqlConnection(constr))
             {
+                using (MySqlCommand cmd = new MySqlCommand("Insert_CreditCard"))
+                {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("UserID", user_id);
                     cmd.Parameters.AddWithValue("CardNumber", card_number);
@@ -108,27 +107,28 @@ public partial class AddCard : System.Web.UI.Page
                     cmd.Parameters.AddWithValue("Expiration", expiration_date);
                     cmd.Connection = con;
                     con.Open();
-//<<<<<<< HEAD
-//                    cmd.ExecuteNonQuery();
-//=======
+                    //<<<<<<< HEAD
+                    //                    cmd.ExecuteNonQuery();
+                    //=======
                     card_id = Convert.ToInt32(cmd.ExecuteNonQuery());
                     con.Close();
+                }
+
+                //using (MySqlCommand cmd = new MySqlCommand())
+                //{
+                //    cmd.CommandType = CommandType.Text;
+                //    cmd.CommandText = "UPDATE CreditCard SET Card_Id=@card WHERE User_Id=@user";
+                //    cmd.Parameters.AddWithValue("@card", card_id);
+                //    cmd.Parameters.AddWithValue("@user", user_id);
+                //    cmd.Connection = con;
+                //    con.Open();
+                //    cmd.ExecuteNonQuery();
+                //    con.Close();
+                //}
+
             }
-
-            //using (MySqlCommand cmd = new MySqlCommand())
-            //{
-            //    cmd.CommandType = CommandType.Text;
-            //    cmd.CommandText = "UPDATE CreditCard SET Card_Id=@card WHERE User_Id=@user";
-            //    cmd.Parameters.AddWithValue("@card", card_id);
-            //    cmd.Parameters.AddWithValue("@user", user_id);
-            //    cmd.Connection = con;
-            //    con.Open();
-            //    cmd.ExecuteNonQuery();
-            //    con.Close();
-            //}
-
+            Response.Redirect("User.aspx");
         }
-        Response.Redirect("User.aspx");
     }
 
     protected void OnServerValidate(object source, ServerValidateEventArgs args)

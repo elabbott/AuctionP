@@ -3,6 +3,12 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 
+    <style type="text/css">
+        .auto-style25 {
+            width: 4px;
+        }
+    </style>
+
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="Body" runat="server">
     <table style="width:100%;">
@@ -32,7 +38,7 @@
                 <table>
                     <tr>
                         <td>Name:</td>
-                        <td><asp:RequiredFieldValidator runat="server" ControlToValidate="txtName" ErrorMessage="Name is required." ForeColor="Red"> *
+                        <td><asp:RequiredFieldValidator runat="server" ControlToValidate="txtName" ErrorMessage="Name is required." ForeColor="Red" ID="validatorName"> *
                 </asp:RequiredFieldValidator><asp:TextBox ID="txtName" runat="server" CausesValidation="True"></asp:TextBox></td>
                     </tr>
                     </table>
@@ -42,7 +48,7 @@
                 <table>
                     <tr>
                         <td>Number:</td>
-                        <td><asp:RequiredFieldValidator runat="server" ControlToValidate="txtNum" ErrorMessage="Number is required." ForeColor="Red"> *
+                        <td><asp:RequiredFieldValidator runat="server" ControlToValidate="txtNum" ErrorMessage="Valid card number is required." ForeColor="Red" ID="validatorNum"> *
                 </asp:RequiredFieldValidator>
                 <asp:TextBox ID="txtNum" runat="server" CausesValidation="True" MaxLength="16"></asp:TextBox></td>
                     </tr>
@@ -53,21 +59,35 @@
                     <table>
                     <tr>
                         <td>CCV #:</td>
-                        <td><asp:RequiredFieldValidator runat="server" ControlToValidate="txtCCV" ErrorMessage="CCV is required." ForeColor="Red"> *
+                        <td><asp:RequiredFieldValidator runat="server" ControlToValidate="txtCCV" ErrorMessage="Valid CCV is required." ForeColor="Red" ID="validatorCCV"> *
                 </asp:RequiredFieldValidator>
-                <asp:TextBox ID="txtCCV" MaxLength="4" runat="server" Width="47px" CausesValidation="True"></asp:TextBox></td>
+                <asp:TextBox ID="txtCCV" MaxLength="3" runat="server" Width="47px" CausesValidation="True"></asp:TextBox></td>
                     </tr>
                     </table>
-                <div>
-                    <br />
-                </div>
                 <table>
                     <tr>
-                        <td>Expiration date: </td>
-                        <td><input type="text" id="datepicker" runat="server"/></td>
+                        <td>
+                            Expiration date: <asp:RequiredFieldValidator ID="validatorMonth" runat="server" ErrorMessage="Valid expiration month required" ControlToValidate="ddListMonth" ForeColor="Red">*</asp:RequiredFieldValidator>
+                            <asp:DropDownList ID="ddListMonth" runat="server">
+                                <asp:ListItem>1</asp:ListItem>
+                                <asp:ListItem>2</asp:ListItem>
+                                <asp:ListItem>3</asp:ListItem>
+                                <asp:ListItem>4</asp:ListItem>
+                                <asp:ListItem>5</asp:ListItem>
+                                <asp:ListItem>6</asp:ListItem>
+                                <asp:ListItem>7</asp:ListItem>
+                                <asp:ListItem>8</asp:ListItem>
+                                <asp:ListItem>9</asp:ListItem>
+                                <asp:ListItem>10</asp:ListItem>
+                                <asp:ListItem>11</asp:ListItem>
+                                <asp:ListItem>12</asp:ListItem>
+                            </asp:DropDownList>
+                            <asp:RequiredFieldValidator ID="validatorYear" runat="server" ErrorMessage="Expiration year required" ControlToValidate="ddListYear" ForeColor="Red">*</asp:RequiredFieldValidator>
+                            <asp:DropDownList ID="ddListYear" runat="server"></asp:DropDownList>
+                        </td>
                     </tr>
                 </table>
-                <div>
+                &nbsp;<div>
                     <br />
                 </div>
                 <asp:Button CssClass="btn btn-default" ID="btnAdd" runat="server" Text="Add card" OnClick="btnAdd_Click" />
