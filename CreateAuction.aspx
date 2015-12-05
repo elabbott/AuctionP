@@ -1,127 +1,38 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="CreateAuction.aspx.cs" Inherits="CreateAuction" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="CreateAuction.aspx.cs" Inherits="CreateAuction" MasterPageFile="~/MasterPage.Master"%>
 
-<!DOCTYPE html>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-    <title></title>
-    <meta charset="utf-8" />
     <style type="text/css">
-        
-        .auto-style2 {
+        .auto-style25 {
             height: 20px;
-            width: 60%;
+            width: 18%;
             text-align: center;
             vertical-align: top;
         }
-
-        .auto-style3 {
-            width: 20%;
+        .auto-style26 {
+            width: 18%;
             text-align: center;
             vertical-align: top;
         }
-
-        .auto-style4 {
-            width: 60%;
-            vertical-align: top;
-        }
-
-        .auto-style6 {
-            height: 20px;
-            width: 20%;
-            text-align: center;
-        }
-
-        .auto-style7 {
-            width: 400px;
-        }
-
-        .newStyle1 {
-            font-family: Arial, Helvetica, sans-serif;
-        }
-
-        .auto-style8 {
-            height: 20px;
-            width: 20%;
-            text-align: right;
-            vertical-align: top;
-        }
-
-        .auto-style10 {
+        .auto-style27 {
+            width: 210px;
+            height: 24px;
+            color: #0000FF;
             text-decoration: underline;
         }
-
-        .auto-style11 {
-            width: 200px;
-            height: 200px;
-        }
-
-        .newStyle2 {
-            font-family: Arial, Helvetica, sans-serif;
-            width: 651px;
-        }
-        .auto-style18 {
-            width: 20%;
-            text-align: center;
-            vertical-align: top;
-            font-family: Arial, Helvetica, sans-serif;
-        }
-        .auto-style19 {
-            width: 200px;
-            height: 198px;
-        }
-        .auto-style20 {
-            width: 200px;
-            height: 112px;
-        }
-        .auto-style21 {
-            width: 200px;
-            height: 197px;
-        }
-        .auto-style22 {
-            width: 200px;
-            height: 201px;
-        }
-        .auto-style23 {
-            color: #FF0000;
-        }
-        .auto-style24 {
-            color: #009933;
+        .auto-style28 {
+            width: 210px;
+            height: 22px;
+            color: #0000FF;
+            text-decoration: underline;
         }
     </style>
-</head>
-<body>
-    <form id="form1" runat="server">
-    <table style="width:100%;">
+
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="Body" runat="server">
+    <table align="center">
         <tr>
-            <td class="auto-style6">
-                <img class="auto-style11" src="AuctionPowers.jpg" />
-            </td>
-            <td class="auto-style2">
-                <input id="Text1" class="auto-style7" type="text" /> <input id="Search" type="button" value="Search" />
-            </td>
-            <td class="auto-style8">
-                <div>
-                Welcome
-                <asp:LoginName ID="LoginName1" runat="server" Font-Bold = "true" />
-                <br />
-                <br />
-                <asp:LoginStatus ID="LoginStatus1" runat="server" />
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td class="auto-style3">
-                <span class="newStyle1">
-                    <span class="auto-style10"><strong>Your Items On Auction</strong><br />
-                        <br />
-                <img class="auto-style19" src="http://i.ebayimg.com/00/s/NDY4WDQ2OQ==/z/Ev4AAOSwBP9UV-N4/$_1.JPG?set_id=2" /><br />
-                    </span>$18.50<br />
-                <hr />
-                <br />
-                <img class="auto-style20" src="http://i.ebayimg.com/00/s/MjY3WDQ2OA==/z/emIAAOSwGWNUV-Oa/$_1.JPG?set_id=2" /><br />
-                $6.46</td>
-            <td class="auto-style4">
+            <td class=".auto-style25">
                 <asp:ValidationSummary runat=server 
                     HeaderText="There were errors on the page:" />
                 <h3 class="newStyle2">Describe your item</h3>
@@ -188,16 +99,6 @@
                     <asp:Button ID="btnCancel" runat="server" CausesValidation="False" OnClick="btnCancel_Click" Text="Cancel" />
                 </p>
             </td>
-            <td class="auto-style18"><strong><span class="auto-style10">Items You&#39;ve Bid On</span><br />
-                <br />
-                <img class="auto-style21" src="http://i.ebayimg.com/00/s/NDY4WDQ2OA==/z/iioAAOSwBP9UV-b3/$_1.JPG?set_id=2" /><br />
-                </strong><span class="auto-style23">$5.80</span><hr />
-                <br />
-                <img class="auto-style22" src="http://i.ebayimg.com/00/s/NjI1WDYyNQ==/z/XxwAAOSwzOxUV-XA/$_1.JPG?set_id=2" /><br />
-                <span class="auto-style24">$17.23</span><br />
-            </td>
         </tr>
         </table>
-        </form>
-</body>
-</html>
+</asp:Content>
