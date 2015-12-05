@@ -19,7 +19,27 @@ public partial class Home : System.Web.UI.Page
             FormsAuthentication.RedirectToLoginPage();
 
         }
-        All();
+        if (!Page.IsPostBack)
+        {
+            try
+            {
+                //search_html = HttpContext.Current.Session["Search_HTML"].ToString();
+                var search_string = Request.QueryString["search"].ToString();
+                if (!String.IsNullOrEmpty(search_string))
+                {
+                    LabelCategory.Text = search_string;
+                    Load_Search(search_string);
+                }
+                else
+                {
+                    All();
+                }
+            }
+            catch (NullReferenceException)
+            {
+                All();
+            }
+        }
     }
     protected int Get_Authenticated_User_ID()
     {

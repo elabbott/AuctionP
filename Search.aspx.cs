@@ -6,6 +6,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Web;
+using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -14,7 +15,11 @@ public partial class Search : System.Web.UI.Page
     private string search_html;
     protected void Page_Load(object sender, EventArgs e)
     {
+        if (!this.Page.User.Identity.IsAuthenticated)
+        {
+            FormsAuthentication.RedirectToLoginPage();
 
+        }
         if (!Page.IsPostBack)
         {
             try
