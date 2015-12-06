@@ -76,23 +76,39 @@ public partial class UserAuctions : System.Web.UI.Page
         html.Append("<table class=\"table\"");
 
         html.Append("<tr>");
-
+        var i = 1;
         foreach (DataColumn column in dt.Columns)
         {
-            html.Append("<th>");
-            html.Append(column.ColumnName);
-            html.Append("</th>");
+            if (i < 8)
+            {
+                html.Append("<th>");
+                html.Append(column.ColumnName);
+                html.Append("</th>");
+            }
+            i++;
         }
         html.Append("</tr>");
 
         foreach (DataRow row in dt.Rows)
         {
-            //var i = 1; // this keeps track which column we are on, reference select statement in GetData() for corresponding column values
+            i = 1; // this keeps track which column we are on, reference select statement in GetData() for corresponding column values
             html.Append("<tr>");
             foreach (DataColumn column in dt.Columns)
             {
                 var columnString = row[column.ColumnName].ToString();
                 html.Append("<td>");
+                if (i == 1)
+                {
+                    html.Append("<a href='Item.aspx?id=" + row[7] + "'>" + columnString + "</a>");
+                }
+                else if (i ==3)
+                {
+                    html.Append(String.Format("{0:C}", row[2]));
+                }
+                else if( i==4)
+                {
+                    html.Append(String.Format("{0:C}", row[3]));
+                }
                 //if (row[column.ColumnName].ToString().Contains(".com"))
                 //if (i == 5 && CheckURLValid(columnString)) //column value check for fifth column <may be unnessarry> and then checks if link is valid url
                 //{
@@ -112,10 +128,13 @@ public partial class UserAuctions : System.Web.UI.Page
                 //}
                 //else
                 //{
-                html.Append(columnString);
-                //}
-                html.Append("</td>");
-                //i++;
+                else if (i < 8)
+                {
+                    html.Append(columnString);
+                    //}
+                    html.Append("</td>");
+                }
+                i++;
             }
             html.Append("</tr>");
         }
@@ -137,7 +156,7 @@ public partial class UserAuctions : System.Web.UI.Page
         {
             var user_id = Get_Authenticated_User_ID();
 
-            var cmd = new MySqlCommand("SELECT Auction_ID, User_Id_Owner, User_Id_High_Bid, Current_High_Bid, Min_Bid, Buyout, Open, Create_Date, End_Date, Description, Category, Title FROM Auction WHERE User_Id_Owner = '" + user_id + "'", con);
+            var cmd = new MySqlCommand("SELECT Title, Current_High_Bid, Min_Bid, Buyout, End_Date, Description, Category, Auction_Id FROM Auction WHERE User_Id_Owner = '" + user_id + "'", con);
 
             using (var adapter = new MySqlDataAdapter(cmd))
             {

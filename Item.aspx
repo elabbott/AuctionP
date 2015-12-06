@@ -28,7 +28,7 @@ th, td {
                 <br />
                 <asp:CompareValidator ID="CompareValidatorAvailableBalance" runat="server" ControlToValidate="txtAmount" ErrorMessage="Must be no greater than Available Balance" ForeColor="Red" Operator="LessThanEqual" Type="Double"></asp:CompareValidator>
                 <br />
-                <asp:Label ID="lblBuyOut" runat="server" Visible="False"></asp:Label>
+                <b><asp:Label ID="lblBuyOut" runat="server" Visible="False"></asp:Label></b>
                 <br />
                 <asp:Button ID="btnBuyOut" runat="server" Enabled="False" OnClick="btnBuyOut_Click" Text="Buy Now" Visible="False" CausesValidation="False" />
             </td>

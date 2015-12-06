@@ -75,6 +75,8 @@
                     <asp:DropDownList ID="ddListCard" runat="server" OnSelectedIndexChanged="ddListCard_SelectedIndexChanged">
                     </asp:DropDownList>
                 &nbsp;<asp:CompareValidator ID="CompareValidator1" runat="server" ControlToValidate="ddListCard" ErrorMessage="Must select card" ForeColor="Red" Operator="NotEqual" ValueToCompare="0"></asp:CompareValidator>
+                <p class="auto-style27">
+                    <a href="AddCard.aspx">Add Credit Card</a></p>
                 <p class="newStyle2">
                     Amount: $<asp:TextBox ID="txtAmount" runat="server" Width="94px"></asp:TextBox>
                     <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ControlToValidate="txtAmount" ForeColor="Red">*</asp:RequiredFieldValidator>
@@ -95,8 +97,7 @@
                 </p>
                 <p class="newStyle2">
                     &nbsp;</p>
-                <p class="auto-style27">
-                    <a href="AddCard.aspx">Add Credit Card</a></p>
+                
             </td>
         </tr>
         </table>

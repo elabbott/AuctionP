@@ -57,7 +57,7 @@ public partial class Item : System.Web.UI.Page
     }
     public void bid(double amount, int bidder_id)
     {
-        if (user_id != user_id_high_bid)
+        if ((user_id != user_id_high_bid) && (user_id_high_bid != 0))
         {
             notifyBidderAboutOutbid();
         }
@@ -103,8 +103,10 @@ public partial class Item : System.Web.UI.Page
             using (MySqlCommand cmd = new MySqlCommand())
             {
                 cmd.CommandType = CommandType.Text;
-                cmd.CommandText = "UPDATE Auction SET Open=0 WHERE Auction_Id=@id";
+                cmd.CommandText = "UPDATE Auction SET Open=0, User_Id_High_Bid=@user, Current_High_Bid=@bid WHERE Auction_Id=@id";
                 cmd.Parameters.AddWithValue("@id", auction_id);
+                cmd.Parameters.AddWithValue("@user", user_id_high_bid);
+                cmd.Parameters.AddWithValue("@bid", current_high_bid);
                 cmd.Connection = con;
                 con.Open();
                 cmd.ExecuteNonQuery();
@@ -251,7 +253,7 @@ public partial class Item : System.Web.UI.Page
                 buyout = dbNullTesterObject == DBNull.Value ? 0 : Convert.ToDouble(dbNullTesterObject);
                 //buyout = (Double)auction["Buyout"];
                 open = (Boolean)auction["Open"];
-                create_date = (DateTime)auction["Create_Date"];
+                create_date = (DateTime)auction["Create_Date"] - new TimeSpan(5, 0, 0);
                 end_date = (DateTime)auction["End_Date"];
                 description = (string)auction["Description"];
                 image_url = (string)auction["Image_URL"];
@@ -267,6 +269,7 @@ public partial class Item : System.Web.UI.Page
     protected void btnBuyOut_Click(object sender, EventArgs e)
     {
         buyOut();
+        Response.Redirect("Item.aspx?id=" + auction_id);
     }
 
     private void buyOut()
@@ -352,8 +355,8 @@ public partial class Item : System.Web.UI.Page
         if (isActive())
         {
             TimeSpan left = new TimeSpan();
-            left = DateTime.Now - create_date;
-            lblTimeleft.Text = "Time left: " + left.Hours + " hours";
+            left = end_date - DateTime.Now;
+            lblTimeleft.Text = "Time left: " + left.Days + " days " + left.Hours + " hours " + left.Minutes + " minutes";
         }
         else
         {
@@ -363,7 +366,7 @@ public partial class Item : System.Web.UI.Page
         showBidControls(show_bid);
         showBuyOutControls(show_buyout);
         lblHighBid.Text = String.Format("{0:C}", current_high_bid);
-        lblNextMinBid.Text = String.Format("{0:C}", min_bid);
+        lblNextMinBid.Text = "Next minimum bid: " + String.Format("{0:C}", min_bid);
     }
 
     private double getBidderAvailableBalance()

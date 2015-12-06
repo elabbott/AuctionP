@@ -77,7 +77,7 @@
                         ErrorMessage="Description is required." ForeColor="Red"> *
                     </asp:RequiredFieldValidator>
                     Description:    <p class="newStyle2">
-                    <asp:TextBox ID="txtDescription" runat="server" Height="160px" Width="488px"></asp:TextBox>
+                    <asp:TextBox ID="txtDescription" runat="server" Height="160px" Width="488px" TextMode="MultiLine"></asp:TextBox>
                 </p>
                 <h3 class="newStyle2">Select duration</h3>
                 <p class="newStyle2">
