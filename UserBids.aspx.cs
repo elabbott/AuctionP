@@ -84,7 +84,15 @@ public partial class UserBids : System.Web.UI.Page
                 html.Append("<td>");
                 if (i == 1)
                 {
-                    html.Append("<a href='Item.aspx?id=" + row[7].ToString() + "'>" + columnString + "</a");
+                    html.Append("<a href='Item.aspx?id=" + row[6].ToString() + "'>" + columnString + "</a>");
+                }
+                else if(i == 4)
+                {
+                    html.Append(String.Format("{0:C}", row[3]));
+                }
+                else if(i == 5)
+                {
+                    html.Append(String.Format("{0:C}", row[4]));
                 }
                 //if (row[column.ColumnName].ToString().Contains(".com"))
                 //if (i == 5 && CheckURLValid(columnString)) //column value check for fifth column <may be unnessarry> and then checks if link is valid url
@@ -103,7 +111,7 @@ public partial class UserBids : System.Web.UI.Page
                 //    lbGoToAuction.PostBackUrl = "Items.aspx";
                 //    html.Append("");
                 //}
-                if (i < 7)
+                else if (i < 7)
                 {
                     html.Append(columnString);
                     html.Append("</td>");

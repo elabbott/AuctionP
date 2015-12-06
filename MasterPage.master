@@ -20,7 +20,7 @@
             <nav class="navbar navbar-default">
                 <div class="container-fluid">
                     <div class="navbar-header">
-                        <img class="navbar-brand" src="AuctionPowers.jpg" />
+                        <img class="img-rounded" height="100" src="AuctionPowers.jpg" />
                     </div>
                     <div class="navbar-right">
                         Welcome, <asp:LoginName ID="LoginName1" runat="server" Font-Bold="true" /> | 

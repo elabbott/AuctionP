@@ -101,11 +101,15 @@ public partial class UserAuctions : System.Web.UI.Page
                 {
                     html.Append("<a href='Item.aspx?id=" + row[7] + "'>" + columnString + "</a>");
                 }
-                else if (i ==3)
+                else if(i == 2)
+                {
+                    html.Append(String.Format("{0:C}", row[1]));
+                }
+                else if (i == 3)
                 {
                     html.Append(String.Format("{0:C}", row[2]));
                 }
-                else if( i==4)
+                else if(i == 4)
                 {
                     html.Append(String.Format("{0:C}", row[3]));
                 }
