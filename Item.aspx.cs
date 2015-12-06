@@ -31,18 +31,17 @@ public partial class Item : System.Web.UI.Page
     private string title;
     private string category;
     //private Auction item;
+    string item_url;
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        if (!this.Page.User.Identity.IsAuthenticated)
+        if (loggedIn())
         {
-            FormsAuthentication.RedirectToLoginPage();
-
+            username = HttpContext.Current.User.Identity.Name;
+            user_id = getUserId();
         }
-        username = HttpContext.Current.User.Identity.Name;
         auction_id = Convert.ToInt32(Request.QueryString["id"]);
-        user_id = getUserId();
-
+        item_url = Request.Url.AbsoluteUri;
         //auction_id = Convert.ToInt32(Session["auction_id"]);
         //Auction item = new Auction(auction_id, owner, min_bid, buyout, end_date, description, image_url, title, category);
         //var item = new Auction(auction_id, owner, min_bid, buyout, end_date, description, image_url, title, category);
@@ -58,7 +57,10 @@ public partial class Item : System.Web.UI.Page
     }
     public void bid(double amount, int bidder_id)
     {
-        notifyBidderAboutOutbid();
+        if (user_id != user_id_high_bid)
+        {
+            notifyBidderAboutOutbid();
+        }
         int result;
         string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
         using (MySqlConnection con = new MySqlConnection(constr))
@@ -154,14 +156,14 @@ public partial class Item : System.Web.UI.Page
         var constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
         using (var con = new MySqlConnection(constr))
         {
-            var cmd = new MySqlCommand("SELECT Email FROM User WHERE User_Id_High_Bid = " + user_id_high_bid, con);
+            var cmd = new MySqlCommand("SELECT Email FROM User WHERE User_Id = " + user_id_high_bid, con);
             cmd.Connection.Open();
 
             object dbNullTesterObject;
             var winner = cmd.ExecuteScalar();
             var winner_email = winner.ToString();
             cmd.Connection.Close();
-            var message = "<br /><br />You won the auction! of " + title + "";
+            var message = "<br /><br />You won the auction of " + title + "!<br /><br /><a href='" + item_url + "'>Link to item</a>";
             var subject = "Auction Won!";
             Send_Email(message, winner_email, subject);
         }
@@ -171,14 +173,14 @@ public partial class Item : System.Web.UI.Page
         var constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
         using (var con = new MySqlConnection(constr))
         {
-            var cmd = new MySqlCommand("SELECT Email FROM User WHERE User_Id_Owner = " + user_id_owner, con);
+            var cmd = new MySqlCommand("SELECT Email FROM User WHERE User_Id = " + user_id_owner, con);
             cmd.Connection.Open();
 
             object dbNullTesterObject;
             var owner = cmd.ExecuteScalar();
             var owner_email = owner.ToString();
             cmd.Connection.Close();
-            var message = "<br /><br />Your auction of " + title + " has been won for " + current_high_bid + "";
+            var message = "<br /><br />Your auction of " + title + " has been won for " + current_high_bid + "!<br /><br /><a href='" + item_url + "'>Link to item</a>";
             var subject = "Auction Over!";
             Send_Email(message, owner_email, subject);
         }
@@ -189,7 +191,7 @@ public partial class Item : System.Web.UI.Page
         var constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
         using (var con = new MySqlConnection(constr))
         {
-            var cmd = new MySqlCommand("SELECT Email FROM User WHERE User_Id_High_Bid = " + user_id_high_bid, con);
+            var cmd = new MySqlCommand("SELECT Email FROM User WHERE User_Id = " + user_id_high_bid, con);
             cmd.Connection.Open();
 
             object dbNullTesterObject;
@@ -197,7 +199,7 @@ public partial class Item : System.Web.UI.Page
             var loser_email = loser.ToString();
             cmd.Connection.Close();
             if (!String.IsNullOrEmpty(loser_email)) { 
-            var message = "<br /><br />You have been outbid! Auction: " + title + "<br /><br /><a href='Item.aspx?id=" + auction_id + "'>Link to page.</a>";
+            var message = "<br /><br />You have been outbid! <br /><br />Auction: " + title + "<br /><br /><a href='" + item_url + "'>Link to page.</a>";
             var subject = "Currently Outbid!";
             Send_Email(message, loser_email, subject);
             }
@@ -286,14 +288,7 @@ public partial class Item : System.Web.UI.Page
 
     private bool isActive()
     {
-        bool result = true;
-
-        if(end_date.CompareTo(DateTime.Now) < 0)
-        {
-            result = false;
-        }
-
-        return result;
+        return ((open) && (end_date > DateTime.Now));
     }
 
     private void updateStats()
@@ -304,10 +299,12 @@ public partial class Item : System.Web.UI.Page
             {
                 min_bid = current_high_bid + 0.01;
             }
-
-            if(user_id != user_id_owner)
+            if (loggedIn())
             {
-                bidderAvailableBalance = getBidderAvailableBalance();
+                if (user_id != user_id_owner)
+                {
+                    bidderAvailableBalance = getBidderAvailableBalance();
+                }
             }
         }
         else
@@ -323,6 +320,8 @@ public partial class Item : System.Web.UI.Page
             CompareValidator1.ValueToCompare = Convert.ToString(min_bid);
             CompareValidatorAvailableBalance.ValueToCompare = Convert.ToString(bidderAvailableBalance);
         }
+        lblBidAmount.Text = "Bid amount: $";
+        lblBidAmount.Visible = show;
         txtAmount.Enabled = show;
         txtAmount.Visible = show;
         btnBid.Enabled = show;
@@ -343,21 +342,28 @@ public partial class Item : System.Web.UI.Page
 
     private void showControls()
     {
-        bool show_buyout = (buyout > 0 ? true : false);
+        bool show_buyout = (isActive() && loggedIn() && (user_id != user_id_owner) && (buyout > 0));
+        bool show_bid = (isActive() && loggedIn() && (user_id != user_id_owner));
+        bool show_login_msg = (isActive() && !loggedIn() && (user_id != user_id_high_bid));
+        if(show_login_msg)
+        {
+            lblLogIn.Text = "Please login to bid on item";
+        }
         if (isActive())
         {
-            if (user_id == user_id_owner)
-            {
-                showBidControls(false);
-                showBuyOutControls(false);
-            }
-            else
-            {
-                showBidControls(true);
-                showBuyOutControls(show_buyout);
-            }
-            lblNextMinBid.Text = String.Format("{0:C}", min_bid);
+            TimeSpan left = new TimeSpan();
+            left = DateTime.Now - create_date;
+            lblTimeleft.Text = "Time left: " + left.Hours + " hours";
         }
+        else
+        {
+            lblTimeleft.Text = "Auction ended.";
+        }
+        lblNextMinBid.Visible = isActive();
+        showBidControls(show_bid);
+        showBuyOutControls(show_buyout);
+        lblHighBid.Text = String.Format("{0:C}", current_high_bid);
+        lblNextMinBid.Text = String.Format("{0:C}", min_bid);
     }
 
     private double getBidderAvailableBalance()
@@ -419,5 +425,16 @@ public partial class Item : System.Web.UI.Page
             }
         }
         return result;
+    }
+
+    private bool loggedIn()
+    {
+        return this.Page.User.Identity.IsAuthenticated;
+        /*if (this.Page.User.Identity.IsAuthenticated)
+        {
+            FormsAuthentication.RedirectToLoginPage();
+            
+        }*/
+
     }
 }
