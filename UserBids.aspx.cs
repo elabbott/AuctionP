@@ -64,7 +64,7 @@ public partial class UserBids : System.Web.UI.Page
         var i = 1;
         foreach (DataColumn column in dt.Columns)
         {
-            if (i < 8)
+            if (i < 7)
             {
                 html.Append("<th>");
                 html.Append(column.ColumnName);
@@ -103,7 +103,7 @@ public partial class UserBids : System.Web.UI.Page
                 //    lbGoToAuction.PostBackUrl = "Items.aspx";
                 //    html.Append("");
                 //}
-                if (i < 8)
+                if (i < 7)
                 {
                     html.Append(columnString);
                     html.Append("</td>");
@@ -129,7 +129,7 @@ public partial class UserBids : System.Web.UI.Page
         using (var con = new MySqlConnection(constr))
         {
             var user_id = Get_Authenticated_User_ID();
-            var cmd = new MySqlCommand("SELECT Title, Category, Description, Current_High_Bid, Buyout, Create_Date, End_Date, Auction_Id FROM Auction WHERE Open=@open AND User_Id_High_Bid = '" + user_id + "'", con);
+            var cmd = new MySqlCommand("SELECT Title, Category, Description, Current_High_Bid, Buyout, End_Date, Auction_Id FROM Auction WHERE Open=@open AND User_Id_High_Bid = '" + user_id + "'", con);
             cmd.Parameters.AddWithValue("@open", open);
             using (var adapter = new MySqlDataAdapter(cmd))
             {

@@ -24,7 +24,7 @@
                     </div>
                     <div class="navbar-right">
                         Welcome, <asp:LoginName ID="LoginName1" runat="server" Font-Bold="true" /> | 
-                        <asp:LoginStatus ID="LoginStatus1" runat="server" />
+                        <asp:LoginStatus ID="LoginStatus1" runat="server" LoginText="Login / Register" />
                     </div>
                     <div>
                         <ul class="nav navbar-nav">
