@@ -2,33 +2,7 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 
-    <style type="text/css">
-        .auto-style25 {
-            height: 20px;
-            width: 18%;
-            text-align: center;
-            vertical-align: top;
-        }
-        .auto-style26 {
-            width: 18%;
-            text-align: center;
-            vertical-align: top;
-        }
-        .auto-style27 {
-            width: 210px;
-            height: 24px;
-            color: #0000FF;
-            text-decoration: underline;
-        }
-        .auto-style28 {
-            width: 210px;
-            height: 22px;
-            color: #0000FF;
-            text-decoration: underline;
-        }
-    </style>
-
-</asp:Content>
+    </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="Body" runat="server">
     <table align="center">
         <tr>
@@ -90,8 +64,10 @@
                     <h3 class="newStyle2">Select price (optional)</h3>
                 <p class="newStyle2">Starting price:
                     <asp:TextBox ID="txtMinBid" runat="server"></asp:TextBox>
+                    <asp:RegularExpressionValidator ID="RegularExpressionValidatorMinBid" runat="server" ControlToValidate="txtMinBid" ErrorMessage="Must be valid dollar amount" ForeColor="Red" ValidationExpression="^\d+(\.\d{2})?$"></asp:RegularExpressionValidator>
                 <p class="newStyle2">Buyout price:
                     <asp:TextBox ID="txtBuyout" runat="server"></asp:TextBox>
+                    <asp:RegularExpressionValidator ID="RegularExpressionValidatorBuyout" runat="server" ControlToValidate="txtBuyout" ErrorMessage="Must be valid dollar amount" ForeColor="Red" ValidationExpression="^\d+(\.\d{2})?$"></asp:RegularExpressionValidator>
                 </p>
                 <p class="newStyle2">
                     <asp:Button ID="btnCreate" runat="server" OnClick="btnCreate_Click" Text="Create Auction" />
